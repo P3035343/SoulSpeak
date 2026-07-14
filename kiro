@@ -1,0 +1,2 @@
+- name: Kiro Action
+  uses: karancode/kiro-action@v0.2.0
