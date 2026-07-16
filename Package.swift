@@ -12,17 +12,11 @@ let package = Package(
             targets: ["SoulSpeak"]
         ),
     ],
-    dependencies: [
-        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.10.0"),
-        .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.3.0"),
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "SoulSpeak",
-            dependencies: [
-                "Kingfisher",
-                .product(name: "Lottie", package: "lottie-spm"),
-            ],
+            dependencies: [],
             path: "Sources/SoulSpeak",
             resources: [.process("Resources")]
         ),
