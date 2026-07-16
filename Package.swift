@@ -6,15 +6,10 @@ let package = Package(
     platforms: [
         .iOS(.v17)
     ],
-    products: [
-        .library(
-            name: "SoulSpeak",
-            targets: ["SoulSpeak"]
-        ),
-    ],
+    products: [],
     dependencies: [],
     targets: [
-        .target(
+        .executableTarget(
             name: "SoulSpeak",
             dependencies: [],
             path: "Sources/SoulSpeak",
