@@ -42,7 +42,7 @@ actor EncryptionService {
     
     func generateKeyData() -> Data {
         let key = SymmetricKey(size: .bits256)
-        return key.withUnsafeBytes { Data(/bin/sh) }
+        return key.withUnsafeBytes { Data($0) }
     }
 }
 

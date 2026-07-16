@@ -1,13 +1,13 @@
 import SwiftUI
 
 enum SSColors {
-    static let primary = Color("PrimaryColor", bundle: .module)
-    static let secondary = Color("SecondaryColor", bundle: .module)
-    static let accent = Color("AccentColor", bundle: .module)
-    static let background = Color("BackgroundColor", bundle: .module)
-    static let surface = Color("SurfaceColor", bundle: .module)
-    static let textPrimary = Color("TextPrimary", bundle: .module)
-    static let textSecondary = Color("TextSecondary", bundle: .module)
+    static let primary = Color(red: 0.4, green: 0.3, blue: 0.8)
+    static let secondary = Color(red: 0.6, green: 0.4, blue: 0.9)
+    static let accent = Color(red: 0.5, green: 0.7, blue: 1.0)
+    static let background = Color(red: 0.97, green: 0.97, blue: 0.98)
+    static let surface = Color.white
+    static let textPrimary = Color(red: 0.1, green: 0.1, blue: 0.15)
+    static let textSecondary = Color(red: 0.4, green: 0.4, blue: 0.5)
     static let success = Color.green
     static let warning = Color.orange
     static let error = Color.red

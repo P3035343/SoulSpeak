@@ -14,7 +14,7 @@ struct BreathworkView: View {
         case inhale = "Breathe In"
         case hold = "Hold"
         case exhale = "Breathe Out"
-        case holdAfterExhale = "Hold"
+        case holdAfterExhale = "Rest"
     }
     
     var body: some View {
