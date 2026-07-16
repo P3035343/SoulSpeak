@@ -47,7 +47,7 @@ struct MainTabView: View {
     @State private var selectedTab = 0
     
     var body: some View {
-        TabView(selection: ) {
+        TabView(selection: $selectedTab) {
             HomeView()
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
