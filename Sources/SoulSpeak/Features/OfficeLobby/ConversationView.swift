@@ -100,22 +100,15 @@ struct ConversationView: View {
     // MARK: - Header
     private var conversationHeader: some View {
         HStack(spacing: 12) {
-            // Mini avatar
-            ZStack {
-                Circle()
-                    .fill(character.backgroundGradient)
-                    .frame(width: 44, height: 44)
-                Image(systemName: character.avatarIcon)
-                    .font(.system(size: 20))
-                    .foregroundColor(.white)
-            }
+            // Animated talking avatar
+            TalkingAvatarView(character: character, isSpeaking: isTyping)
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(character.title)
                     .font(.system(size: 16, weight: .semibold, design: .rounded))
                 HStack(spacing: 4) {
                     Circle().fill(Color.green).frame(width: 6, height: 6)
-                    Text(isTyping ? "Typing..." : "Active now")
+                    Text(isTyping ? "Speaking..." : "Listening")
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                 }
@@ -225,23 +218,10 @@ struct MessageBubble: View {
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
             if message.isFromCharacter {
-                // Character avatar mini
-                if let imageName = character.avatarImageName {
-                    Image(imageName)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 28, height: 28)
-                        .clipShape(Circle())
-                } else {
-                    Circle()
-                        .fill(character.backgroundGradient)
-                        .frame(width: 28, height: 28)
-                        .overlay(
-                            Image(systemName: character.avatarIcon)
-                                .font(.system(size: 12))
-                                .foregroundColor(.white)
-                        )
-                }
+                // Character avatar with talking animation
+                TalkingAvatarView(character: character, isSpeaking: false)
+                    .scaleEffect(0.5)
+                    .frame(width: 28, height: 28)
             } else {
                 Spacer(minLength: 60)
             }

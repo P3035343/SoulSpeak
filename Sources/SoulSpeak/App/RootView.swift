@@ -60,15 +60,15 @@ struct MainTabView: View {
                 }
                 .tag(1)
             
-            MoodTrackingView()
+            OfficeLobbyView()
                 .tabItem {
-                    Label("Mood", systemImage: "heart.fill")
+                    Label("Office", systemImage: "person.2.fill")
                 }
                 .tag(2)
             
-            GrowthDashboardView()
+            MoodTrackingView()
                 .tabItem {
-                    Label("Growth", systemImage: "chart.line.uptrend.xyaxis")
+                    Label("Mood", systemImage: "heart.fill")
                 }
                 .tag(3)
             
