@@ -55,14 +55,16 @@ struct ConversationView: View {
                         
                         if isTyping {
                             TypingIndicator(color: character.avatarColor)
-                                .id("typing")
+                                .id(UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
                         }
                     }
                     .padding()
                 }
                 .onChange(of: messages.count) { _, _ in
                     withAnimation {
-                        proxy.scrollTo(messages.last?.id ?? "typing", anchor: .bottom)
+                        if let lastId = messages.last?.id {
+                            proxy.scrollTo(lastId, anchor: .bottom)
+                        }
                     }
                 }
             }
