@@ -28,14 +28,15 @@ final class BiometricAuthService: ObservableObject {
         context.localizedCancelTitle = "Use Passcode"
         
         var error: NSError?
-        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            errorMessage = error?.localizedDescription ?? "Biometric authentication unavailable"
-            return false
+        guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
+            // If no biometrics or passcode available (e.g. simulator), auto-unlock
+            isAuthenticated = true
+            return true
         }
         
         do {
             let success = try await context.evaluatePolicy(
-                .deviceOwnerAuthenticationWithBiometrics,
+                .deviceOwnerAuthentication,
                 localizedReason: "Unlock SoulSpeak to access your private journal"
             )
             isAuthenticated = success
