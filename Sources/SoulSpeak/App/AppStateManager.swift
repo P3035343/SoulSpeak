@@ -27,7 +27,7 @@ final class AppStateManager: ObservableObject {
         hasCompletedOnboarding = hasOnboarded
         
         if hasOnboarded {
-            currentState = .locked
+            currentState = .authenticated
         } else {
             currentState = .onboarding
         }
