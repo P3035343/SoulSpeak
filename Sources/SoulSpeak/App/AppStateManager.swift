@@ -5,12 +5,11 @@ enum AppState: Equatable {
     case loading
     case onboarding
     case authenticated
-    case locked
 }
 
 @MainActor
 final class AppStateManager: ObservableObject {
-    @Published var currentState: AppState = .loading
+    @Published var currentState: AppState = .authenticated
     @Published var isFirstLaunch: Bool = true
     @Published var hasCompletedOnboarding: Bool = false
     @Published var showPrivacyOverlay: Bool = false
@@ -19,32 +18,12 @@ final class AppStateManager: ObservableObject {
     
     init() {
         loadInitialState()
-        setupNotificationObservers()
     }
     
     private func loadInitialState() {
         let hasOnboarded = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
         hasCompletedOnboarding = hasOnboarded
-        
-        if hasOnboarded {
-            currentState = .authenticated
-        } else {
-            currentState = .onboarding
-        }
-    }
-    
-    private func setupNotificationObservers() {
-        NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-            .sink { [weak self] _ in
-                self?.showPrivacyOverlay = true
-            }
-            .store(in: &cancellables)
-        
-        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
-            .sink { [weak self] _ in
-                self?.showPrivacyOverlay = false
-            }
-            .store(in: &cancellables)
+        currentState = .authenticated
     }
     
     func completeOnboarding() {
@@ -55,10 +34,6 @@ final class AppStateManager: ObservableObject {
     
     func unlock() {
         currentState = .authenticated
-    }
-    
-    func lock() {
-        currentState = .locked
     }
     
     func resetApp() {
