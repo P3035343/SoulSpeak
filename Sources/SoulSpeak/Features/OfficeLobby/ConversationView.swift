@@ -224,14 +224,22 @@ struct MessageBubble: View {
         HStack(alignment: .bottom, spacing: 8) {
             if message.isFromCharacter {
                 // Character avatar mini
-                Circle()
-                    .fill(character.backgroundGradient)
-                    .frame(width: 28, height: 28)
-                    .overlay(
-                        Image(systemName: character.avatarIcon)
-                            .font(.system(size: 12))
-                            .foregroundColor(.white)
-                    )
+                if let imageName = character.avatarImageName {
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 28, height: 28)
+                        .clipShape(Circle())
+                } else {
+                    Circle()
+                        .fill(character.backgroundGradient)
+                        .frame(width: 28, height: 28)
+                        .overlay(
+                            Image(systemName: character.avatarIcon)
+                                .font(.system(size: 12))
+                                .foregroundColor(.white)
+                        )
+                }
             } else {
                 Spacer(minLength: 60)
             }

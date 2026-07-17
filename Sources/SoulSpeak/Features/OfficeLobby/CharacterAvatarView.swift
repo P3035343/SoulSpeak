@@ -26,11 +26,20 @@ struct CharacterAvatarView: View {
                         .frame(width: 110, height: 110)
                         .shadow(color: character.avatarColor.opacity(0.4), radius: 8, y: 4)
                     
-                    // Avatar icon (SF Symbol as placeholder for real avatar)
-                    Image(systemName: character.avatarIcon)
-                        .font(.system(size: 44))
-                        .foregroundColor(.white)
-                        .scaleEffect(isBreathing ? 1.05 : 1.0)
+                    // Avatar image or SF Symbol fallback
+                    if let imageName = character.avatarImageName {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
+                            .scaleEffect(isBreathing ? 1.03 : 1.0)
+                    } else {
+                        Image(systemName: character.avatarIcon)
+                            .font(.system(size: 44))
+                            .foregroundColor(.white)
+                            .scaleEffect(isBreathing ? 1.05 : 1.0)
+                    }
                 }
                 
                 // Name plate

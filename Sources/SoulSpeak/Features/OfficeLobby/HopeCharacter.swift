@@ -48,6 +48,14 @@ enum HopeCharacter: String, CaseIterable, Identifiable {
         }
     }
     
+    /// Custom image name in asset catalog (nil = use SF Symbol fallback)
+    var avatarImageName: String? {
+        switch self {
+        case .mrHope: return "mr_hope"
+        case .drHope: return nil // Add "dr_hope" when you have the image
+        }
+    }
+    
     var backgroundGradient: LinearGradient {
         switch self {
         case .mrHope:
