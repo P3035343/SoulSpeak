@@ -52,7 +52,7 @@ enum HopeCharacter: String, CaseIterable, Identifiable {
     var avatarImageName: String? {
         switch self {
         case .mrHope: return "mr_hope"
-        case .drHope: return nil // Add "dr_hope" when you have the image
+        case .drHope: return "dr_hope"
         }
     }
     
