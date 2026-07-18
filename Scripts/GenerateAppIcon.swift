@@ -14,6 +14,7 @@ import Foundation
 import CoreGraphics
 import CoreText
 import ImageIO
+import AppKit  // Needed for NSAttributedString keys on macOS
 
 let size: Int = 1024
 let cgSize = CGFloat(size)
@@ -96,11 +97,11 @@ for i in 0..<3 {
 
 // === CENTRAL "S" LETTER ===
 let font = CTFontCreateWithName("Georgia-Bold" as CFString, 380, nil)
-let attrs: [NSAttributedString.Key: Any] = [
-    .font: font,
-    .foregroundColor: CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.95)
+let sAttributes: [NSAttributedString.Key: Any] = [
+    .font: font as Any,
+    .foregroundColor: NSColor.white.withAlphaComponent(0.95).cgColor as Any
 ]
-let attrStr = NSAttributedString(string: "S", attributes: attrs)
+let attrStr = NSAttributedString(string: "S", attributes: sAttributes)
 let line = CTLineCreateWithAttributedString(attrStr)
 let textBounds = CTLineGetBoundsWithOptions(line, [])
 
@@ -113,8 +114,8 @@ CTLineDraw(line, context)
 // === "SoulSpeak" TAGLINE ===
 let tagFont = CTFontCreateWithName("Avenir-Medium" as CFString, 80, nil)
 let tagAttrs: [NSAttributedString.Key: Any] = [
-    .font: tagFont,
-    .foregroundColor: CGColor(red: 0.95, green: 0.78, blue: 0.30, alpha: 0.85)
+    .font: tagFont as Any,
+    .foregroundColor: NSColor(red: 0.95, green: 0.78, blue: 0.30, alpha: 0.85).cgColor as Any
 ]
 let tagStr = NSAttributedString(string: "SoulSpeak", attributes: tagAttrs)
 let tagLine = CTLineCreateWithAttributedString(tagStr)
@@ -133,13 +134,14 @@ let projectRoot = scriptDir.deletingLastPathComponent()
 let outputPath = projectRoot.appendingPathComponent("SoulSpeak/Assets.xcassets/AppIcon.appiconset/AppIcon.png")
 
 guard let dest = CGImageDestinationCreateWithURL(outputPath as CFURL, "public.png" as CFString, 1, nil) else {
-    fatalError("Failed to create output file")
+    fatalError("Failed to create output file at: \(outputPath.path)")
 }
 CGImageDestinationAddImage(dest, image, nil)
 
 if CGImageDestinationFinalize(dest) {
-    print("App icon generated successfully!")
-    print("Location: \(outputPath.path)")
+    print("✅ App icon generated successfully!")
+    print("📍 Location: \(outputPath.path)")
+    print("🎨 Size: 1024x1024")
 } else {
     fatalError("Failed to write PNG")
 }
