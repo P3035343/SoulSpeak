@@ -56,14 +56,16 @@ class VoiceRecorderService: ObservableObject {
     private func startTimers() {
         // Duration timer
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+            guard let self else { return }
+            Task { @MainActor [weak self] in
                 self?.recordingDuration += 1.0
             }
         }
 
         // Audio level metering timer
         levelTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+            guard let self else { return }
+            Task { @MainActor [weak self] in
                 self?.updateAudioLevels()
             }
         }
