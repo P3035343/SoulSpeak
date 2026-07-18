@@ -88,6 +88,15 @@ struct SettingsView: View {
             .tint(SSColors.primary)
             .onChange(of: notificationsEnabled) { _, newValue in
                 updateSetting { $0.notificationsEnabled = newValue }
+                if newValue {
+                    NotificationService.shared.requestPermission { granted in
+                        if granted {
+                            NotificationService.shared.scheduleDailyReminder(hour: reminderHour, minute: reminderMinute)
+                        }
+                    }
+                } else {
+                    NotificationService.shared.cancelDailyReminder()
+                }
             }
 
             if notificationsEnabled {
@@ -281,6 +290,10 @@ struct SettingsView: View {
                     $0.dailyReminderHour = reminderHour
                     $0.dailyReminderMinute = reminderMinute
                 }
+                // Reschedule notification with new time
+                if notificationsEnabled {
+                    NotificationService.shared.scheduleDailyReminder(hour: reminderHour, minute: reminderMinute)
+                }
             }
         )
     }
@@ -291,6 +304,10 @@ struct SettingsView: View {
             notificationsEnabled = s.notificationsEnabled
             reminderHour = s.dailyReminderHour
             reminderMinute = s.dailyReminderMinute
+            // Ensure notifications are scheduled if enabled
+            if notificationsEnabled {
+                NotificationService.shared.scheduleDailyReminder(hour: reminderHour, minute: reminderMinute)
+            }
         } else {
             // Create default settings
             let newSettings = UserSettings()

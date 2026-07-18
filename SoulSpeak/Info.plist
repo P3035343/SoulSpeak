@@ -24,6 +24,8 @@
     <true/>
     <key>NSMicrophoneUsageDescription</key>
     <string>SoulSpeak needs microphone access to record your voice journal entries with Dr. Hope.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>SoulSpeak uses speech recognition to transcribe your voice journals so Dr. Hope can give you personalized feedback.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>SoulSpeak uses your location to find mental health resources and services near you.</string>
     <key>UIApplicationSceneManifest</key>
