@@ -1,0 +1,492 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10001001 /* SoulSpeakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002001 /* SoulSpeakApp.swift */; };
+		A10001002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002002 /* ContentView.swift */; };
+		A10001003 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002003 /* MainTabView.swift */; };
+		A10001004 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002004 /* JournalEntry.swift */; };
+		A10001005 /* MoodEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002005 /* MoodEntry.swift */; };
+		A10001006 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002006 /* UserSettings.swift */; };
+		A10001007 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002007 /* AudioPlayerService.swift */; };
+		A10001008 /* ScriptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002008 /* ScriptureService.swift */; };
+		A10001009 /* VoiceRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002009 /* VoiceRecorderService.swift */; };
+		A10001010 /* SoulSpeakTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010 /* SoulSpeakTheme.swift */; };
+		A10001011 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002011 /* WelcomeView.swift */; };
+		A10001012 /* VoiceJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* VoiceJournalView.swift */; };
+		A10001013 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* WaveformView.swift */; };
+		A10001014 /* MoodTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* MoodTrackerView.swift */; };
+		A10001015 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002015 /* AnalyticsView.swift */; };
+		A10001016 /* PrayerOutroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002016 /* PrayerOutroView.swift */; };
+		A10001017 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002017 /* SettingsView.swift */; };
+		A10001018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10002018 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A10002001 /* SoulSpeakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakApp.swift; sourceTree = "<group>"; };
+		A10002002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A10002003 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		A10002004 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		A10002005 /* MoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodEntry.swift; sourceTree = "<group>"; };
+		A10002006 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		A10002007 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
+		A10002008 /* ScriptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptureService.swift; sourceTree = "<group>"; };
+		A10002009 /* VoiceRecorderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecorderService.swift; sourceTree = "<group>"; };
+		A10002010 /* SoulSpeakTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakTheme.swift; sourceTree = "<group>"; };
+		A10002011 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		A10002012 /* VoiceJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceJournalView.swift; sourceTree = "<group>"; };
+		A10002013 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
+		A10002014 /* MoodTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodTrackerView.swift; sourceTree = "<group>"; };
+		A10002015 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
+		A10002016 /* PrayerOutroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerOutroView.swift; sourceTree = "<group>"; };
+		A10002017 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A10002018 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10002019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A10003000 /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10004000 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10005000 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				A10005001 /* SoulSpeak */,
+				A10005099 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10005099 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10003000 /* SoulSpeak.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10005001 /* SoulSpeak */ = {
+			isa = PBXGroup;
+			children = (
+				A10005002 /* App */,
+				A10005003 /* Models */,
+				A10005004 /* Services */,
+				A10005005 /* Theme */,
+				A10005006 /* Views */,
+				A10002018 /* Assets.xcassets */,
+				A10002019 /* Info.plist */,
+			);
+			path = SoulSpeak;
+			sourceTree = "<group>";
+		};
+		A10005002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A10002001 /* SoulSpeakApp.swift */,
+				A10002002 /* ContentView.swift */,
+				A10002003 /* MainTabView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A10005003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A10002004 /* JournalEntry.swift */,
+				A10002005 /* MoodEntry.swift */,
+				A10002006 /* UserSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A10005004 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A10002007 /* AudioPlayerService.swift */,
+				A10002008 /* ScriptureService.swift */,
+				A10002009 /* VoiceRecorderService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A10005005 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				A10002010 /* SoulSpeakTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		A10005006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A10005007 /* Welcome */,
+				A10005008 /* VoiceJournal */,
+				A10005009 /* MoodTracker */,
+				A10005010 /* Analytics */,
+				A10005011 /* Prayer */,
+				A10005012 /* Settings */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A10005007 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				A10002011 /* WelcomeView.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+		A10005008 /* VoiceJournal */ = {
+			isa = PBXGroup;
+			children = (
+				A10002012 /* VoiceJournalView.swift */,
+				A10002013 /* WaveformView.swift */,
+			);
+			path = VoiceJournal;
+			sourceTree = "<group>";
+		};
+		A10005009 /* MoodTracker */ = {
+			isa = PBXGroup;
+			children = (
+				A10002014 /* MoodTrackerView.swift */,
+			);
+			path = MoodTracker;
+			sourceTree = "<group>";
+		};
+		A10005010 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				A10002015 /* AnalyticsView.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
+		A10005011 /* Prayer */ = {
+			isa = PBXGroup;
+			children = (
+				A10002016 /* PrayerOutroView.swift */,
+			);
+			path = Prayer;
+			sourceTree = "<group>";
+		};
+		A10005012 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A10002017 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10006000 /* SoulSpeak */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10008000 /* Build configuration list for PBXNativeTarget "SoulSpeak" */;
+			buildPhases = (
+				A10007000 /* Sources */,
+				A10004000 /* Frameworks */,
+				A10007001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SoulSpeak;
+			productName = SoulSpeak;
+			productReference = A10003000 /* SoulSpeak.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10009000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					A10006000 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = A10008002 /* Build configuration list for PBXProject "SoulSpeak" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10005000 /* Root */;
+			productRefGroup = A10005099 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10006000 /* SoulSpeak */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10007001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001018 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10007000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001001 /* SoulSpeakApp.swift in Sources */,
+				A10001002 /* ContentView.swift in Sources */,
+				A10001003 /* MainTabView.swift in Sources */,
+				A10001004 /* JournalEntry.swift in Sources */,
+				A10001005 /* MoodEntry.swift in Sources */,
+				A10001006 /* UserSettings.swift in Sources */,
+				A10001007 /* AudioPlayerService.swift in Sources */,
+				A10001008 /* ScriptureService.swift in Sources */,
+				A10001009 /* VoiceRecorderService.swift in Sources */,
+				A10001010 /* SoulSpeakTheme.swift in Sources */,
+				A10001011 /* WelcomeView.swift in Sources */,
+				A10001012 /* VoiceJournalView.swift in Sources */,
+				A10001013 /* WaveformView.swift in Sources */,
+				A10001014 /* MoodTrackerView.swift in Sources */,
+				A10001015 /* AnalyticsView.swift in Sources */,
+				A10001016 /* PrayerOutroView.swift in Sources */,
+				A10001017 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A10008003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A10008004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A10008005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SoulSpeak/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SoulSpeak;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soulspeak.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A10008006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SoulSpeak/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SoulSpeak;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soulspeak.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10008000 /* Build configuration list for PBXNativeTarget "SoulSpeak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10008005 /* Debug */,
+				A10008006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10008002 /* Build configuration list for PBXProject "SoulSpeak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10008003 /* Debug */,
+				A10008004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = A10009000 /* Project object */;
+}

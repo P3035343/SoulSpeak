@@ -1,42 +1,93 @@
 # SoulSpeak
 
-A privacy-first iOS mental wellness companion built with SwiftUI and SwiftData for iOS 17+.
+A spiritual mental wellness iOS app featuring two caring characters who guide users through voice journaling, mood tracking, prayer, and personal growth.
 
-## Overview
+## Characters
 
-SoulSpeak is a comprehensive mental wellness app that prioritizes user privacy above all else. All data stays on-device, protected by AES-256 encryption and biometric authentication.
+- **Dr. Hope** — Main therapist with Gullah-style warmth and spiritual wisdom. Comforting, wise, and deeply caring.
+- **Mr. Hope** — Warm greeter who calls the user "Champ" and sets a welcoming tone.
 
-## Features
+## Screens
 
-- **Journaling** - Rich text entries with mood tagging, encryption, and AI insights
-- **Mood Tracking** - Track emotions, triggers, energy, and sleep with visual trends
-- **Daily Affirmations** - Curated and custom affirmations with category browsing
-- **Breathwork** - Guided breathing exercises (Box, 4-7-8, Energizing)
-- **Gratitude** - Daily gratitude practice with streak tracking
-- **Rituals** - Customizable daily wellness rituals
-- **Growth Dashboard** - Milestones, achievements, and streaks
-- **Community** - Anonymous sharing and support
-- **Crisis Support** - Local crisis language detection with hotline resources
-- **Security** - Biometric lock, AES-256 encryption, privacy overlay
-
-## Privacy & Security
-
-- All data stored locally on-device only
-- AES-256-GCM encryption for journal entries
-- Face ID / Touch ID authentication
-- Privacy overlay on app background
-- Zero analytics or tracking
-- No cloud sync, no network calls for personal data
-- Crisis detection runs entirely on-device
+| Screen | Description |
+|--------|-------------|
+| **Welcome** | Mr. Hope animated avatar + "Dr. Hope will see you shortly, Champ" + Start button |
+| **Voice Journal** | Record/Stop, real-time waveform animation, Dr. Hope's text feedback, mood selector |
+| **Mood Tracker** | Calendar with emotion icons, mood history chart, daily reflection prompt |
+| **Analytics** | Weekly stats, journaling streaks, mood trends, progress badges |
+| **Prayer/Outro** | Dr. Hope's closing quote, play prayer button, scripture of the day |
+| **Settings** | Theme toggle, notifications, mental health resources with GPS locator |
 
 ## Tech Stack
 
-- **UI**: SwiftUI (iOS 17+)
-- **Persistence**: SwiftData
-- **Security**: CryptoKit, LocalAuthentication, Security framework
-- **Architecture**: Protocol-oriented services with dependency injection
-- **Concurrency**: Swift async/await, actors
-- **Package Manager**: Swift Package Manager
+- **Platform:** iOS 17+
+- **UI Framework:** SwiftUI
+- **Data Persistence:** SwiftData
+- **Audio:** AVFoundation
+- **Location:** CoreLocation + MapKit
+- **Project:** Native Xcode project (.xcodeproj)
+
+## Project Structure
+
+```
+SoulSpeak/
+├── SoulSpeak.xcodeproj/
+├── SoulSpeak/
+│   ├── App/
+│   │   ├── SoulSpeakApp.swift
+│   │   ├── ContentView.swift
+│   │   └── MainTabView.swift
+│   ├── Models/
+│   │   ├── JournalEntry.swift
+│   │   ├── MoodEntry.swift
+│   │   └── UserSettings.swift
+│   ├── Services/
+│   │   ├── AudioPlayerService.swift
+│   │   ├── ScriptureService.swift
+│   │   └── VoiceRecorderService.swift
+│   ├── Theme/
+│   │   └── SoulSpeakTheme.swift
+│   ├── Views/
+│   │   ├── Welcome/WelcomeView.swift
+│   │   ├── VoiceJournal/VoiceJournalView.swift
+│   │   ├── VoiceJournal/WaveformView.swift
+│   │   ├── MoodTracker/MoodTrackerView.swift
+│   │   ├── Analytics/AnalyticsView.swift
+│   │   ├── Prayer/PrayerOutroView.swift
+│   │   └── Settings/SettingsView.swift
+│   ├── Assets.xcassets/
+│   ├── Resources/
+│   └── Info.plist
+```
+
+## Assets to Add Manually
+
+Place these files in the project:
+
+### Audio Files (add to Resources/ folder, ensure "Copy to bundle" is checked)
+- `dr_hope_intro.mp3` — Dr. Hope's introduction audio
+- `mr_hope_greeting.mp3` — Mr. Hope's greeting ("Champ" welcome)
+- `dr_hope_prayer.mp3` — Dr. Hope's evening prayer
+- `jazz_loop_1.mp3` — Background jazz loop (welcome)
+- `jazz_loop_2.mp3` — Background jazz loop (main app)
+- `jazz_loop_3.mp3` — Background jazz loop (alternate)
+
+### Image Assets (add to Assets.xcassets)
+- `Dr_Hope_Office_Render.jpg` → `dr_hope_office_render` image set
+- `Mr_Hope_Office_Render.jpg` → `mr_hope_office_render` image set
+- Dr. Hope avatar → `dr_hope` image set
+- Mr. Hope avatar → `mr_hope` image set
+
+## Features
+
+- **No Lock Screen** — App goes straight to content, idle timer disabled
+- **Animated Talking Avatars** — Characters animate with breathing, head nods, and sound wave indicators
+- **Immersive Office Backgrounds** — Custom render images for character offices
+- **Gullah-Style Dialogue** — Dr. Hope speaks with warm, culturally-rooted wisdom
+- **Real-Time Waveform** — Voice journal shows live audio level visualization
+- **SwiftData Persistence** — All journal entries, moods, and settings saved locally
+- **GPS Resource Locator** — Find nearby mental health services using MapKit
+- **Crisis Hotlines** — Quick access to 988, Crisis Text Line, SAMHSA, NAMI
 
 ## Requirements
 
@@ -46,59 +97,7 @@ SoulSpeak is a comprehensive mental wellness app that prioritizes user privacy a
 
 ## Getting Started
 
-1. Clone the repository
-2. Copy `Secrets.xcconfig.example` to `Secrets.xcconfig`
-3. Open the project in Xcode
-4. Build and run on simulator or device
-
-## Project Structure
-
-```
-SoulSpeak/
-├── Package.swift
-├── Sources/SoulSpeak/
-│   ├── App/                    # App entry point and state management
-│   ├── DesignSystem/           # Colors, typography, reusable components
-│   ├── Models/                 # SwiftData @Model definitions
-│   ├── Security/               # Encryption, biometric, keychain
-│   ├── Services/
-│   │   ├── Protocols/          # Service interfaces
-│   │   └── Mocks/              # Mock implementations for testing
-│   ├── Features/               # Feature-organized views
-│   └── Resources/              # Assets and static data
-├── Tests/SoulSpeakTests/       # Unit tests (38 tests)
-└── Documentation/              # Architecture and design docs
-```
-
-## Testing
-
-Run tests with:
-```bash
-swift test
-```
-
-38 unit tests covering models, services, crisis detection, and state management.
-
-## Documentation
-
-See the `Documentation/` directory for:
-- Architecture overview
-- Design system guide
-- Data model reference
-- Security architecture
-- Crisis detection system
-- Privacy documentation
-- Development roadmap
-- API design patterns
-- Testing strategy
-
-## License
-
-Private - All rights reserved.
-
-## Crisis Resources
-
-If you or someone you know is in crisis:
-- **988 Suicide & Crisis Lifeline**: Call or text 988
-- **Crisis Text Line**: Text HOME to 741741
-- **Emergency**: Call 911
+1. Open `SoulSpeak.xcodeproj` in Xcode
+2. Add your audio files to the Resources folder
+3. Add your image assets to Assets.xcassets
+4. Build and run on a device or simulator (iOS 17+)
