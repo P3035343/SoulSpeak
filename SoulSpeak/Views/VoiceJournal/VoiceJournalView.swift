@@ -28,13 +28,26 @@ struct VoiceJournalView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-                .overlay(Color.black.opacity(0.5).ignoresSafeArea())
+                .overlay(
+                    LinearGradient(
+                        colors: [
+                            Color.black.opacity(0.2),
+                            Color.black.opacity(0.4),
+                            Color.black.opacity(0.7)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                )
 
             ScrollView {
-                VStack(spacing: 28) {
+                VStack(spacing: 20) {
+                    // Spacer to push content down — lets office background breathe
+                    Spacer(minLength: 120)
+
                     // Dr. Hope avatar section
                     drHopeSection
-                        .padding(.top, 20)
 
                     // Live transcription (appears during/after recording)
                     if showTranscription && !speechService.transcribedText.isEmpty {
@@ -90,12 +103,12 @@ struct VoiceJournalView: View {
 
     // MARK: - Dr. Hope Avatar
     private var drHopeSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             ZStack {
                 // Glow
                 Circle()
                     .fill(Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.2))
-                    .frame(width: 100, height: 100)
+                    .frame(width: 64, height: 64)
                     .scaleEffect(drHopeTalking ? 1.15 : 1.0)
                     .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: drHopeTalking)
 
@@ -103,13 +116,13 @@ struct VoiceJournalView: View {
                 Image("dr_hope")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 80, height: 80)
+                    .frame(width: 52, height: 52)
                     .clipShape(Circle())
                     .overlay(
                         Circle()
                             .stroke(Color(red: 0.7, green: 0.4, blue: 0.8), lineWidth: 2)
                     )
-                    .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.4), radius: 8)
+                    .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.4), radius: 6)
                     .scaleEffect(drHopeTalking ? mouthPulse : 1.0)
 
                 // Talking indicator
@@ -118,7 +131,7 @@ struct VoiceJournalView: View {
                         ForEach(0..<3, id: \.self) { i in
                             RoundedRectangle(cornerRadius: 1)
                                 .fill(Color(red: 0.7, green: 0.4, blue: 0.8))
-                                .frame(width: 3, height: CGFloat(6 + i * 3) * mouthPulse)
+                                .frame(width: 2.5, height: CGFloat(5 + i * 2) * mouthPulse)
                                 .animation(
                                     .easeInOut(duration: 0.2 + Double(i) * 0.05)
                                         .repeatForever(autoreverses: true),
@@ -126,23 +139,23 @@ struct VoiceJournalView: View {
                                 )
                         }
                     }
-                    .offset(x: 45, y: 5)
+                    .offset(x: 30, y: 4)
                 }
             }
 
             Text("Dr. Hope")
-                .font(SSTypography.caption)
+                .font(.system(size: 11, weight: .medium))
                 .foregroundColor(.white.opacity(0.8))
 
             if !recorder.isRecording && !showFeedback {
                 Text("\"Go on, baby. Speak your truth.\nI'm right here listenin'.\"")
-                    .font(.system(size: 14, weight: .medium, design: .serif))
+                    .font(.system(size: 12, weight: .medium, design: .serif))
                     .foregroundColor(.white.opacity(0.7))
                     .multilineTextAlignment(.center)
                     .italic()
             } else if recorder.isRecording {
                 Text("\"Mmhmm... I'm listenin'...\"")
-                    .font(.system(size: 14, weight: .medium, design: .serif))
+                    .font(.system(size: 12, weight: .medium, design: .serif))
                     .foregroundColor(.white.opacity(0.6))
                     .italic()
             }
