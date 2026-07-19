@@ -4,23 +4,22 @@ import SwiftUI
 ///
 /// Flow:
 /// 1. Office door with wooden doorknob (user taps to enter)
-/// 2. Video 1: First-person camera enters office, sees Mr. Hope (~10s)
-/// 3. Video 2: Mr. Hope greets user, announces to Dr. Hope, says "follow me" (~10s)
-/// 4. Video 3: Camera follows Mr. Hope to Dr. Hope's office, he explains she's his wife (~10s)
-/// 5. → Main app begins
+/// 2. mr_hope_intro.mp4 — One continuous shot: entering office, Mr. Hope greets,
+///    leads user to Dr. Hope's office, explains she's his wife
+/// 3. dr_hope_intro.mp4 — Dr. Hope introduces herself (auto-starts after Mr. Hope)
+/// 4. → Main app begins
 ///
 /// All videos have voice/script baked in — no text overlays needed.
+/// No skip button — full immersive experience.
 ///
 /// Video files expected in bundle:
-/// - office_entry.mp4       (first-person walking into office, seeing Mr. Hope)
-/// - mr_hope_greeting.mp4   (Mr. Hope greets user, tells Dr. Hope, "follow me")
-/// - mr_hope_walkthrough.mp4 (following Mr. Hope to Dr. Hope's office)
+/// - mr_hope_intro.mp4    (one combined shot: enter office, greeting, walkthrough)
+/// - dr_hope_intro.mp4    (Dr. Hope introduces herself)
 
-enum IntroPhase: CaseIterable {
+enum IntroPhase {
     case door
-    case enteringOffice      // Video 1
-    case mrHopeGreeting      // Video 2
-    case walkToDrHope        // Video 3
+    case mrHopeIntro       // Combined Mr. Hope video
+    case drHopeIntro       // Dr. Hope introduces herself
     case complete
 }
 
@@ -43,29 +42,21 @@ struct IntroSequenceView: View {
                 doorScreen
                     .opacity(screenFade)
 
-            case .enteringOffice:
+            case .mrHopeIntro:
                 videoPhase(
-                    videoName: "office_entry",
-                    onFinished: { advanceTo(.mrHopeGreeting) }
+                    videoName: "mr_hope_intro",
+                    onFinished: { advanceTo(.drHopeIntro) }
                 )
 
-            case .mrHopeGreeting:
+            case .drHopeIntro:
                 videoPhase(
-                    videoName: "mr_hope_greeting",
-                    onFinished: { advanceTo(.walkToDrHope) }
-                )
-
-            case .walkToDrHope:
-                videoPhase(
-                    videoName: "mr_hope_walkthrough",
+                    videoName: "dr_hope_intro",
                     onFinished: { advanceTo(.complete) }
                 )
 
             case .complete:
                 Color.clear
             }
-
-
         }
     }
 
@@ -222,8 +213,6 @@ struct IntroSequenceView: View {
             onFinished: onFinished
         )
         .transition(.opacity)
-        .onAppear {
-        }
     }
 
     // MARK: - Animations
@@ -261,9 +250,9 @@ struct IntroSequenceView: View {
             }
         }
 
-        // Start first video
+        // Start Mr. Hope's video
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
-            phase = .enteringOffice
+            phase = .mrHopeIntro
             screenFade = 1.0
         }
     }
@@ -286,6 +275,4 @@ struct IntroSequenceView: View {
             }
         }
     }
-
-
 }
