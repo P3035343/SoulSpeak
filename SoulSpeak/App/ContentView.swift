@@ -10,7 +10,7 @@ import SwiftData
 /// 3. Dr. Hope video intro (she introduces herself)
 /// 4. "Begin Session" button → main app
 struct ContentView: View {
-    @AppStorage("hasSeenIntro") private var hasSeenIntro = false
+    @AppStorage("hasSeenIntroV2") private var hasSeenIntro = false
     @State private var introComplete = false
     @Query private var settings: [UserSettings]
 
