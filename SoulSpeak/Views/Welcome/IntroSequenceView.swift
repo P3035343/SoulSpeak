@@ -33,7 +33,6 @@ struct IntroSequenceView: View {
     @State private var doorOpening = false
     @State private var screenFade: Double = 1.0
     @State private var showTapHint = false
-    @State private var showSkip = false
 
     var body: some View {
         ZStack {
@@ -66,33 +65,7 @@ struct IntroSequenceView: View {
                 Color.clear
             }
 
-            // Skip button (top-right, appears after 3 seconds in video phases)
-            if showSkip && phase != .door && phase != .complete {
-                VStack {
-                    HStack {
-                        Spacer()
-                        Button(action: skipIntro) {
-                            Text("Skip")
-                                .font(.system(size: 13, weight: .medium, design: .rounded))
-                                .foregroundColor(.white.opacity(0.6))
-                                .padding(.horizontal, 14)
-                                .padding(.vertical, 7)
-                                .background(
-                                    Capsule()
-                                        .fill(Color.white.opacity(0.12))
-                                        .overlay(
-                                            Capsule()
-                                                .stroke(Color.white.opacity(0.15), lineWidth: 1)
-                                        )
-                                )
-                        }
-                        .padding(.trailing, 20)
-                        .padding(.top, 56)
-                    }
-                    Spacer()
-                }
-                .transition(.opacity)
-            }
+
         }
     }
 
@@ -250,13 +223,6 @@ struct IntroSequenceView: View {
         )
         .transition(.opacity)
         .onAppear {
-            // Show skip button after 3 seconds into the video
-            showSkip = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                withAnimation(.easeIn(duration: 0.3)) {
-                    showSkip = true
-                }
-            }
         }
     }
 
@@ -321,9 +287,5 @@ struct IntroSequenceView: View {
         }
     }
 
-    private func skipIntro() {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            introComplete = true
-        }
-    }
+
 }
