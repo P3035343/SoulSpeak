@@ -43,7 +43,7 @@ struct DrHopeResponseEngine {
     /// Generate a contextual Dr. Hope response based on transcribed text.
     static func generateResponse(for text: String) -> String {
         let theme = detectTheme(in: text)
-        let duration = text.count // Use text length as a proxy for depth of sharing
+        _ = text.count // Text length used as proxy for depth of sharing
 
         // Pick response based on theme
         let responses = themeResponses[theme] ?? generalResponses

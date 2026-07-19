@@ -327,24 +327,26 @@ struct ResourceLocatorView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var locationManager = LocationManager()
     @State private var searchResults: [MKMapItem] = []
-    @State private var region = MKCoordinateRegion(
+    @State private var position: MapCameraPosition = .region(MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 33.749, longitude: -84.388),
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-    )
+    ))
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 // Map
-                Map(coordinateRegion: $region, annotationItems: searchResults) { item in
-                    MapAnnotation(coordinate: item.placemark.coordinate) {
-                        VStack(spacing: 2) {
-                            Image(systemName: "heart.circle.fill")
-                                .font(.system(size: 24))
-                                .foregroundColor(SSColors.primary)
-                            Text(item.name ?? "")
-                                .font(.system(size: 9))
-                                .lineLimit(1)
+                Map(position: $position) {
+                    ForEach(searchResults, id: \.self) { item in
+                        Annotation(item.name ?? "", coordinate: item.placemark.coordinate) {
+                            VStack(spacing: 2) {
+                                Image(systemName: "heart.circle.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(SSColors.primary)
+                                Text(item.name ?? "")
+                                    .font(.system(size: 9))
+                                    .lineLimit(1)
+                            }
                         }
                     }
                 }
@@ -399,17 +401,23 @@ struct ResourceLocatorView: View {
             }
             .onChange(of: locationManager.lastLocation) { _, location in
                 if let location = location {
-                    region.center = location.coordinate
-                    searchNearbyResources()
+                    position = .region(MKCoordinateRegion(
+                        center: location.coordinate,
+                        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                    ))
+                    searchNearbyResources(near: location.coordinate)
                 }
             }
         }
     }
 
-    private func searchNearbyResources() {
+    private func searchNearbyResources(near coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 33.749, longitude: -84.388)) {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = "mental health counseling therapy"
-        request.region = region
+        request.region = MKCoordinateRegion(
+            center: coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        )
 
         let search = MKLocalSearch(request: request)
         search.start { response, _ in
