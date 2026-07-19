@@ -18,6 +18,8 @@
 		A10001009 /* VoiceRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002009 /* VoiceRecorderService.swift */; };
 		A10001010 /* SoulSpeakTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010 /* SoulSpeakTheme.swift */; };
 		A10001011 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002011 /* WelcomeView.swift */; };
+		A10001022 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002023 /* VideoPlayerView.swift */; };
+		A10001023 /* IntroSequenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002024 /* IntroSequenceView.swift */; };
 		A10001012 /* VoiceJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* VoiceJournalView.swift */; };
 		A10001013 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* WaveformView.swift */; };
 		A10001014 /* MoodTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* MoodTrackerView.swift */; };
@@ -53,6 +55,8 @@
 		A10002020 /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
 		A10002021 /* DrHopeResponseEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrHopeResponseEngine.swift; sourceTree = "<group>"; };
 		A10002022 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		A10002023 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		A10002024 /* IntroSequenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSequenceView.swift; sourceTree = "<group>"; };
 		A10003000 /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -155,6 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				A10002011 /* WelcomeView.swift */,
+				A10002023 /* VideoPlayerView.swift */,
+				A10002024 /* IntroSequenceView.swift */,
 			);
 			path = Welcome;
 			sourceTree = "<group>";
@@ -289,6 +295,8 @@
 				A10001019 /* SpeechRecognitionService.swift in Sources */,
 				A10001020 /* DrHopeResponseEngine.swift in Sources */,
 				A10001021 /* NotificationService.swift in Sources */,
+				A10001022 /* VideoPlayerView.swift in Sources */,
+				A10001023 /* IntroSequenceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
