@@ -1,334 +1,322 @@
 import SwiftUI
 
-/// The full intro sequence that plays when the user first opens the app:
-/// 1. Mr. Hope video intro (he greets the user, introduces Dr. Hope)
-/// 2. Transition
-/// 3. Dr. Hope video intro (she introduces herself)
-/// 4. User enters the main app
+/// Cinematic intro sequence — first-person office experience.
 ///
-/// Video files expected:
-/// - mr_hope_intro_video.mp4
-/// - dr_hope_intro_video.mp4
-enum IntroPhase {
-    case mrHopeIntro
-    case transition
-    case drHopeIntro
-    case ready
+/// Flow:
+/// 1. Office door with wooden doorknob (user taps to enter)
+/// 2. Video 1: First-person camera enters office, sees Mr. Hope (~10s)
+/// 3. Video 2: Mr. Hope greets user, announces to Dr. Hope, says "follow me" (~10s)
+/// 4. Video 3: Camera follows Mr. Hope to Dr. Hope's office, he explains she's his wife (~10s)
+/// 5. → Main app begins
+///
+/// All videos have voice/script baked in — no text overlays needed.
+///
+/// Video files expected in bundle:
+/// - office_entry.mp4       (first-person walking into office, seeing Mr. Hope)
+/// - mr_hope_greeting.mp4   (Mr. Hope greets user, tells Dr. Hope, "follow me")
+/// - mr_hope_walkthrough.mp4 (following Mr. Hope to Dr. Hope's office)
+
+enum IntroPhase: CaseIterable {
+    case door
+    case enteringOffice      // Video 1
+    case mrHopeGreeting      // Video 2
+    case walkToDrHope        // Video 3
+    case complete
 }
 
 struct IntroSequenceView: View {
     @Binding var introComplete: Bool
-    @State private var phase: IntroPhase = .mrHopeIntro
-    @State private var fadeOpacity: Double = 1.0
-    @State private var transitionOpacity: Double = 0
-    @State private var showSkipButton = false
-    @State private var subtitleText: String = ""
-    @State private var subtitleOpacity: Double = 0
+
+    @State private var phase: IntroPhase = .door
+    @State private var doorKnobScale: CGFloat = 1.0
+    @State private var doorKnobGlow = false
+    @State private var doorOpening = false
+    @State private var screenFade: Double = 1.0
+    @State private var showTapHint = false
+    @State private var showSkip = false
 
     var body: some View {
         ZStack {
-            // Background (always black during transitions)
             Color.black.ignoresSafeArea()
 
             switch phase {
-            case .mrHopeIntro:
-                mrHopeIntroScreen
-                    .opacity(fadeOpacity)
+            case .door:
+                doorScreen
+                    .opacity(screenFade)
 
-            case .transition:
-                transitionScreen
-                    .opacity(transitionOpacity)
+            case .enteringOffice:
+                videoPhase(
+                    videoName: "office_entry",
+                    onFinished: { advanceTo(.mrHopeGreeting) }
+                )
 
-            case .drHopeIntro:
-                drHopeIntroScreen
-                    .opacity(fadeOpacity)
+            case .mrHopeGreeting:
+                videoPhase(
+                    videoName: "mr_hope_greeting",
+                    onFinished: { advanceTo(.walkToDrHope) }
+                )
 
-            case .ready:
-                readyScreen
+            case .walkToDrHope:
+                videoPhase(
+                    videoName: "mr_hope_walkthrough",
+                    onFinished: { advanceTo(.complete) }
+                )
+
+            case .complete:
+                Color.clear
             }
 
-            // Skip button (always available after 2 seconds)
-            if showSkipButton && phase != .ready {
+            // Skip button (top-right, appears after 3 seconds in video phases)
+            if showSkip && phase != .door && phase != .complete {
                 VStack {
                     HStack {
                         Spacer()
-                        Button(action: skipToApp) {
+                        Button(action: skipIntro) {
                             Text("Skip")
-                                .font(.system(size: 14, weight: .medium, design: .rounded))
-                                .foregroundColor(.white.opacity(0.7))
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
+                                .font(.system(size: 13, weight: .medium, design: .rounded))
+                                .foregroundColor(.white.opacity(0.6))
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 7)
                                 .background(
                                     Capsule()
-                                        .fill(Color.white.opacity(0.15))
+                                        .fill(Color.white.opacity(0.12))
+                                        .overlay(
+                                            Capsule()
+                                                .stroke(Color.white.opacity(0.15), lineWidth: 1)
+                                        )
                                 )
                         }
                         .padding(.trailing, 20)
-                        .padding(.top, 60)
+                        .padding(.top, 56)
                     }
                     Spacer()
                 }
-            }
-        }
-        .onAppear {
-            // Show skip button after 2 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                withAnimation { showSkipButton = true }
+                .transition(.opacity)
             }
         }
     }
 
-    // MARK: - Mr. Hope Intro Screen
-    private var mrHopeIntroScreen: some View {
+    // MARK: - Door Screen
+    private var doorScreen: some View {
         ZStack {
-            // Video plays full screen
-            FullScreenVideoBackground(
-                videoName: "mr_hope_intro_video",
-                fileExtension: "mp4",
-                looping: false,
-                onFinished: { transitionToNextPhase() }
-            )
-
-            // Subtitle overlay at bottom
-            VStack {
-                Spacer()
-
-                // Character name tag
-                HStack(spacing: 8) {
-                    Circle()
-                        .fill(Color(red: 0.3, green: 0.6, blue: 0.9))
-                        .frame(width: 10, height: 10)
-                    Text("Mr. Hope")
-                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                        .foregroundColor(.white.opacity(0.9))
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .background(
-                    Capsule()
-                        .fill(Color.black.opacity(0.5))
-                )
-                .padding(.bottom, 8)
-
-                // Subtitle text
-                Text("\"Hey there, Champ! Welcome to SoulSpeak.\nDr. Hope is ready for you...\"")
-                    .font(.system(size: 16, weight: .medium, design: .serif))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-                    .padding(.vertical, 16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.black.opacity(0.6))
-                    )
-                    .padding(.bottom, 50)
-                    .opacity(subtitleOpacity)
-            }
-        }
-        .onAppear {
-            // Fade in subtitle after a moment
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                withAnimation(.easeIn(duration: 0.6)) {
-                    subtitleOpacity = 1.0
-                }
-            }
-        }
-    }
-
-    // MARK: - Transition Screen
-    private var transitionScreen: some View {
-        VStack(spacing: 20) {
-            // Elegant transition with sparkle
-            Image(systemName: "sparkles")
-                .font(.system(size: 40))
-                .foregroundColor(Color(red: 0.9, green: 0.7, blue: 0.3))
-
-            Text("Dr. Hope will see you now...")
-                .font(.system(size: 20, weight: .medium, design: .serif))
-                .foregroundColor(.white.opacity(0.9))
-                .italic()
-        }
-    }
-
-    // MARK: - Dr. Hope Intro Screen
-    private var drHopeIntroScreen: some View {
-        ZStack {
-            // Video plays full screen
-            FullScreenVideoBackground(
-                videoName: "dr_hope_intro_video",
-                fileExtension: "mp4",
-                looping: false,
-                onFinished: { finishIntro() }
-            )
-
-            // Subtitle overlay at bottom
-            VStack {
-                Spacer()
-
-                // Character name tag
-                HStack(spacing: 8) {
-                    Circle()
-                        .fill(Color(red: 0.7, green: 0.4, blue: 0.8))
-                        .frame(width: 10, height: 10)
-                    Text("Dr. Hope")
-                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                        .foregroundColor(.white.opacity(0.9))
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .background(
-                    Capsule()
-                        .fill(Color.black.opacity(0.5))
-                )
-                .padding(.bottom, 8)
-
-                // Subtitle text
-                Text("\"Welcome, baby. I'm Dr. Hope.\nThis is a safe space. Let's talk.\"")
-                    .font(.system(size: 16, weight: .medium, design: .serif))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-                    .padding(.vertical, 16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.black.opacity(0.6))
-                    )
-                    .padding(.bottom, 50)
-                    .opacity(subtitleOpacity)
-            }
-        }
-        .onAppear {
-            subtitleOpacity = 0
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                withAnimation(.easeIn(duration: 0.6)) {
-                    subtitleOpacity = 1.0
-                }
-            }
-        }
-    }
-
-    // MARK: - Ready Screen (brief before entering app)
-    private var readyScreen: some View {
-        ZStack {
-            // Dark warm background
+            // Dark hallway background
             LinearGradient(
                 colors: [
-                    Color(red: 0.15, green: 0.1, blue: 0.25),
-                    Color(red: 0.08, green: 0.06, blue: 0.15)
+                    Color(red: 0.06, green: 0.04, blue: 0.1),
+                    Color(red: 0.12, green: 0.08, blue: 0.16),
+                    Color(red: 0.08, green: 0.05, blue: 0.12)
                 ],
                 startPoint: .top,
                 endPoint: .bottom
             )
             .ignoresSafeArea()
 
-            VStack(spacing: 32) {
-                // Both character indicators
-                HStack(spacing: 40) {
-                    VStack(spacing: 8) {
-                        Circle()
-                            .fill(Color(red: 0.3, green: 0.6, blue: 0.9).opacity(0.3))
-                            .frame(width: 60, height: 60)
-                            .overlay(
-                                Image(systemName: "hand.wave.fill")
-                                    .font(.system(size: 24))
-                                    .foregroundColor(Color(red: 0.3, green: 0.6, blue: 0.9))
-                            )
-                        Text("Mr. Hope")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.white.opacity(0.7))
-                    }
-
-                    VStack(spacing: 8) {
-                        Circle()
-                            .fill(Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.3))
-                            .frame(width: 60, height: 60)
-                            .overlay(
-                                Image(systemName: "heart.fill")
-                                    .font(.system(size: 24))
-                                    .foregroundColor(Color(red: 0.7, green: 0.4, blue: 0.8))
-                            )
-                        Text("Dr. Hope")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.white.opacity(0.7))
-                    }
-                }
-
-                Text("Your session is ready")
-                    .font(.system(size: 24, weight: .bold, design: .serif))
-                    .foregroundColor(.white)
-
-                Text("Take a deep breath. You're in good hands.")
-                    .font(.system(size: 15, weight: .medium, design: .rounded))
-                    .foregroundColor(.white.opacity(0.7))
-
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        introComplete = true
-                    }
-                }) {
-                    HStack(spacing: 12) {
-                        Image(systemName: "heart.fill")
-                            .font(.system(size: 18))
-                        Text("Begin Session")
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    }
-                    .foregroundColor(.white)
-                    .padding(.vertical, 18)
-                    .padding(.horizontal, 48)
-                    .background(
-                        Capsule()
-                            .fill(SSColors.gradientPrimary)
-                            .shadow(color: SSColors.primary.opacity(0.5), radius: 12, y: 6)
+            // Warm light leaking from under the door
+            VStack {
+                Spacer()
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 0.9, green: 0.7, blue: 0.3).opacity(0.2),
+                                Color.clear
+                            ],
+                            startPoint: .bottom,
+                            endPoint: .top
+                        )
                     )
+                    .frame(height: 120)
+                    .ignoresSafeArea()
+            }
+
+            VStack(spacing: 0) {
+                Spacer()
+
+                // Door frame
+                ZStack {
+                    // The door itself
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color(red: 0.35, green: 0.22, blue: 0.12),
+                                    Color(red: 0.28, green: 0.17, blue: 0.08),
+                                    Color(red: 0.32, green: 0.2, blue: 0.1)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 220, height: 360)
+                        .overlay(
+                            // Wood grain texture lines
+                            VStack(spacing: 18) {
+                                ForEach(0..<15, id: \.self) { _ in
+                                    Rectangle()
+                                        .fill(Color.black.opacity(0.06))
+                                        .frame(height: 1)
+                                }
+                            }
+                            .padding(.vertical, 20)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(red: 0.25, green: 0.15, blue: 0.08), lineWidth: 4)
+                        )
+                        .shadow(color: Color.black.opacity(0.5), radius: 20, y: 10)
+                        .scaleEffect(doorOpening ? 0.9 : 1.0)
+                        .opacity(doorOpening ? 0.0 : 1.0)
+
+                    // THE DOORKNOB — tap target
+                    Button(action: openDoor) {
+                        ZStack {
+                            // Glow behind knob
+                            Circle()
+                                .fill(Color(red: 0.9, green: 0.7, blue: 0.3).opacity(doorKnobGlow ? 0.4 : 0.15))
+                                .frame(width: 70, height: 70)
+                                .scaleEffect(doorKnobGlow ? 1.2 : 1.0)
+
+                            // The knob — beautiful golden/brass
+                            Circle()
+                                .fill(
+                                    RadialGradient(
+                                        colors: [
+                                            Color(red: 0.95, green: 0.82, blue: 0.4),
+                                            Color(red: 0.8, green: 0.6, blue: 0.2),
+                                            Color(red: 0.6, green: 0.4, blue: 0.1)
+                                        ],
+                                        center: .init(x: 0.35, y: 0.35),
+                                        startRadius: 2,
+                                        endRadius: 25
+                                    )
+                                )
+                                .frame(width: 44, height: 44)
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color(red: 0.7, green: 0.5, blue: 0.15), lineWidth: 2)
+                                )
+                                .shadow(color: Color(red: 0.9, green: 0.7, blue: 0.3).opacity(0.5), radius: 8, y: 2)
+
+                            // Keyhole detail
+                            Capsule()
+                                .fill(Color(red: 0.3, green: 0.2, blue: 0.08))
+                                .frame(width: 4, height: 12)
+                                .offset(y: 2)
+                        }
+                        .scaleEffect(doorKnobScale)
+                    }
+                    .offset(x: 70, y: 20)
+                    .opacity(doorOpening ? 0.0 : 1.0)
                 }
-                .padding(.top, 16)
+
+                Spacer()
+                    .frame(height: 80)
+
+                // "Tap to enter" hint
+                if showTapHint && !doorOpening {
+                    VStack(spacing: 8) {
+                        Image(systemName: "hand.tap.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(Color(red: 0.9, green: 0.7, blue: 0.3).opacity(0.7))
+
+                        Text("Touch the doorknob to enter")
+                            .font(.system(size: 14, weight: .medium, design: .serif))
+                            .foregroundColor(.white.opacity(0.6))
+                    }
+                    .transition(.opacity)
+                }
+
+                Spacer()
+                    .frame(height: 60)
+            }
+        }
+        .onAppear {
+            startDoorAnimations()
+        }
+    }
+
+    // MARK: - Video Phase
+    private func videoPhase(videoName: String, onFinished: @escaping () -> Void) -> some View {
+        FullScreenVideoBackground(
+            videoName: videoName,
+            fileExtension: "mp4",
+            looping: false,
+            onFinished: onFinished
+        )
+        .transition(.opacity)
+        .onAppear {
+            // Show skip button after 3 seconds into the video
+            showSkip = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                withAnimation(.easeIn(duration: 0.3)) {
+                    showSkip = true
+                }
+            }
+        }
+    }
+
+    // MARK: - Animations
+    private func startDoorAnimations() {
+        // Doorknob glow pulse
+        withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+            doorKnobGlow = true
+        }
+
+        // Doorknob subtle scale pulse
+        withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true)) {
+            doorKnobScale = 1.08
+        }
+
+        // Show tap hint after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            withAnimation(.easeIn(duration: 0.5)) {
+                showTapHint = true
             }
         }
     }
 
     // MARK: - Actions
-    private func transitionToNextPhase() {
-        // Fade out Mr. Hope
-        withAnimation(.easeOut(duration: 0.5)) {
-            fadeOpacity = 0
+    private func openDoor() {
+        // Door opening animation
+        withAnimation(.easeInOut(duration: 0.6)) {
+            doorOpening = true
+            showTapHint = false
         }
 
-        // Show transition text
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            phase = .transition
-            withAnimation(.easeIn(duration: 0.8)) {
-                transitionOpacity = 1.0
+        // Fade to black
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            withAnimation(.easeOut(duration: 0.4)) {
+                screenFade = 0
             }
         }
 
-        // Move to Dr. Hope after transition
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            withAnimation(.easeOut(duration: 0.5)) {
-                transitionOpacity = 0
-            }
+        // Start first video
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
+            phase = .enteringOffice
+            screenFade = 1.0
+        }
+    }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                phase = .drHopeIntro
-                fadeOpacity = 0
-                withAnimation(.easeIn(duration: 0.5)) {
-                    fadeOpacity = 1.0
+    private func advanceTo(_ nextPhase: IntroPhase) {
+        if nextPhase == .complete {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                introComplete = true
+            }
+        } else {
+            // Brief fade between videos
+            withAnimation(.easeOut(duration: 0.3)) {
+                screenFade = 0
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                phase = nextPhase
+                withAnimation(.easeIn(duration: 0.3)) {
+                    screenFade = 1.0
                 }
             }
         }
     }
 
-    private func finishIntro() {
-        withAnimation(.easeOut(duration: 0.5)) {
-            fadeOpacity = 0
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            withAnimation(.easeIn(duration: 0.5)) {
-                phase = .ready
-            }
-        }
-    }
-
-    private func skipToApp() {
+    private func skipIntro() {
         withAnimation(.easeInOut(duration: 0.3)) {
             introComplete = true
         }
