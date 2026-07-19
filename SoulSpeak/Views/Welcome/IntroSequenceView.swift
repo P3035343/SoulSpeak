@@ -166,10 +166,15 @@ struct IntroSequenceView: View {
                         .shadow(color: Color.black.opacity(0.5), radius: 20, y: 10)
                         .scaleEffect(doorOpening ? 0.9 : 1.0)
                         .opacity(doorOpening ? 0.0 : 1.0)
+                        .allowsHitTesting(false)
 
-                    // THE DOORKNOB — tap target
+                    // THE DOORKNOB — tap target (entire door is tappable)
                     Button(action: openDoor) {
                         ZStack {
+                            // Invisible large tap target covering the door
+                            Color.clear
+                                .frame(width: 220, height: 360)
+
                             // Glow behind knob
                             Circle()
                                 .fill(Color(red: 0.9, green: 0.7, blue: 0.3).opacity(doorKnobGlow ? 0.4 : 0.15))
@@ -205,7 +210,7 @@ struct IntroSequenceView: View {
                         }
                         .scaleEffect(doorKnobScale)
                     }
-                    .offset(x: 70, y: 20)
+                    .buttonStyle(.plain)
                     .opacity(doorOpening ? 0.0 : 1.0)
                 }
 
