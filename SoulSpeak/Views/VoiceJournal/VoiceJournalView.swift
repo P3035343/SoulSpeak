@@ -1,9 +1,12 @@
 import SwiftUI
 import SwiftData
 
-/// Voice Journal Screen: Record/Stop, waveform animation, live transcription,
-/// Dr. Hope's intelligent text feedback, mood selector.
-/// Dr. Hope is Gullah-style, comforting, wise.
+/// Voice Journal Screen — immersive recording experience.
+///
+/// Before recording: Office background with record button prompt.
+/// During recording: Full-screen Dr. Hope "listening" — animated image of her
+/// writing notes and looking up at the user. Feels like a real therapy session.
+/// After recording: Dr. Hope's intelligent feedback + mood selector.
 struct VoiceJournalView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var recorder = VoiceRecorderService()
@@ -22,6 +25,124 @@ struct VoiceJournalView: View {
     @State private var showPermissionAlert = false
 
     var body: some View {
+        ZStack {
+            if recorder.isRecording {
+                // RECORDING STATE: Full-screen Dr. Hope listening
+                recordingSessionView
+                    .transition(.opacity)
+            } else {
+                // IDLE / POST-RECORDING STATE
+                idleAndResultsView
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.4), value: recorder.isRecording)
+        .navigationTitle(recorder.isRecording ? "" : "Voice Journal")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            speechService.requestAuthorization()
+        }
+        .alert("Microphone & Speech Access", isPresented: $showPermissionAlert) {
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("SoulSpeak needs microphone and speech recognition access to transcribe your journal entries. Please enable them in Settings.")
+        }
+    }
+
+    // MARK: - Recording Session View (Full Screen Dr. Hope Listening)
+    private var recordingSessionView: some View {
+        ZStack {
+            // Full-screen Dr. Hope image — she's writing and listening
+            DrHopeListeningView()
+                .ignoresSafeArea()
+
+            // Overlay gradient at bottom for controls
+            VStack {
+                Spacer()
+                LinearGradient(
+                    colors: [Color.clear, Color.black.opacity(0.7)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 200)
+            }
+            .ignoresSafeArea()
+
+            // Recording controls floating at bottom
+            VStack {
+                // Top: subtle recording indicator
+                HStack {
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(Color.red)
+                            .frame(width: 8, height: 8)
+                            .opacity(mouthPulse > 1.0 ? 1.0 : 0.5)
+                        Text("Recording")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.white.opacity(0.7))
+                        Text(recorder.formattedDuration)
+                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                            .foregroundColor(.white.opacity(0.9))
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(
+                        Capsule()
+                            .fill(Color.black.opacity(0.5))
+                    )
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 60)
+
+                Spacer()
+
+                // Bottom: Stop button + waveform
+                VStack(spacing: 16) {
+                    // Mini waveform
+                    WaveformView(levels: recorder.audioLevels, isActive: true, barColor: .white)
+                        .frame(height: 30)
+                        .padding(.horizontal, 40)
+
+                    // Stop button
+                    Button(action: stopRecording) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.white.opacity(0.15))
+                                .frame(width: 72, height: 72)
+
+                            Circle()
+                                .stroke(Color.white.opacity(0.5), lineWidth: 3)
+                                .frame(width: 72, height: 72)
+
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(Color.red)
+                                .frame(width: 26, height: 26)
+                        }
+                    }
+
+                    Text("Tap to stop")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.white.opacity(0.5))
+                }
+                .padding(.bottom, 50)
+            }
+        }
+        .onAppear {
+            // Animate the recording pulse
+            withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
+                mouthPulse = 1.05
+            }
+        }
+    }
+
+    // MARK: - Idle / Results View
+    private var idleAndResultsView: some View {
         ZStack {
             // Office background
             Image("dr_hope_office_render")
@@ -43,28 +164,23 @@ struct VoiceJournalView: View {
 
             ScrollView {
                 VStack(spacing: 20) {
-                    // Spacer to push content down — lets office background breathe
-                    Spacer(minLength: 120)
+                    Spacer(minLength: 100)
 
-                    // Dr. Hope avatar section
-                    drHopeSection
-
-                    // Live transcription (appears during/after recording)
-                    if showTranscription && !speechService.transcribedText.isEmpty {
-                        transcriptionCard
-                            .transition(.move(edge: .top).combined(with: .opacity))
+                    // Pre-recording prompt
+                    if !showFeedback && !savedEntry {
+                        preRecordSection
                     }
-
-                    // Waveform
-                    waveformSection
-
-                    // Record button
-                    recordButton
 
                     // Dr. Hope feedback (appears after recording)
                     if showFeedback {
                         feedbackCard
                             .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+
+                    // Live transcription (shown after recording)
+                    if showTranscription && !speechService.transcribedText.isEmpty && !recorder.isRecording {
+                        transcriptionCard
+                            .transition(.opacity)
                     }
 
                     // Mood selector (appears after feedback)
@@ -84,81 +200,45 @@ struct VoiceJournalView: View {
                 .padding(.horizontal, 24)
             }
         }
-        .navigationTitle("Voice Journal")
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            speechService.requestAuthorization()
-        }
-        .alert("Microphone & Speech Access", isPresented: $showPermissionAlert) {
-            Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
-                }
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("SoulSpeak needs microphone and speech recognition access to transcribe your journal entries. Please enable them in Settings.")
-        }
     }
 
-    // MARK: - Dr. Hope Avatar
-    private var drHopeSection: some View {
-        VStack(spacing: 8) {
-            ZStack {
-                // Glow
-                Circle()
-                    .fill(Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.2))
-                    .frame(width: 64, height: 64)
-                    .scaleEffect(drHopeTalking ? 1.15 : 1.0)
-                    .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: drHopeTalking)
+    // MARK: - Pre-Record Section
+    private var preRecordSection: some View {
+        VStack(spacing: 24) {
+            // Small Dr. Hope avatar
+            Image("dr_hope")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 52, height: 52)
+                .clipShape(Circle())
+                .overlay(
+                    Circle()
+                        .stroke(Color(red: 0.7, green: 0.4, blue: 0.8), lineWidth: 2)
+                )
+                .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.4), radius: 6)
 
-                // Avatar
-                Image("dr_hope")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 52, height: 52)
-                    .clipShape(Circle())
-                    .overlay(
-                        Circle()
-                            .stroke(Color(red: 0.7, green: 0.4, blue: 0.8), lineWidth: 2)
-                    )
-                    .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.4), radius: 6)
-                    .scaleEffect(drHopeTalking ? mouthPulse : 1.0)
+            Text("\"Go on, baby. Speak your truth.\nI'm right here listenin'.\"")
+                .font(.system(size: 14, weight: .medium, design: .serif))
+                .foregroundColor(.white.opacity(0.8))
+                .multilineTextAlignment(.center)
+                .italic()
 
-                // Talking indicator
-                if drHopeTalking {
-                    HStack(spacing: 2) {
-                        ForEach(0..<3, id: \.self) { i in
-                            RoundedRectangle(cornerRadius: 1)
-                                .fill(Color(red: 0.7, green: 0.4, blue: 0.8))
-                                .frame(width: 2.5, height: CGFloat(5 + i * 2) * mouthPulse)
-                                .animation(
-                                    .easeInOut(duration: 0.2 + Double(i) * 0.05)
-                                        .repeatForever(autoreverses: true),
-                                    value: drHopeTalking
-                                )
-                        }
-                    }
-                    .offset(x: 30, y: 4)
+            // Record button
+            Button(action: startRecording) {
+                ZStack {
+                    Circle()
+                        .stroke(Color.white.opacity(0.3), lineWidth: 3)
+                        .frame(width: 80, height: 80)
+
+                    Circle()
+                        .fill(Color.red)
+                        .frame(width: 56, height: 56)
                 }
             }
 
-            Text("Dr. Hope")
-                .font(.system(size: 11, weight: .medium))
-                .foregroundColor(.white.opacity(0.8))
-
-            if !recorder.isRecording && !showFeedback {
-                Text("\"Go on, baby. Speak your truth.\nI'm right here listenin'.\"")
-                    .font(.system(size: 12, weight: .medium, design: .serif))
-                    .foregroundColor(.white.opacity(0.7))
-                    .multilineTextAlignment(.center)
-                    .italic()
-            } else if recorder.isRecording {
-                Text("\"Mmhmm... I'm listenin'...\"")
-                    .font(.system(size: 12, weight: .medium, design: .serif))
-                    .foregroundColor(.white.opacity(0.6))
-                    .italic()
-            }
+            Text("Tap to Record")
+                .font(.system(size: 13, weight: .medium))
+                .foregroundColor(.white.opacity(0.6))
         }
     }
 
@@ -166,19 +246,13 @@ struct VoiceJournalView: View {
     private var transcriptionCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
-                if speechService.isTranscribing {
-                    Circle()
-                        .fill(Color.green)
-                        .frame(width: 8, height: 8)
-                        .opacity(recorder.isRecording ? 1.0 : 0.5)
-                }
-                Text(speechService.isTranscribing ? "Listening..." : "Your Words")
+                Image(systemName: "text.bubble.fill")
+                    .font(.system(size: 12))
+                    .foregroundColor(.white.opacity(0.5))
+                Text("What you shared")
                     .font(SSTypography.caption)
                     .foregroundColor(.white.opacity(0.6))
                 Spacer()
-                Image(systemName: "text.bubble.fill")
-                    .font(.system(size: 12))
-                    .foregroundColor(.white.opacity(0.4))
             }
 
             Text(speechService.transcribedText)
@@ -196,70 +270,6 @@ struct VoiceJournalView: View {
                         .stroke(Color.white.opacity(0.12), lineWidth: 1)
                 )
         )
-    }
-
-    // MARK: - Waveform Section
-    private var waveformSection: some View {
-        VStack(spacing: 12) {
-            if recorder.isRecording {
-                WaveformView(levels: recorder.audioLevels, isActive: true)
-            } else {
-                IdleWaveformView()
-            }
-
-            // Duration display
-            Text(recorder.isRecording ? recorder.formattedDuration : "Ready to record")
-                .font(SSTypography.caption)
-                .foregroundColor(.white.opacity(0.7))
-        }
-        .padding(.vertical, 16)
-        .padding(.horizontal, 20)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.08))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white.opacity(0.15), lineWidth: 1)
-                )
-        )
-    }
-
-    // MARK: - Record Button
-    private var recordButton: some View {
-        VStack(spacing: 12) {
-            Button(action: toggleRecording) {
-                ZStack {
-                    // Outer ring
-                    Circle()
-                        .stroke(Color.white.opacity(0.3), lineWidth: 3)
-                        .frame(width: 80, height: 80)
-
-                    // Animated recording ring
-                    if recorder.isRecording {
-                        Circle()
-                            .stroke(Color.red.opacity(0.6), lineWidth: 3)
-                            .frame(width: 80, height: 80)
-                            .scaleEffect(recorder.isRecording ? 1.1 : 1.0)
-                            .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: recorder.isRecording)
-                    }
-
-                    // Inner button
-                    if recorder.isRecording {
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(Color.red)
-                            .frame(width: 28, height: 28)
-                    } else {
-                        Circle()
-                            .fill(Color.red)
-                            .frame(width: 56, height: 56)
-                    }
-                }
-            }
-
-            Text(recorder.isRecording ? "Tap to Stop" : "Tap to Record")
-                .font(SSTypography.caption)
-                .foregroundColor(.white.opacity(0.6))
-        }
     }
 
     // MARK: - Feedback Card
@@ -283,7 +293,6 @@ struct VoiceJournalView: View {
                 .italic()
                 .lineSpacing(4)
 
-            // Follow-up question
             if !drHopeFollowUp.isEmpty {
                 Divider()
                     .padding(.vertical, 4)
@@ -389,42 +398,40 @@ struct VoiceJournalView: View {
     }
 
     // MARK: - Actions
-    private func toggleRecording() {
-        if recorder.isRecording {
-            // Stop recording and transcription
-            recorder.stopRecording()
-            speechService.stopTranscribing()
-            generateIntelligentFeedback()
-        } else {
-            // Reset state
-            savedEntry = false
-            showFeedback = false
-            showMoodSelector = false
-            selectedMood = nil
-            drHopeFeedback = ""
-            drHopeFollowUp = ""
+    private func startRecording() {
+        // Reset state
+        savedEntry = false
+        showFeedback = false
+        showMoodSelector = false
+        selectedMood = nil
+        drHopeFeedback = ""
+        drHopeFollowUp = ""
 
-            // Check speech permission
-            if speechService.authorizationStatus == .denied || speechService.authorizationStatus == .restricted {
-                showPermissionAlert = true
-                return
-            }
-
-            // Start recording + live transcription
-            recorder.startRecording()
-            speechService.startTranscribing()
-            showTranscription = true
-
-            // Play Dr. Hope intro when starting
-            audioPlayer.playVoice(fileName: "dr_hope_intro")
+        // Check speech permission
+        if speechService.authorizationStatus == .denied || speechService.authorizationStatus == .restricted {
+            showPermissionAlert = true
+            return
         }
+
+        // Start recording + live transcription
+        recorder.startRecording()
+        speechService.startTranscribing()
+        showTranscription = true
+
+        // Play Dr. Hope intro when starting
+        audioPlayer.playVoice(fileName: "dr_hope_intro")
+    }
+
+    private func stopRecording() {
+        recorder.stopRecording()
+        speechService.stopTranscribing()
+        generateIntelligentFeedback()
     }
 
     private func generateIntelligentFeedback() {
         let transcribedText = speechService.transcribedText
 
         if transcribedText.isEmpty {
-            // Fallback if no transcription available (permissions denied, etc.)
             let fallbacks = [
                 "Mmhmm, I hear you, baby. That took courage to let out. The swamp don't clear itself — you gotta wade through. And you wadin'. I'm proud of you.",
                 "Chile, you just poured out somethin' real. That weight you been carryin'? It's a little lighter now. Trust the process, hear?",
@@ -433,12 +440,10 @@ struct VoiceJournalView: View {
             drHopeFeedback = fallbacks[Int(recorder.recordingDuration) % fallbacks.count]
             drHopeFollowUp = "What's one thing you need to hear right now?"
         } else {
-            // Use the intelligent response engine with the actual transcription
             drHopeFeedback = DrHopeResponseEngine.generateResponse(for: transcribedText)
             drHopeFollowUp = DrHopeResponseEngine.generateFollowUp(for: transcribedText)
         }
 
-        // Animate feedback appearance
         withAnimation(.easeInOut(duration: 0.5)) {
             showFeedback = true
             drHopeTalking = true
@@ -448,7 +453,6 @@ struct VoiceJournalView: View {
             mouthPulse = 1.04
         }
 
-        // Stop talking after a few seconds, then show mood selector
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             withAnimation(.easeOut(duration: 0.3)) {
                 drHopeTalking = false
@@ -476,7 +480,6 @@ struct VoiceJournalView: View {
         )
         modelContext.insert(entry)
 
-        // Cancel streak reminder since they journaled today
         NotificationService.shared.cancelStreakReminder()
 
         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {

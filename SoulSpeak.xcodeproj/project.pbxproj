@@ -22,6 +22,7 @@
 		A10001023 /* IntroSequenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002024 /* IntroSequenceView.swift */; };
 		A10001012 /* VoiceJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* VoiceJournalView.swift */; };
 		A10001013 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* WaveformView.swift */; };
+		A10001024 /* DrHopeListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002025 /* DrHopeListeningView.swift */; };
 		A10001014 /* MoodTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* MoodTrackerView.swift */; };
 		A10001015 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002015 /* AnalyticsView.swift */; };
 		A10001016 /* PrayerOutroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002016 /* PrayerOutroView.swift */; };
@@ -57,6 +58,7 @@
 		A10002022 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A10002023 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		A10002024 /* IntroSequenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSequenceView.swift; sourceTree = "<group>"; };
+		A10002025 /* DrHopeListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrHopeListeningView.swift; sourceTree = "<group>"; };
 		A10003000 /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -170,6 +172,7 @@
 			children = (
 				A10002012 /* VoiceJournalView.swift */,
 				A10002013 /* WaveformView.swift */,
+				A10002025 /* DrHopeListeningView.swift */,
 			);
 			path = VoiceJournal;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				A10001011 /* WelcomeView.swift in Sources */,
 				A10001012 /* VoiceJournalView.swift in Sources */,
 				A10001013 /* WaveformView.swift in Sources */,
+				A10001024 /* DrHopeListeningView.swift in Sources */,
 				A10001014 /* MoodTrackerView.swift in Sources */,
 				A10001015 /* AnalyticsView.swift in Sources */,
 				A10001016 /* PrayerOutroView.swift in Sources */,
