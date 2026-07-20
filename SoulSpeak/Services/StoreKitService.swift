@@ -5,7 +5,11 @@ import StoreKit
 /// Premium features: AI Conversation with Dr. Hope/Mr. Hope, Vent Room.
 @MainActor
 class StoreKitService: ObservableObject {
+    #if DEBUG
+    @Published var isPremium: Bool = true  // Always unlocked for testing
+    #else
     @Published var isPremium: Bool = false
+    #endif
     @Published var products: [Product] = []
     @Published var purchaseError: String?
     @Published var isLoading: Bool = false
