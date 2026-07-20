@@ -4,8 +4,8 @@ import SwiftData
 /// Root content view — shows disclaimer first (one time), then intro sequence, then main app.
 /// No lock screen; app goes straight to content.
 struct ContentView: View {
-    @AppStorage("hasAgreedToDisclaimer") private var hasAgreedToDisclaimer = false
-    @AppStorage("hasSeenIntroV2") private var hasSeenIntro = false
+    @AppStorage("hasAgreedToDisclaimerV2") private var hasAgreedToDisclaimer = false
+    @AppStorage("hasSeenIntroV3") private var hasSeenIntro = false
     @State private var introComplete = false
     @Query private var settings: [UserSettings]
 
