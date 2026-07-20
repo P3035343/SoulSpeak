@@ -40,3 +40,7 @@ Secrets.xcconfig
 # IDE
 .idea/
 .vscode/
+
+
+# API Keys
+GeminiConfig.plist
