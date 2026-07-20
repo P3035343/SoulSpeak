@@ -124,7 +124,7 @@ class StoreKitService: ObservableObject {
     private func listenForTransactions() -> Task<Void, Error> {
         return Task.detached {
             for await result in Transaction.updates {
-                if let transaction = try? self.checkVerified(result) {
+                if case .verified(let transaction) = result {
                     await transaction.finish()
                     await self.checkPremiumStatus()
                 }
