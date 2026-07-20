@@ -23,6 +23,7 @@ struct VoiceJournalView: View {
     @State private var mouthPulse: CGFloat = 1.0
     @State private var savedEntry = false
     @State private var showPermissionAlert = false
+    @State private var showResponseVideo = false
 
     var body: some View {
         ZStack {
@@ -171,7 +172,13 @@ struct VoiceJournalView: View {
                         preRecordSection
                     }
 
-                    // Dr. Hope feedback (appears after recording)
+                    // Dr. Hope response video (plays after recording stops)
+                    if showResponseVideo {
+                        responseVideoSection
+                            .transition(.opacity)
+                    }
+
+                    // Dr. Hope feedback (appears after video)
                     if showFeedback {
                         feedbackCard
                             .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -425,7 +432,41 @@ struct VoiceJournalView: View {
     private func stopRecording() {
         recorder.stopRecording()
         speechService.stopTranscribing()
-        generateIntelligentFeedback()
+
+        // Show Dr. Hope response video first
+        withAnimation(.easeInOut(duration: 0.4)) {
+            showResponseVideo = true
+        }
+    }
+
+    // MARK: - Response Video Section
+    private var responseVideoSection: some View {
+        VStack(spacing: 12) {
+            // Play dr_hope_response.mp4 in a rounded frame
+            VideoPlayerView(
+                videoName: "dr_hope_response",
+                fileExtension: "mp4",
+                looping: false,
+                onVideoFinished: {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        showResponseVideo = false
+                    }
+                    generateIntelligentFeedback()
+                }
+            )
+            .frame(height: 220)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.4), lineWidth: 2)
+            )
+            .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.3), radius: 10, y: 4)
+
+            Text("Dr. Hope is reflecting...")
+                .font(.system(size: 12, weight: .medium, design: .serif))
+                .foregroundColor(.white.opacity(0.6))
+                .italic()
+        }
     }
 
     private func generateIntelligentFeedback() {
