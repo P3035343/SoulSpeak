@@ -149,6 +149,8 @@ struct VoiceJournalView: View {
             Image("dr_hope_office_render")
                 .resizable()
                 .scaledToFill()
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .clipped()
                 .ignoresSafeArea()
                 .overlay(
                     LinearGradient(

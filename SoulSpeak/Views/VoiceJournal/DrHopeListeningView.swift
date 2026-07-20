@@ -22,6 +22,8 @@ struct DrHopeListeningView: View {
             Image("dr_hope_listening")
                 .resizable()
                 .scaledToFill()
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .clipped()
                 .ignoresSafeArea()
                 // Subtle breathing/scale animation — makes her feel alive
                 .scaleEffect(breathe ? 1.008 : 1.0)

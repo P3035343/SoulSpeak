@@ -43,7 +43,7 @@ class PlayerUIView: UIView {
 
         let avPlayerLayer = layer as! AVPlayerLayer
         avPlayerLayer.player = player
-        avPlayerLayer.videoGravity = .resizeAspect
+        avPlayerLayer.videoGravity = .resizeAspectFill
         avPlayerLayer.backgroundColor = UIColor.black.cgColor
 
         // Observe when video ends
