@@ -7,63 +7,85 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10001001 /* SoulSpeakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002001 /* SoulSpeakApp.swift */; };
-		A10001002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002002 /* ContentView.swift */; };
-		A10001003 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002003 /* MainTabView.swift */; };
-		A10001004 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002004 /* JournalEntry.swift */; };
-		A10001005 /* MoodEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002005 /* MoodEntry.swift */; };
-		A10001006 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002006 /* UserSettings.swift */; };
-		A10001007 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002007 /* AudioPlayerService.swift */; };
-		A10001008 /* ScriptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002008 /* ScriptureService.swift */; };
-		A10001009 /* VoiceRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002009 /* VoiceRecorderService.swift */; };
-		A10001010 /* SoulSpeakTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010 /* SoulSpeakTheme.swift */; };
-		A10001011 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002011 /* WelcomeView.swift */; };
-		A10001022 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002023 /* VideoPlayerView.swift */; };
-		A10001023 /* IntroSequenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002024 /* IntroSequenceView.swift */; };
-		A10001012 /* VoiceJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* VoiceJournalView.swift */; };
-		A10001013 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* WaveformView.swift */; };
-		A10001024 /* DrHopeListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002025 /* DrHopeListeningView.swift */; };
-		A10001014 /* MoodTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* MoodTrackerView.swift */; };
-		A10001015 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002015 /* AnalyticsView.swift */; };
-		A10001016 /* PrayerOutroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002016 /* PrayerOutroView.swift */; };
-		A10001017 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002017 /* SettingsView.swift */; };
-		A10001018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10002018 /* Assets.xcassets */; };
-		A10001019 /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002020 /* SpeechRecognitionService.swift */; };
-		A10001020 /* DrHopeResponseEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002021 /* DrHopeResponseEngine.swift */; };
-		A10001021 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002022 /* NotificationService.swift */; };
+		B0000001 /* SoulSpeakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000001; };
+		B0000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000002; };
+		B0000003 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000003; };
+		B0000004 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000004; };
+		B0000005 /* MoodEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000005; };
+		B0000006 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000006; };
+		B0000007 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000007; };
+		B0000008 /* DrHopeResponseEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000008; };
+		B0000009 /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000009; };
+		B0000010 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000010; };
+		B0000011 /* ScriptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000011; };
+		B0000012 /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000012; };
+		B0000013 /* StoreKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000013; };
+		B0000014 /* TextToSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000014; };
+		B0000015 /* VoiceRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000015; };
+		B0000016 /* SoulSpeakTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000016; };
+		B0000017 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000017; };
+		B0000018 /* ConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000018; };
+		B0000019 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000019; };
+		B0000020 /* MoodTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000020; };
+		B0000021 /* PrayerOutroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000021; };
+		B0000022 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000022; };
+		B0000023 /* DestructionRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000023; };
+		B0000024 /* PaperBurnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000024; };
+		B0000025 /* ReleaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000025; };
+		B0000026 /* VentPlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000026; };
+		B0000027 /* VentRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000027; };
+		B0000028 /* VentRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000028; };
+		B0000029 /* DrHopeListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000029; };
+		B0000030 /* VoiceJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000030; };
+		B0000031 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000031; };
+		B0000032 /* IntroSequenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000032; };
+		B0000033 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000033; };
+		B0000034 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000034; };
+		B0000035 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0000035; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A10002001 /* SoulSpeakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakApp.swift; sourceTree = "<group>"; };
-		A10002002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A10002003 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
-		A10002004 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
-		A10002005 /* MoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodEntry.swift; sourceTree = "<group>"; };
-		A10002006 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
-		A10002007 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
-		A10002008 /* ScriptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptureService.swift; sourceTree = "<group>"; };
-		A10002009 /* VoiceRecorderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecorderService.swift; sourceTree = "<group>"; };
-		A10002010 /* SoulSpeakTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakTheme.swift; sourceTree = "<group>"; };
-		A10002011 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		A10002012 /* VoiceJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceJournalView.swift; sourceTree = "<group>"; };
-		A10002013 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
-		A10002014 /* MoodTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodTrackerView.swift; sourceTree = "<group>"; };
-		A10002015 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
-		A10002016 /* PrayerOutroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerOutroView.swift; sourceTree = "<group>"; };
-		A10002017 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		A10002018 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A10002019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A10002020 /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
-		A10002021 /* DrHopeResponseEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrHopeResponseEngine.swift; sourceTree = "<group>"; };
-		A10002022 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		A10002023 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
-		A10002024 /* IntroSequenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSequenceView.swift; sourceTree = "<group>"; };
-		A10002025 /* DrHopeListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrHopeListeningView.swift; sourceTree = "<group>"; };
-		A10003000 /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0000001 /* SoulSpeakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakApp.swift; sourceTree = "<group>"; };
+		F0000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F0000003 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		F0000004 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		F0000005 /* MoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodEntry.swift; sourceTree = "<group>"; };
+		F0000006 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		F0000007 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
+		F0000008 /* DrHopeResponseEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrHopeResponseEngine.swift; sourceTree = "<group>"; };
+		F0000009 /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
+		F0000010 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		F0000011 /* ScriptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptureService.swift; sourceTree = "<group>"; };
+		F0000012 /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
+		F0000013 /* StoreKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitService.swift; sourceTree = "<group>"; };
+		F0000014 /* TextToSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeechService.swift; sourceTree = "<group>"; };
+		F0000015 /* VoiceRecorderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecorderService.swift; sourceTree = "<group>"; };
+		F0000016 /* SoulSpeakTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakTheme.swift; sourceTree = "<group>"; };
+		F0000017 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
+		F0000018 /* ConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationView.swift; sourceTree = "<group>"; };
+		F0000019 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		F0000020 /* MoodTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodTrackerView.swift; sourceTree = "<group>"; };
+		F0000021 /* PrayerOutroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerOutroView.swift; sourceTree = "<group>"; };
+		F0000022 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F0000023 /* DestructionRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestructionRoomView.swift; sourceTree = "<group>"; };
+		F0000024 /* PaperBurnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperBurnView.swift; sourceTree = "<group>"; };
+		F0000025 /* ReleaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseView.swift; sourceTree = "<group>"; };
+		F0000026 /* VentPlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VentPlaybackView.swift; sourceTree = "<group>"; };
+		F0000027 /* VentRecordingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VentRecordingView.swift; sourceTree = "<group>"; };
+		F0000028 /* VentRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VentRoomView.swift; sourceTree = "<group>"; };
+		F0000029 /* DrHopeListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrHopeListeningView.swift; sourceTree = "<group>"; };
+		F0000030 /* VoiceJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceJournalView.swift; sourceTree = "<group>"; };
+		F0000031 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
+		F0000032 /* IntroSequenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSequenceView.swift; sourceTree = "<group>"; };
+		F0000033 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		F0000034 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		F0000035 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F0000036 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0000099 /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A10004000 /* Frameworks */ = {
+		C0000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -73,152 +95,179 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A10005000 /* Root */ = {
+		G0000000 = {
 			isa = PBXGroup;
 			children = (
-				A10005001 /* SoulSpeak */,
-				A10005099 /* Products */,
+				G0000001 /* SoulSpeak */,
+				G0000099 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A10005099 /* Products */ = {
+		G0000099 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A10003000 /* SoulSpeak.app */,
+				F0000099 /* SoulSpeak.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A10005001 /* SoulSpeak */ = {
+		G0000001 /* SoulSpeak */ = {
 			isa = PBXGroup;
 			children = (
-				A10005002 /* App */,
-				A10005003 /* Models */,
-				A10005004 /* Services */,
-				A10005005 /* Theme */,
-				A10005006 /* Views */,
-				A10002018 /* Assets.xcassets */,
-				A10002019 /* Info.plist */,
+				G0000002 /* App */,
+				G0000003 /* Models */,
+				G0000004 /* Services */,
+				G0000005 /* Theme */,
+				G0000006 /* Views */,
+				F0000035 /* Assets.xcassets */,
+				F0000036 /* Info.plist */,
 			);
 			path = SoulSpeak;
 			sourceTree = "<group>";
 		};
-		A10005002 /* App */ = {
+		G0000002 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				A10002001 /* SoulSpeakApp.swift */,
-				A10002002 /* ContentView.swift */,
-				A10002003 /* MainTabView.swift */,
+				F0000001,
+				F0000002,
+				F0000003,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
-		A10005003 /* Models */ = {
+		G0000003 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A10002004 /* JournalEntry.swift */,
-				A10002005 /* MoodEntry.swift */,
-				A10002006 /* UserSettings.swift */,
+				F0000004,
+				F0000005,
+				F0000006,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		A10005004 /* Services */ = {
+		G0000004 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A10002007 /* AudioPlayerService.swift */,
-				A10002008 /* ScriptureService.swift */,
-				A10002009 /* VoiceRecorderService.swift */,
-				A10002020 /* SpeechRecognitionService.swift */,
-				A10002021 /* DrHopeResponseEngine.swift */,
-				A10002022 /* NotificationService.swift */,
+				F0000007,
+				F0000008,
+				F0000009,
+				F0000010,
+				F0000011,
+				F0000012,
+				F0000013,
+				F0000014,
+				F0000015,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		A10005005 /* Theme */ = {
+		G0000005 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				A10002010 /* SoulSpeakTheme.swift */,
+				F0000016,
 			);
 			path = Theme;
 			sourceTree = "<group>";
 		};
-		A10005006 /* Views */ = {
+		G0000006 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A10005007 /* Welcome */,
-				A10005008 /* VoiceJournal */,
-				A10005009 /* MoodTracker */,
-				A10005010 /* Analytics */,
-				A10005011 /* Prayer */,
-				A10005012 /* Settings */,
+				G0000007 /* Analytics */,
+				G0000008 /* Components */,
+				G0000009 /* MoodTracker */,
+				G0000010 /* Prayer */,
+				G0000011 /* Settings */,
+				G0000012 /* VentRoom */,
+				G0000013 /* VoiceJournal */,
+				G0000014 /* Welcome */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		A10005007 /* Welcome */ = {
+		G0000007 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				A10002011 /* WelcomeView.swift */,
-				A10002023 /* VideoPlayerView.swift */,
-				A10002024 /* IntroSequenceView.swift */,
-			);
-			path = Welcome;
-			sourceTree = "<group>";
-		};
-		A10005008 /* VoiceJournal */ = {
-			isa = PBXGroup;
-			children = (
-				A10002012 /* VoiceJournalView.swift */,
-				A10002013 /* WaveformView.swift */,
-				A10002025 /* DrHopeListeningView.swift */,
-			);
-			path = VoiceJournal;
-			sourceTree = "<group>";
-		};
-		A10005009 /* MoodTracker */ = {
-			isa = PBXGroup;
-			children = (
-				A10002014 /* MoodTrackerView.swift */,
-			);
-			path = MoodTracker;
-			sourceTree = "<group>";
-		};
-		A10005010 /* Analytics */ = {
-			isa = PBXGroup;
-			children = (
-				A10002015 /* AnalyticsView.swift */,
+				F0000017,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
 		};
-		A10005011 /* Prayer */ = {
+		G0000008 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				A10002016 /* PrayerOutroView.swift */,
+				F0000018,
+				F0000019,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		G0000009 /* MoodTracker */ = {
+			isa = PBXGroup;
+			children = (
+				F0000020,
+			);
+			path = MoodTracker;
+			sourceTree = "<group>";
+		};
+		G0000010 /* Prayer */ = {
+			isa = PBXGroup;
+			children = (
+				F0000021,
 			);
 			path = Prayer;
 			sourceTree = "<group>";
 		};
-		A10005012 /* Settings */ = {
+		G0000011 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				A10002017 /* SettingsView.swift */,
+				F0000022,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		G0000012 /* VentRoom */ = {
+			isa = PBXGroup;
+			children = (
+				F0000023,
+				F0000024,
+				F0000025,
+				F0000026,
+				F0000027,
+				F0000028,
+			);
+			path = VentRoom;
+			sourceTree = "<group>";
+		};
+		G0000013 /* VoiceJournal */ = {
+			isa = PBXGroup;
+			children = (
+				F0000029,
+				F0000030,
+				F0000031,
+			);
+			path = VoiceJournal;
+			sourceTree = "<group>";
+		};
+		G0000014 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				F0000032,
+				F0000033,
+				F0000034,
+			);
+			path = Welcome;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A10006000 /* SoulSpeak */ = {
+		T0000001 /* SoulSpeak */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A10008000 /* Build configuration list for PBXNativeTarget "SoulSpeak" */;
+			buildConfigurationList = X0000001;
 			buildPhases = (
-				A10007000 /* Sources */,
-				A10004000 /* Frameworks */,
-				A10007001 /* Resources */,
+				S0000001 /* Sources */,
+				C0000001 /* Frameworks */,
+				R0000001 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -226,25 +275,25 @@
 			);
 			name = SoulSpeak;
 			productName = SoulSpeak;
-			productReference = A10003000 /* SoulSpeak.app */;
+			productReference = F0000099 /* SoulSpeak.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A10009000 /* Project object */ = {
+		P0000001 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
-					A10006000 = {
+					T0000001 = {
 						CreatedOnToolsVersion = 15.4;
 					};
 				};
 			};
-			buildConfigurationList = A10008002 /* Build configuration list for PBXProject "SoulSpeak" */;
+			buildConfigurationList = X0000002;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -252,99 +301,85 @@
 				en,
 				Base,
 			);
-			mainGroup = A10005000 /* Root */;
-			productRefGroup = A10005099 /* Products */;
+			mainGroup = G0000000;
+			productRefGroup = G0000099 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A10006000 /* SoulSpeak */,
+				T0000001 /* SoulSpeak */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A10007001 /* Resources */ = {
+		R0000001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10001018 /* Assets.xcassets in Resources */,
+				B0000035 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A10007000 /* Sources */ = {
+		S0000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10001001 /* SoulSpeakApp.swift in Sources */,
-				A10001002 /* ContentView.swift in Sources */,
-				A10001003 /* MainTabView.swift in Sources */,
-				A10001004 /* JournalEntry.swift in Sources */,
-				A10001005 /* MoodEntry.swift in Sources */,
-				A10001006 /* UserSettings.swift in Sources */,
-				A10001007 /* AudioPlayerService.swift in Sources */,
-				A10001008 /* ScriptureService.swift in Sources */,
-				A10001009 /* VoiceRecorderService.swift in Sources */,
-				A10001010 /* SoulSpeakTheme.swift in Sources */,
-				A10001011 /* WelcomeView.swift in Sources */,
-				A10001012 /* VoiceJournalView.swift in Sources */,
-				A10001013 /* WaveformView.swift in Sources */,
-				A10001024 /* DrHopeListeningView.swift in Sources */,
-				A10001014 /* MoodTrackerView.swift in Sources */,
-				A10001015 /* AnalyticsView.swift in Sources */,
-				A10001016 /* PrayerOutroView.swift in Sources */,
-				A10001017 /* SettingsView.swift in Sources */,
-				A10001019 /* SpeechRecognitionService.swift in Sources */,
-				A10001020 /* DrHopeResponseEngine.swift in Sources */,
-				A10001021 /* NotificationService.swift in Sources */,
-				A10001022 /* VideoPlayerView.swift in Sources */,
-				A10001023 /* IntroSequenceView.swift in Sources */,
+				B0000001,
+				B0000002,
+				B0000003,
+				B0000004,
+				B0000005,
+				B0000006,
+				B0000007,
+				B0000008,
+				B0000009,
+				B0000010,
+				B0000011,
+				B0000012,
+				B0000013,
+				B0000014,
+				B0000015,
+				B0000016,
+				B0000017,
+				B0000018,
+				B0000019,
+				B0000020,
+				B0000021,
+				B0000022,
+				B0000023,
+				B0000024,
+				B0000025,
+				B0000026,
+				B0000027,
+				B0000028,
+				B0000029,
+				B0000030,
+				B0000031,
+				B0000032,
+				B0000033,
+				B0000034,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		A10008003 /* Debug */ = {
+		D0000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -353,14 +388,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -370,54 +398,22 @@
 			};
 			name = Debug;
 		};
-		A10008004 /* Release */ = {
+		D0000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -426,7 +422,7 @@
 			};
 			name = Release;
 		};
-		A10008005 /* Debug */ = {
+		D0000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -438,7 +434,6 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SoulSpeak/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SoulSpeak;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -450,14 +445,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.soulspeak.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		A10008006 /* Release */ = {
+		D0000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -469,7 +463,6 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SoulSpeak/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SoulSpeak;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -481,7 +474,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.soulspeak.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -491,20 +483,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A10008000 /* Build configuration list for PBXNativeTarget "SoulSpeak" */ = {
+		X0000001 /* Build configuration list for PBXNativeTarget "SoulSpeak" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A10008005 /* Debug */,
-				A10008006 /* Release */,
+				D0000003 /* Debug */,
+				D0000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A10008002 /* Build configuration list for PBXProject "SoulSpeak" */ = {
+		X0000002 /* Build configuration list for PBXProject "SoulSpeak" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A10008003 /* Debug */,
-				A10008004 /* Release */,
+				D0000001 /* Debug */,
+				D0000002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -512,5 +504,5 @@
 /* End XCConfigurationList section */
 
 	};
-	rootObject = A10009000 /* Project object */;
+	rootObject = P0000001 /* Project object */;
 }
