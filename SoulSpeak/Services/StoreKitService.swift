@@ -111,6 +111,11 @@ class StoreKitService: ObservableObject {
 
     /// Check if user has active premium entitlement.
     func checkPremiumStatus() async {
+        #if DEBUG
+        // In debug/testing mode, always keep premium unlocked
+        isPremium = true
+        return
+        #else
         for await result in Transaction.currentEntitlements {
             if let transaction = try? checkVerified(result) {
                 if StoreKitService.allProductIDs.contains(transaction.productID) {
@@ -120,6 +125,7 @@ class StoreKitService: ObservableObject {
             }
         }
         isPremium = false
+        #endif
     }
 
     // MARK: - Transaction Listener
