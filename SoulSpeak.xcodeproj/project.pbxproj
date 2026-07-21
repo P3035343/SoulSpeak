@@ -43,6 +43,7 @@
 		05B249C2541500634D02684F /* VoiceRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2865AAB519B73AC9C9C1884; };
 		87724417D64B9DCDE3DCE83B /* SoulSpeakTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFF6B8D12CF6A95E0478B02; };
 		99810209AD4FE3320BC122AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58F02208A1E6A99468703A4E; };
+		685B13812F121CB0D1F0FBF9 /* RageRoomSceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7305F7720AB475F81AC7E11; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		58F02208A1E6A99468703A4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D644AFBB5A54E9F05256CDF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BEFD367C4AB92E0F59B0B1F /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7305F7720AB475F81AC7E11 /* RageRoomSceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RageRoomSceneManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,7 +236,8 @@
 				6289BBB53C1204A78E175A41 /* VentPlaybackView.swift */,
 				DDB0EBA415265E7955271330 /* VentRecordingView.swift */,
 				C83A9DDA50C643AD6C05E4BE /* VentRoomView.swift */,
-			);
+			
+				B7305F7720AB475F81AC7E11 /* RageRoomSceneManager.swift */,);
 			path = VentRoom;
 			sourceTree = "<group>";
 		};
@@ -348,6 +351,7 @@
 				F600B2FD57C48E13754AC1AE,
 				05B249C2541500634D02684F,
 				87724417D64B9DCDE3DCE83B,
+				685B13812F121CB0D1F0FBF9,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
