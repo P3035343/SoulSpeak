@@ -1,0 +1,506 @@
+// !*UTF8*$!!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2EAE62909D0F4A43908E347A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93ECFEC61EE4F4097350F22; };
+		AB787F5229E74C948037797B /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361CE75840A4FF88D488180; };
+		7EBF8C338A87417692E9FBC4 /* SoulSpeakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF64061AFF04C9F91892A7E; };
+		67D67B2F9BFF43E8B3FDE43B /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3073B5F00643E3B6BDA87A; };
+		1896C229E70749689722293D /* MoodEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798CE63089454C0497FA8021; };
+		150FDE6FE83243D592722727 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CA37B77BF74C13848FCB37; };
+		8A80E8B0F3E84FED8F1BF170 /* DrHopeListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0606C7498EDD4E94850FF36D; };
+		D15794AC94234AD1847A0BF0 /* VoiceJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4457F44E99D14647BF9EBEBB; };
+		F7D2D60A678244109F036E2D /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA02101D14F40A0BF710246; };
+		4828834ED0554360AFC13740 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22300DB330324BF9817B3E90; };
+		9948CFED19324EA888CF28D7 /* MoodTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E9979A573D410C98916E37; };
+		DFBE0B8485BA4DCC9A76D4CE /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1EC21B61F94D909B577D8D; };
+		328C14206D7B449AB088053F /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35390074195B440EA49D5613; };
+		F5C88B9216E448469ACF1690 /* IntroSequenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BC64CAD0854DE0B2AE9765; };
+		DDA87D58C9544924A482E20C /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA46D71E4B24C1E8556EBF6; };
+		D8D955D6C8DA474B81F31B72 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75CBB497A194A8CB9C456FD; };
+		82247801953749B3B6D048EB /* PrayerOutroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D46D44C51DB4A3F99A535F5; };
+		66B8BA6E692E4CF58616F6A5 /* ConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19EC38B8374C4E85A31E2AD7; };
+		281B56AAFBEE4A1EB65B0674 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444B453578CB471796BD82DB; };
+		B36F44B13E2B44DBA2EE61B8 /* DestructionRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2EF1189CAD4992A016D25F; };
+		FB2E4A861B4F4638AD79A071 /* PaperBurnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21672C49BF434A6C9E0A5EE0; };
+		4A022FF8B6FA44EEBF4B1C5C /* ReleaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81139CE8244F495A866C8935; };
+		9CEED063FD0740C88633954D /* VentPlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B307644C804C17AAC57054; };
+		7311B94F2EC04832BEFA004E /* VentRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD61851EA62443A8916DE02; };
+		A69541D6307947B5A3ADABDA /* VentRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9F6CD1225471092879E07; };
+		0EF2FD02AFFF4DDB9D6F9622 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BFF4FB874246E38FA71A13; };
+		DD5D6A564BF64EBFA0CA2CCD /* DrHopeResponseEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2A3A8EABC24F7799C7960E; };
+		B8626F24509040F7807E13DB /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F194164C42495D81F0E9FC; };
+		4F307B1A9F5D4AE5AF65094A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE1AA4424DD4D82A07101E6; };
+		CBE8D0AD9C4C43529BF3022A /* ScriptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49D2D938A894DC09DDFA050; };
+		DEFC1F4A867744AD85A4E52A /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C5E61490AB412DB970ED79; };
+		81CE9CA6988F407F8D5409AD /* StoreKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86F14CD574D628A62349F; };
+		B06B87C73D924EF381246533 /* TextToSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA5F5988747459880328F55; };
+		1F338D5D86A446F8AC916117 /* VoiceRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7E156D56164FF1A0B3967B; };
+		EE96EC8CF3934243A4898BEB /* SoulSpeakTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7C5B1B4DBA4075821C7042; };
+		9158D0FE606540C0998FC1B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DAE0DAE06184E5BBA9B74D8; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F93ECFEC61EE4F4097350F22 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6361CE75840A4FF88D488180 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		9BF64061AFF04C9F91892A7E /* SoulSpeakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakApp.swift; sourceTree = "<group>"; };
+		CA3073B5F00643E3B6BDA87A /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		798CE63089454C0497FA8021 /* MoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodEntry.swift; sourceTree = "<group>"; };
+		A8CA37B77BF74C13848FCB37 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		0606C7498EDD4E94850FF36D /* DrHopeListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrHopeListeningView.swift; sourceTree = "<group>"; };
+		4457F44E99D14647BF9EBEBB /* VoiceJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceJournalView.swift; sourceTree = "<group>"; };
+		5FA02101D14F40A0BF710246 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
+		22300DB330324BF9817B3E90 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E4E9979A573D410C98916E37 /* MoodTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodTrackerView.swift; sourceTree = "<group>"; };
+		0A1EC21B61F94D909B577D8D /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
+		35390074195B440EA49D5613 /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
+		56BC64CAD0854DE0B2AE9765 /* IntroSequenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSequenceView.swift; sourceTree = "<group>"; };
+		CAA46D71E4B24C1E8556EBF6 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		E75CBB497A194A8CB9C456FD /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		3D46D44C51DB4A3F99A535F5 /* PrayerOutroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerOutroView.swift; sourceTree = "<group>"; };
+		19EC38B8374C4E85A31E2AD7 /* ConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationView.swift; sourceTree = "<group>"; };
+		444B453578CB471796BD82DB /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		1D2EF1189CAD4992A016D25F /* DestructionRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestructionRoomView.swift; sourceTree = "<group>"; };
+		21672C49BF434A6C9E0A5EE0 /* PaperBurnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperBurnView.swift; sourceTree = "<group>"; };
+		81139CE8244F495A866C8935 /* ReleaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseView.swift; sourceTree = "<group>"; };
+		61B307644C804C17AAC57054 /* VentPlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VentPlaybackView.swift; sourceTree = "<group>"; };
+		FAD61851EA62443A8916DE02 /* VentRecordingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VentRecordingView.swift; sourceTree = "<group>"; };
+		7AC9F6CD1225471092879E07 /* VentRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VentRoomView.swift; sourceTree = "<group>"; };
+		F3BFF4FB874246E38FA71A13 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
+		6B2A3A8EABC24F7799C7960E /* DrHopeResponseEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrHopeResponseEngine.swift; sourceTree = "<group>"; };
+		53F194164C42495D81F0E9FC /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
+		ECE1AA4424DD4D82A07101E6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		A49D2D938A894DC09DDFA050 /* ScriptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptureService.swift; sourceTree = "<group>"; };
+		45C5E61490AB412DB970ED79 /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
+		16B86F14CD574D628A62349F /* StoreKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitService.swift; sourceTree = "<group>"; };
+		FCA5F5988747459880328F55 /* TextToSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeechService.swift; sourceTree = "<group>"; };
+		7C7E156D56164FF1A0B3967B /* VoiceRecorderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecorderService.swift; sourceTree = "<group>"; };
+		FF7C5B1B4DBA4075821C7042 /* SoulSpeakTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakTheme.swift; sourceTree = "<group>"; };
+		5DAE0DAE06184E5BBA9B74D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9B8EBE1707FD4C98B57BFCA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8031D201E46E455AB5FEF0D6 /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D28C6F950DDC4E0DA2B88495 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4E3774C6C1174ABEB8FE2190 = {
+			isa = PBXGroup;
+			children = (
+				4DA54ED64C0843CAA112A4A3,
+				133089E5CEB4463AAA5A9C2B,
+			);
+			sourceTree = "<group>";
+		};
+		133089E5CEB4463AAA5A9C2B = {
+			isa = PBXGroup;
+			children = (
+				8031D201E46E455AB5FEF0D6,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4DA54ED64C0843CAA112A4A3 = {
+			isa = PBXGroup;
+			children = (
+				9F75D3AAE5924EDFBA22D0E2,
+				634839BE844D47B0953E99D5,
+				C778D23B2FA2400EA6A6BBBD,
+				27E9E6395B594ACD8B6F7848,
+				C3DCD8C5BF7D4A81909AC1DB,
+				5DAE0DAE06184E5BBA9B74D8,
+				9B8EBE1707FD4C98B57BFCA2,
+			);
+			path = SoulSpeak;
+			sourceTree = "<group>";
+		};
+		9F75D3AAE5924EDFBA22D0E2 = {
+			isa = PBXGroup;
+			children = (
+				F93ECFEC61EE4F4097350F22,
+				6361CE75840A4FF88D488180,
+				9BF64061AFF04C9F91892A7E,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		634839BE844D47B0953E99D5 = {
+			isa = PBXGroup;
+			children = (
+				CA3073B5F00643E3B6BDA87A,
+				798CE63089454C0497FA8021,
+				A8CA37B77BF74C13848FCB37,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C778D23B2FA2400EA6A6BBBD = {
+			isa = PBXGroup;
+			children = (
+				F3BFF4FB874246E38FA71A13,
+				6B2A3A8EABC24F7799C7960E,
+				53F194164C42495D81F0E9FC,
+				ECE1AA4424DD4D82A07101E6,
+				A49D2D938A894DC09DDFA050,
+				45C5E61490AB412DB970ED79,
+				16B86F14CD574D628A62349F,
+				FCA5F5988747459880328F55,
+				7C7E156D56164FF1A0B3967B,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		27E9E6395B594ACD8B6F7848 = {
+			isa = PBXGroup;
+			children = (
+				FF7C5B1B4DBA4075821C7042,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		C3DCD8C5BF7D4A81909AC1DB = {
+			isa = PBXGroup;
+			children = (
+				F70FC3F5EBAB4C21B5C16C35,
+				6499B81499B24855898A77AD,
+				DBCB31E3AAE34025A942BBDA,
+				ADDBD30D49FA44078BC1FB90,
+				37284F47415E435E94FCBB95,
+				E96A13466E3D4E0186A57340,
+				3CF6EAA9978C45DD9D47D312,
+				63F6CEFCCD1E4D758A64928E,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F70FC3F5EBAB4C21B5C16C35 = {
+			isa = PBXGroup;
+			children = (
+				0A1EC21B61F94D909B577D8D,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
+		6499B81499B24855898A77AD = {
+			isa = PBXGroup;
+			children = (
+				19EC38B8374C4E85A31E2AD7,
+				444B453578CB471796BD82DB,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		DBCB31E3AAE34025A942BBDA = {
+			isa = PBXGroup;
+			children = (
+				E4E9979A573D410C98916E37,
+			);
+			path = MoodTracker;
+			sourceTree = "<group>";
+		};
+		ADDBD30D49FA44078BC1FB90 = {
+			isa = PBXGroup;
+			children = (
+				3D46D44C51DB4A3F99A535F5,
+			);
+			path = Prayer;
+			sourceTree = "<group>";
+		};
+		37284F47415E435E94FCBB95 = {
+			isa = PBXGroup;
+			children = (
+				22300DB330324BF9817B3E90,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		E96A13466E3D4E0186A57340 = {
+			isa = PBXGroup;
+			children = (
+				1D2EF1189CAD4992A016D25F,
+				21672C49BF434A6C9E0A5EE0,
+				81139CE8244F495A866C8935,
+				61B307644C804C17AAC57054,
+				FAD61851EA62443A8916DE02,
+				7AC9F6CD1225471092879E07,
+			);
+			path = VentRoom;
+			sourceTree = "<group>";
+		};
+		3CF6EAA9978C45DD9D47D312 = {
+			isa = PBXGroup;
+			children = (
+				0606C7498EDD4E94850FF36D,
+				4457F44E99D14647BF9EBEBB,
+				5FA02101D14F40A0BF710246,
+			);
+			path = VoiceJournal;
+			sourceTree = "<group>";
+		};
+		63F6CEFCCD1E4D758A64928E = {
+			isa = PBXGroup;
+			children = (
+				35390074195B440EA49D5613,
+				56BC64CAD0854DE0B2AE9765,
+				CAA46D71E4B24C1E8556EBF6,
+				E75CBB497A194A8CB9C456FD,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		38D4443157B24F03AAF530E4 = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C334D64F874E4595BF52B738;
+			buildPhases = (
+				DB35316683244DB893CE630B,
+				D28C6F950DDC4E0DA2B88495,
+				EAA811900B2B412FA418111F,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SoulSpeak;
+			productName = SoulSpeak;
+			productReference = 8031D201E46E455AB5FEF0D6;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BE0665C5A1444BCBBE033FFF = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					38D4443157B24F03AAF530E4 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 90A06A8C3FF541ADBA94F7C7;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4E3774C6C1174ABEB8FE2190;
+			productRefGroup = 133089E5CEB4463AAA5A9C2B;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				38D4443157B24F03AAF530E4,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EAA811900B2B412FA418111F = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9158D0FE606540C0998FC1B8,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DB35316683244DB893CE630B = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2EAE62909D0F4A43908E347A,
+				AB787F5229E74C948037797B,
+				7EBF8C338A87417692E9FBC4,
+				67D67B2F9BFF43E8B3FDE43B,
+				1896C229E70749689722293D,
+				150FDE6FE83243D592722727,
+				8A80E8B0F3E84FED8F1BF170,
+				D15794AC94234AD1847A0BF0,
+				F7D2D60A678244109F036E2D,
+				4828834ED0554360AFC13740,
+				9948CFED19324EA888CF28D7,
+				DFBE0B8485BA4DCC9A76D4CE,
+				328C14206D7B449AB088053F,
+				F5C88B9216E448469ACF1690,
+				DDA87D58C9544924A482E20C,
+				D8D955D6C8DA474B81F31B72,
+				82247801953749B3B6D048EB,
+				66B8BA6E692E4CF58616F6A5,
+				281B56AAFBEE4A1EB65B0674,
+				B36F44B13E2B44DBA2EE61B8,
+				FB2E4A861B4F4638AD79A071,
+				4A022FF8B6FA44EEBF4B1C5C,
+				9CEED063FD0740C88633954D,
+				7311B94F2EC04832BEFA004E,
+				A69541D6307947B5A3ADABDA,
+				0EF2FD02AFFF4DDB9D6F9622,
+				DD5D6A564BF64EBFA0CA2CCD,
+				B8626F24509040F7807E13DB,
+				4F307B1A9F5D4AE5AF65094A,
+				CBE8D0AD9C4C43529BF3022A,
+				DEFC1F4A867744AD85A4E52A,
+				81CE9CA6988F407F8D5409AD,
+				B06B87C73D924EF381246533,
+				1F338D5D86A446F8AC916117,
+				EE96EC8CF3934243A4898BEB,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AAF70507552B4785A0FE7ACF = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2EA0D5BE4CC14D42B7394D18 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9ED205A6CADE4C76AD9BECF1 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SoulSpeak/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SoulSpeak;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soulspeak.app;
+				PRODUCT_NAME = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FAC205EE0E514076B8CD93C7 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SoulSpeak/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SoulSpeak;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soulspeak.app;
+				PRODUCT_NAME = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C334D64F874E4595BF52B738 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9ED205A6CADE4C76AD9BECF1,
+				FAC205EE0E514076B8CD93C7,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		90A06A8C3FF541ADBA94F7C7 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAF70507552B4785A0FE7ACF,
+				2EA0D5BE4CC14D42B7394D18,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = BE0665C5A1444BCBBE033FFF;
+}
