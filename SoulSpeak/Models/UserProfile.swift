@@ -16,6 +16,7 @@ final class UserProfile {
     var isInRecovery: Bool
     var substanceType: String?
     var faithPreference: String
+    var accountabilityCategories: [String]
     var createdAt: Date
     var lastCheckIn: Date?
 
@@ -41,6 +42,7 @@ final class UserProfile {
         isInRecovery: Bool = false,
         substanceType: String? = nil,
         faithPreference: String = "Christian",
+        accountabilityCategories: [String] = [],
         createdAt: Date = Date(),
         lastCheckIn: Date? = nil
     ) {
@@ -55,6 +57,7 @@ final class UserProfile {
         self.isInRecovery = isInRecovery
         self.substanceType = substanceType
         self.faithPreference = faithPreference
+        self.accountabilityCategories = accountabilityCategories
         self.createdAt = createdAt
         self.lastCheckIn = lastCheckIn
         self.prayedToday = false

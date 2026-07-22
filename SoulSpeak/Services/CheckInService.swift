@@ -114,3 +114,52 @@ class CheckInService {
         center.removePendingNotificationRequests(withIdentifiers: ids)
     }
 }
+
+
+
+    /// Schedule accountability-specific check-in notifications based on user's selected categories.
+    func scheduleAccountabilityCheckIns(for categories: Set<AccountabilityCategory>) {
+        // Remove old accountability notifications
+        let oldIDs = (0..<50).map { "accountability_\($0)" }
+        center.removePendingNotificationRequests(withIdentifiers: oldIDs)
+
+        var notificationIndex = 0
+
+        for category in categories {
+            let messages = category.checkInMessages
+            guard !messages.isEmpty else { continue }
+
+            // Schedule 2-3 notifications per category at different times
+            let times: [(Int, Int)] = [(8, 30), (13, 0), (19, 30)]
+
+            for (timeIndex, (hour, minute)) in times.prefix(min(messages.count, 3)).enumerated() {
+                let content = UNMutableNotificationContent()
+                content.title = "Check-in: \(category.rawValue)"
+                content.body = messages[timeIndex % messages.count]
+                content.sound = .default
+                content.categoryIdentifier = "ACCOUNTABILITY_CHECKIN"
+
+                var dateComponents = DateComponents()
+                dateComponents.hour = hour
+                dateComponents.minute = minute
+                // Spread across days of the week
+                dateComponents.weekday = (notificationIndex % 7) + 1
+
+                let trigger = UNCalendarNotificationTrigger(
+                    dateMatching: dateComponents,
+                    repeats: true
+                )
+
+                let request = UNNotificationRequest(
+                    identifier: "accountability_\(notificationIndex)",
+                    content: content,
+                    trigger: trigger
+                )
+
+                center.add(request, withCompletionHandler: nil)
+                notificationIndex += 1
+            }
+        }
+
+        print("[SoulSpeak] Scheduled \(notificationIndex) accountability notifications for \(categories.count) categories")
+    }
