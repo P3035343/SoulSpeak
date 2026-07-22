@@ -8,6 +8,7 @@ struct SoulSpeakApp: App {
             JournalEntry.self,
             MoodEntry.self,
             UserSettings.self,
+            UserProfile.self,
         ])
         let modelConfiguration = ModelConfiguration(
             schema: schema,
