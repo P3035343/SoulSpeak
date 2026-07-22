@@ -64,6 +64,16 @@ struct MainTabView: View {
             }
             .tag(4)
 
+            // Centered (meditation/soundscapes/bible)
+            NavigationStack {
+                CenteredView()
+            }
+            .tabItem {
+                Image(systemName: "leaf.circle.fill")
+                Text("Centered")
+            }
+            .tag(5)
+
             // Prayer/Outro tab
             NavigationStack {
                 PrayerOutroView()
@@ -72,7 +82,7 @@ struct MainTabView: View {
                 Image(systemName: "hands.and.sparkles.fill")
                 Text("Prayer")
             }
-            .tag(5)
+            .tag(6)
 
             // Settings tab
             NavigationStack {
@@ -82,7 +92,7 @@ struct MainTabView: View {
                 Image(systemName: "gearshape.fill")
                 Text("Settings")
             }
-            .tag(6)
+            .tag(7)
         }
         .tint(SSColors.primary)
         .onAppear {
