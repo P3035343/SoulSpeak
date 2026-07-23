@@ -1,126 +1,110 @@
 import Foundation
 import AVFoundation
 
-/// Text-to-speech service for Dr. Hope and Mr. Hope to "talk back" to the user.
-/// Uses Apple's AVSpeechSynthesizer with specific voice selections that
-/// match each character's personality — warm female for Dr. Hope, deep male for Mr. Hope.
+/// Text-to-speech using ElevenLabs API for Dr. Hope and Mr. Hope's
+/// actual cloned voices. Falls back to Apple TTS if unavailable.
 @MainActor
 class TextToSpeechService: ObservableObject {
     @Published var isSpeaking = false
 
+    private var audioPlayer: AVAudioPlayer?
     private let synthesizer = AVSpeechSynthesizer()
 
-    /// Speak text aloud as the given character with their unique voice.
+    // ElevenLabs Voice IDs
+    private let mrHopeVoiceID = "4OyvWLbRHLsY3GBjrXWX"
+    private let drHopeVoiceID = "O8oEKeaG9DHHSKVcRQuq"
+
+    private let elevenLabsAPIKey: String = {
+        if let path = Bundle.main.path(forResource: "GeminiConfig", ofType: "plist"),
+           let dict = NSDictionary(contentsOfFile: path),
+           let key = dict["ELEVENLABS_API_KEY"] as? String, !key.isEmpty {
+            return key
+        }
+        return ""
+    }()
+
+    private let baseURL = "https://api.elevenlabs.io/v1/text-to-speech"
+
     func speak(_ text: String, as character: GeminiService.Character) {
-        // Stop any current speech
-        if synthesizer.isSpeaking {
-            synthesizer.stopSpeaking(at: .immediate)
+        stop()
+        if !elevenLabsAPIKey.isEmpty {
+            Task { await speakWithElevenLabs(text, character: character) }
+        } else {
+            speakWithApple(text, character: character)
         }
+    }
 
+    func stop() {
+        audioPlayer?.stop()
+        audioPlayer = nil
+        synthesizer.stopSpeaking(at: .immediate)
+        isSpeaking = false
+    }
+
+    private func speakWithElevenLabs(_ text: String, character: GeminiService.Character) async {
+        let voiceID = character == .drHope ? drHopeVoiceID : mrHopeVoiceID
+        guard let url = URL(string: "\(baseURL)/\(voiceID)") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("audio/mpeg", forHTTPHeaderField: "Accept")
+        request.setValue(elevenLabsAPIKey, forHTTPHeaderField: "xi-api-key")
+        request.timeoutInterval = 30
+
+        let body: [String: Any] = [
+            "text": text,
+            "model_id": "eleven_monolingual_v1",
+            "voice_settings": [
+                "stability": character == .drHope ? 0.6 : 0.5,
+                "similarity_boost": 0.85,
+                "style": character == .drHope ? 0.4 : 0.5,
+                "use_speaker_boost": true
+            ]
+        ]
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+                speakWithApple(text, character: character)
+                return
+            }
+
+            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("el_\(UUID().uuidString).mp3")
+            try data.write(to: tempURL)
+
+            audioPlayer = try AVAudioPlayer(contentsOf: tempURL)
+            audioPlayer?.volume = 0.95
+            audioPlayer?.play()
+            isSpeaking = true
+
+            Task {
+                while audioPlayer?.isPlaying == true {
+                    try? await Task.sleep(nanoseconds: 200_000_000)
+                }
+                isSpeaking = false
+                try? FileManager.default.removeItem(at: tempURL)
+            }
+        } catch {
+            speakWithApple(text, character: character)
+        }
+    }
+
+    private func speakWithApple(_ text: String, character: GeminiService.Character) {
         let utterance = AVSpeechUtterance(string: text)
-
-        // Select the best available voice for each character
-        switch character {
-        case .drHope:
-            // Dr. Hope: Warm, soulful, slower female voice
-            // Try premium voices first, then fall back
-            if let voice = findBestVoice(for: .drHope) {
-                utterance.voice = voice
-            } else {
-                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-            }
-            utterance.rate = 0.38          // Slow, deliberate — like she's thinking with you
-            utterance.pitchMultiplier = 1.0 // Natural warm female pitch
-            utterance.volume = 0.92
-            utterance.preUtteranceDelay = 0.4  // Pause before speaking — feels reflective
-            utterance.postUtteranceDelay = 0.2
-
-        case .mrHope:
-            // Mr. Hope: Energetic, confident, deeper male voice
-            if let voice = findBestVoice(for: .mrHope) {
-                utterance.voice = voice
-            } else {
-                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-            }
-            utterance.rate = 0.44          // Slightly faster — energetic but clear
-            utterance.pitchMultiplier = 0.82 // Deeper, masculine tone
-            utterance.volume = 0.95
-            utterance.preUtteranceDelay = 0.2  // Quick to respond — he's engaged
-            utterance.postUtteranceDelay = 0.1
-        }
-
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = character == .drHope ? 0.38 : 0.44
+        utterance.pitchMultiplier = character == .drHope ? 1.0 : 0.82
+        utterance.volume = 0.9
         isSpeaking = true
         synthesizer.speak(utterance)
-
-        // Monitor when speaking finishes
         Task {
             while synthesizer.isSpeaking {
                 try? await Task.sleep(nanoseconds: 200_000_000)
             }
             isSpeaking = false
         }
-    }
-
-    /// Stop speaking immediately.
-    func stop() {
-        synthesizer.stopSpeaking(at: .immediate)
-        isSpeaking = false
-    }
-
-    // MARK: - Voice Selection
-
-    /// Find the best available voice for each character.
-    /// Prefers premium/enhanced voices that sound more natural.
-    private func findBestVoice(for character: GeminiService.Character) -> AVSpeechSynthesisVoice? {
-        let allVoices = AVSpeechSynthesisVoice.speechVoices()
-        let englishVoices = allVoices.filter { $0.language.starts(with: "en") }
-
-        switch character {
-        case .drHope:
-            // Prefer these voices for Dr. Hope (warm female):
-            // "Samantha" (premium), "Allison", "Ava", "Zoe", "Susan"
-            let preferredNames = ["Samantha", "Allison", "Ava", "Zoe", "Susan", "Karen"]
-            for name in preferredNames {
-                if let voice = englishVoices.first(where: {
-                    $0.name.contains(name) && $0.quality == .enhanced
-                }) {
-                    return voice
-                }
-            }
-            // Fall back to any enhanced female-typical English voice
-            for name in preferredNames {
-                if let voice = englishVoices.first(where: { $0.name.contains(name) }) {
-                    return voice
-                }
-            }
-            return nil
-
-        case .mrHope:
-            // Prefer these voices for Mr. Hope (confident male):
-            // "Aaron" (premium), "Tom", "Daniel", "Fred", "Ralph"
-            let preferredNames = ["Aaron", "Tom", "Daniel", "Fred", "Ralph", "Lee"]
-            for name in preferredNames {
-                if let voice = englishVoices.first(where: {
-                    $0.name.contains(name) && $0.quality == .enhanced
-                }) {
-                    return voice
-                }
-            }
-            // Fall back to any male-typical English voice
-            for name in preferredNames {
-                if let voice = englishVoices.first(where: { $0.name.contains(name) }) {
-                    return voice
-                }
-            }
-            return nil
-        }
-    }
-
-    /// List available voices (useful for debugging which voices are on the device).
-    func listAvailableVoices() -> [(name: String, language: String, quality: String)] {
-        return AVSpeechSynthesisVoice.speechVoices()
-            .filter { $0.language.starts(with: "en") }
-            .map { ($0.name, $0.language, $0.quality == .enhanced ? "Enhanced" : "Default") }
-            .sorted { $0.name < $1.name }
     }
 }
