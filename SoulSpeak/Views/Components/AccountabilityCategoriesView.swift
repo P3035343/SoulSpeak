@@ -144,8 +144,8 @@ struct AccountabilityCategoriesView: View {
                 .background(
                     RoundedRectangle(cornerRadius: 14)
                         .fill(selectedCategories.isEmpty
-                              ? Color.white.opacity(0.1)
-                              : LinearGradient(colors: [Color(red: 0.7, green: 0.4, blue: 0.8), Color(red: 0.5, green: 0.25, blue: 0.7)], startPoint: .leading, endPoint: .trailing))
+                              ? AnyShapeStyle(Color.white.opacity(0.1))
+                              : AnyShapeStyle(LinearGradient(colors: [Color(red: 0.7, green: 0.4, blue: 0.8), Color(red: 0.5, green: 0.25, blue: 0.7)], startPoint: .leading, endPoint: .trailing)))
                 )
         }
         .disabled(selectedCategories.isEmpty)

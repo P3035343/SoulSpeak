@@ -113,9 +113,6 @@ class CheckInService {
         ]
         center.removePendingNotificationRequests(withIdentifiers: ids)
     }
-}
-
-
 
     /// Schedule accountability-specific check-in notifications based on user's selected categories.
     func scheduleAccountabilityCheckIns(for categories: Set<AccountabilityCategory>) {
@@ -163,3 +160,5 @@ class CheckInService {
 
         print("[SoulSpeak] Scheduled \(notificationIndex) accountability notifications for \(categories.count) categories")
     }
+
+}

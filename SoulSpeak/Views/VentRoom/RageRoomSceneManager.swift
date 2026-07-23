@@ -288,7 +288,7 @@ class RageRoomSceneManager: ObservableObject {
             // Throw the nearest plate or object
             if tool == .throwPlates {
                 if let plate = destructibleNodes.first(where: { $0.name?.contains("plate") == true }) {
-                    let throwForce = SCNVector3(Float.random(in: -2...2), Float.random(in: 1...3), Float.random(in: -8...-4))
+                    let throwForce = SCNVector3(Float.random(in: -2...2), Float.random(in: 1...3), Float.random(in: (-8)...(-4)))
                     plate.physicsBody?.applyForce(throwForce, asImpulse: true)
                     plate.physicsBody?.applyTorque(SCNVector4(1, 0, 0, 10), asImpulse: true)
                 }
