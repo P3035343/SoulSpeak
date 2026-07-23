@@ -153,7 +153,6 @@
 				32E1ED5C1C5E52A07C922A70 /* ContentView.swift */,
 				1CA6BBCBE74BD05B1A9E106D /* MainTabView.swift */,
 				622D6B7546429E84F742BB55 /* SoulSpeakApp.swift */,
-			
 				78729E1742EC47B77040D333 /* UserProfile.swift */,
 				B825D27F9DB1DE86C520B815 /* AccountabilityCategory.swift */,
 				D3CFBFF81C548CCB7E3778E7 /* CheckInService.swift */,
@@ -215,7 +214,6 @@
 			isa = PBXGroup;
 			children = (
 				89462EFE92DBF877D9ECD19F /* AnalyticsView.swift */,
-			
 				975DFFC55315A85F0E9A9BC6 /* AccountabilityCategoriesView.swift */,
 				2CEF1E9D6E28FEEAB3F656D2 /* EmergencyView.swift */,);
 			path = Analytics;
