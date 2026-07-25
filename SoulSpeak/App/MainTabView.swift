@@ -97,6 +97,12 @@ struct MainTabView: View {
         .tint(SSColors.primary)
         .onAppear {
             audioPlayer.playBackgroundMusic(fileName: "jazz_loop_2")
+            // Make tab bar visible with solid background
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(red: 0.08, green: 0.06, blue: 0.12, alpha: 0.95)
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
         }
         .fullScreenCover(isPresented: $showConversation) {
             ConversationView(character: selectedCharacter)

@@ -155,9 +155,9 @@ struct VoiceJournalView: View {
                 .overlay(
                     LinearGradient(
                         colors: [
-                            Color.black.opacity(0.2),
-                            Color.black.opacity(0.4),
-                            Color.black.opacity(0.7)
+                            Color.black.opacity(0.05),
+                            Color.black.opacity(0.15),
+                            Color.black.opacity(0.45)
                         ],
                         startPoint: .top,
                         endPoint: .bottom
@@ -167,7 +167,7 @@ struct VoiceJournalView: View {
 
             ScrollView {
                 VStack(spacing: 20) {
-                    Spacer(minLength: 100)
+                    Spacer(minLength: 220)
 
                     // Pre-recording prompt
                     if !showFeedback && !savedEntry {
