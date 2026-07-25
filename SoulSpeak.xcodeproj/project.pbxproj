@@ -29,7 +29,6 @@
 		5225C1A733C3AD6BA5C79927 /* SoulSpeakTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBE9A2B6840726D5D75D096; };
 		349B3C22BB817DB4D616AB1C /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112AFAA7081D0FAE9C4F353B; };
 		72B309D138485EA7D9BE4C41 /* CenteredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4BAFD8A62420AC5631C986; };
-		70776A1A7FF0F5C006D97DE7 /* EthiopianBibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ADC3F436EF80C5399802C7; };
 		3B88DAF609ECF3F3B6CD590F /* MeditationCatalogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7FDAE56186B5DB20CD101F; };
 		F44F47468FEDCC69326F797B /* SoundscapesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B20213B28BDE639C6246DC; };
 		0DE65F7545A928050FFAF824 /* AccountabilityCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C192B3741060DF62C12DC37B; };
@@ -79,7 +78,6 @@
 		4BBE9A2B6840726D5D75D096 /* SoulSpeakTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoulSpeakTheme.swift; sourceTree = "<group>"; };
 		112AFAA7081D0FAE9C4F353B /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		DC4BAFD8A62420AC5631C986 /* CenteredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredView.swift; sourceTree = "<group>"; };
-		F8ADC3F436EF80C5399802C7 /* EthiopianBibleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthiopianBibleView.swift; sourceTree = "<group>"; };
 		AB7FDAE56186B5DB20CD101F /* MeditationCatalogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationCatalogView.swift; sourceTree = "<group>"; };
 		20B20213B28BDE639C6246DC /* SoundscapesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundscapesView.swift; sourceTree = "<group>"; };
 		C192B3741060DF62C12DC37B /* AccountabilityCategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountabilityCategoriesView.swift; sourceTree = "<group>"; };
