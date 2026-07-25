@@ -12,7 +12,6 @@ import SwiftUI
 /// Video expected: centered_room_intro.mp4
 enum CenteredSection: String, CaseIterable, Identifiable {
     case soundscapes = "Soundscapes"
-    case bible = "Ethiopian Bible"
     case meditations = "Meditations"
 
     var id: String { rawValue }
@@ -20,7 +19,6 @@ enum CenteredSection: String, CaseIterable, Identifiable {
     var icon: String {
         switch self {
         case .soundscapes: return "waveform.circle.fill"
-        case .bible: return "book.fill"
         case .meditations: return "sparkles"
         }
     }
@@ -28,7 +26,6 @@ enum CenteredSection: String, CaseIterable, Identifiable {
     var color: Color {
         switch self {
         case .soundscapes: return Color(red: 0.4, green: 0.7, blue: 0.9)
-        case .bible: return Color(red: 0.85, green: 0.7, blue: 0.3)
         case .meditations: return Color(red: 0.7, green: 0.4, blue: 0.8)
         }
     }
@@ -120,8 +117,6 @@ struct CenteredView: View {
             switch section {
             case .soundscapes:
                 SoundscapesView()
-            case .bible:
-                EthiopianBibleView()
             case .meditations:
                 MeditationCatalogView()
             }
@@ -197,8 +192,6 @@ struct CenteredView: View {
         switch section {
         case .soundscapes:
             return "Free relaxing soundscapes, nature sounds, and instrumental music"
-        case .bible:
-            return "Listen to the Ethiopian Bible — free audio chapters"
         case .meditations:
             return "Guided meditations from Dr. Hope & Mr. Hope"
         }
