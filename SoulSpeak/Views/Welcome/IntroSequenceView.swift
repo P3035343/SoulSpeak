@@ -89,17 +89,16 @@ struct IntroSequenceView: View {
     }
 
     private func openDoor() {
-        withAnimation(.easeInOut(duration: 0.6)) { doorOpening = true; showTapHint = false }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { withAnimation(.easeOut(duration: 0.4)) { screenFade = 0 } }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { phase = .officeEntry; screenFade = 1.0 }
+        withAnimation(.easeInOut(duration: 0.4)) { doorOpening = true; showTapHint = false }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { withAnimation(.easeOut(duration: 0.2)) { screenFade = 0 } }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { phase = .officeEntry; screenFade = 1.0 }
     }
 
     private func advanceTo(_ nextPhase: IntroPhase) {
         if nextPhase == .complete {
-            withAnimation(.easeInOut(duration: 0.5)) { introComplete = true }
+            withAnimation(.easeInOut(duration: 0.3)) { introComplete = true }
         } else {
-            withAnimation(.easeOut(duration: 0.3)) { screenFade = 0 }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { phase = nextPhase; withAnimation(.easeIn(duration: 0.3)) { screenFade = 1.0 } }
+            phase = nextPhase
         }
     }
 }
