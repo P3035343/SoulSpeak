@@ -10,7 +10,6 @@ struct PaperBurnView: View {
     @State private var paperOpacity: Double = 1.0
     @State private var showFireplace = false
     @State private var burning = false
-    @State private var fireIntensity: CGFloat = 0
     @State private var showInstruction = true
     @State private var paperPlaced = false
 
@@ -124,57 +123,37 @@ struct PaperBurnView: View {
     // MARK: - Fireplace
     private var fireplaceView: some View {
         ZStack {
-            // Fireplace opening
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color(red: 0.15, green: 0.08, blue: 0.05))
+            // Real fire video playing in the fireplace
+            if burning {
+                VideoPlayerView(
+                    videoName: "vent_fire",
+                    fileExtension: "mp4",
+                    looping: true
+                )
                 .frame(width: 280, height: 180)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color(red: 0.4, green: 0.25, blue: 0.15), lineWidth: 6)
                 )
+            } else {
+                // Fireplace opening (before burning)
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color(red: 0.15, green: 0.08, blue: 0.05))
+                    .frame(width: 280, height: 180)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color(red: 0.4, green: 0.25, blue: 0.15), lineWidth: 6)
+                    )
 
-            // Fire
-            if burning {
-                VStack(spacing: 0) {
-                    // Flames
-                    HStack(spacing: 4) {
-                        ForEach(0..<5, id: \.self) { i in
-                            fireFlame(delay: Double(i) * 0.1, height: 30 + CGFloat(i % 3) * 15)
-                        }
-                    }
-                    .offset(y: 20)
-                }
+                // Embers glow
+                Circle()
+                    .fill(Color(red: 0.9, green: 0.3, blue: 0.1).opacity(showFireplace ? 0.2 : 0))
+                    .frame(width: 100, height: 50)
+                    .offset(y: 40)
             }
-
-            // Embers (always show subtle glow)
-            Circle()
-                .fill(Color(red: 0.9, green: 0.3, blue: 0.1).opacity(showFireplace ? 0.2 : 0))
-                .frame(width: 100, height: 50)
-                .offset(y: 40)
         }
         .frame(height: 200)
-    }
-
-    private func fireFlame(delay: Double, height: CGFloat) -> some View {
-        Capsule()
-            .fill(
-                LinearGradient(
-                    colors: [
-                        Color(red: 1.0, green: 0.8, blue: 0.1),
-                        Color(red: 1.0, green: 0.4, blue: 0.1),
-                        Color(red: 0.8, green: 0.2, blue: 0.0)
-                    ],
-                    startPoint: .bottom,
-                    endPoint: .top
-                )
-            )
-            .frame(width: 14, height: height * fireIntensity)
-            .offset(y: -fireIntensity * 10)
-            .animation(
-                .easeInOut(duration: 0.4 + delay)
-                    .repeatForever(autoreverses: true),
-                value: fireIntensity
-            )
     }
 
     // MARK: - Actions
@@ -192,9 +171,6 @@ struct PaperBurnView: View {
         // Start fire
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             burning = true
-            withAnimation(.easeInOut(duration: 1.0)) {
-                fireIntensity = 1.0
-            }
         }
 
         // Finish after burning
