@@ -32,6 +32,16 @@ class SpeechRecognitionService: ObservableObject {
         // Cancel any existing task
         stopTranscribing()
 
+        // Set up audio session first
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.record, mode: .measurement, options: .duckOthers)
+            try session.setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("[SoulSpeak] Audio session setup failed: \(error)")
+            return
+        }
+
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         guard let recognitionRequest = recognitionRequest else { return }
 
@@ -39,10 +49,13 @@ class SpeechRecognitionService: ObservableObject {
         recognitionRequest.addsPunctuation = true
 
         let inputNode = audioEngine.inputNode
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
 
-        // Install tap on input node to feed audio to recognizer
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
+        // Use the NATIVE format of the input node — don't override it
+        // This avoids "isFormatSampleRateAndChannelCountValid" crashes on device
+        let nativeFormat = inputNode.inputFormat(forBus: 0)
+
+        // Install tap using native format
+        inputNode.installTap(onBus: 0, bufferSize: 4096, format: nativeFormat) { buffer, _ in
             recognitionRequest.append(buffer)
         }
 
