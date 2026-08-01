@@ -28,6 +28,7 @@ struct IntroSequenceView: View {
     @State private var doorOpening = false
     @State private var screenFade: Double = 1.0
     @State private var showTapHint = false
+    @State private var showSkip = false
 
     var body: some View {
         ZStack {
@@ -45,6 +46,28 @@ struct IntroSequenceView: View {
                 videoPhase(videoName: "dr_hope_intro", onFinished: { advanceTo(.complete) })
             case .complete:
                 Color.clear
+            }
+
+            // Skip button (appears during video phases)
+            if showSkip && phase != .door && phase != .complete {
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            withAnimation(.easeInOut(duration: 0.3)) { introComplete = true }
+                        }) {
+                            Text("Skip")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(.white.opacity(0.7))
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(Capsule().fill(Color.white.opacity(0.15)))
+                        }
+                        .padding(.trailing, 20)
+                        .padding(.top, 60)
+                    }
+                    Spacer()
+                }
             }
         }
     }
@@ -91,7 +114,14 @@ struct IntroSequenceView: View {
     private func openDoor() {
         withAnimation(.easeInOut(duration: 0.4)) { doorOpening = true; showTapHint = false }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { withAnimation(.easeOut(duration: 0.2)) { screenFade = 0 } }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { phase = .officeEntry; screenFade = 1.0 }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            phase = .officeEntry
+            screenFade = 1.0
+            // Show skip after 3 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                withAnimation { showSkip = true }
+            }
+        }
     }
 
     private func advanceTo(_ nextPhase: IntroPhase) {

@@ -123,127 +123,88 @@ struct PaperBurnView: View {
     // MARK: - Fireplace
     private var fireplaceView: some View {
         ZStack {
-            // Fireplace brick frame
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color(red: 0.12, green: 0.06, blue: 0.03))
-                .frame(width: 280, height: 200)
+            // Brick fireplace frame
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color(red: 0.08, green: 0.04, blue: 0.02))
+                .frame(width: 260, height: 170)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color(red: 0.35, green: 0.2, blue: 0.1), lineWidth: 8)
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color(red: 0.3, green: 0.18, blue: 0.1), lineWidth: 10)
                 )
-                .shadow(color: burning ? Color(red: 0.9, green: 0.4, blue: 0.1).opacity(0.4) : Color.clear, radius: 20)
+                .shadow(color: burning ? Color.orange.opacity(0.5) : Color.clear, radius: 30)
 
-            // Fire when burning
             if burning {
-                // Realistic multi-layer fire
-                ZStack {
-                    // Base red glow
-                    Ellipse()
-                        .fill(
-                            RadialGradient(
-                                colors: [
-                                    Color(red: 0.9, green: 0.2, blue: 0.0).opacity(0.8),
-                                    Color(red: 0.6, green: 0.1, blue: 0.0).opacity(0.4),
-                                    Color.clear
-                                ],
-                                center: .bottom,
-                                startRadius: 10,
-                                endRadius: 80
-                            )
-                        )
-                        .frame(width: 180, height: 100)
-                        .offset(y: 30)
-
-                    // Flame layer 1 - main flames
-                    HStack(spacing: 6) {
-                        ForEach(0..<7, id: \.self) { i in
-                            realisticFlame(
-                                width: CGFloat.random(in: 12...22),
-                                maxHeight: CGFloat.random(in: 50...90),
-                                delay: Double(i) * 0.08,
-                                color1: Color(red: 1.0, green: 0.9, blue: 0.3),
-                                color2: Color(red: 1.0, green: 0.5, blue: 0.0),
-                                color3: Color(red: 0.8, green: 0.15, blue: 0.0)
-                            )
-                        }
-                    }
-                    .offset(y: -10)
-
-                    // Flame layer 2 - inner bright flames
-                    HStack(spacing: 10) {
-                        ForEach(0..<4, id: \.self) { i in
-                            realisticFlame(
-                                width: CGFloat.random(in: 8...14),
-                                maxHeight: CGFloat.random(in: 60...100),
-                                delay: Double(i) * 0.12 + 0.05,
-                                color1: Color(red: 1.0, green: 1.0, blue: 0.8),
-                                color2: Color(red: 1.0, green: 0.8, blue: 0.2),
-                                color3: Color(red: 1.0, green: 0.4, blue: 0.0)
-                            )
-                        }
-                    }
-                    .offset(y: -20)
-
-                    // Embers/sparks floating up
-                    ForEach(0..<8, id: \.self) { i in
-                        Circle()
-                            .fill(Color(red: 1.0, green: CGFloat.random(in: 0.4...0.8), blue: 0.0))
-                            .frame(width: CGFloat.random(in: 2...5))
-                            .offset(
-                                x: CGFloat.random(in: -60...60),
-                                y: emberOffset(index: i)
-                            )
-                            .opacity(emberOpacity(index: i))
-                    }
-
-                    // Smoke wisps at top
-                    ForEach(0..<3, id: \.self) { i in
-                        Ellipse()
-                            .fill(Color.white.opacity(0.05))
-                            .frame(width: CGFloat.random(in: 20...40), height: CGFloat.random(in: 10...20))
-                            .offset(x: CGFloat.random(in: -30...30), y: -70 - CGFloat(i) * 15)
-                            .blur(radius: 4)
-                    }
-                }
-                .frame(width: 240, height: 160)
-            } else {
-                // Cold fireplace - embers
-                Circle()
-                    .fill(Color(red: 0.9, green: 0.3, blue: 0.1).opacity(showFireplace ? 0.15 : 0))
-                    .frame(width: 80, height: 40)
+                // Glowing base
+                Ellipse()
+                    .fill(Color.orange.opacity(0.6))
+                    .frame(width: 160, height: 40)
+                    .blur(radius: 12)
                     .offset(y: 50)
-                    .blur(radius: 5)
+
+                // Main fire body
+                Ellipse()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.yellow, Color.orange, Color.red, Color(red: 0.4, green: 0, blue: 0)],
+                            startPoint: .bottom,
+                            endPoint: .top
+                        )
+                    )
+                    .frame(width: 120, height: 110)
+                    .blur(radius: 8)
+                    .offset(y: -5)
+                    .scaleEffect(x: burning ? 1.05 : 0.95, y: burning ? 1.1 : 0.9)
+                    .animation(.easeInOut(duration: 0.4).repeatForever(autoreverses: true), value: burning)
+
+                // Bright core
+                Ellipse()
+                    .fill(Color.white.opacity(0.7))
+                    .frame(width: 50, height: 30)
+                    .blur(radius: 10)
+                    .offset(y: 30)
+
+                // Flickering tips
+                ForEach(0..<5, id: \.self) { i in
+                    Capsule()
+                        .fill(Color.orange.opacity(0.8))
+                        .frame(width: CGFloat(6 + i * 2), height: CGFloat(30 + i * 10))
+                        .blur(radius: 3)
+                        .offset(x: CGFloat(i * 15 - 30), y: CGFloat(-20 - i * 8))
+                        .scaleEffect(y: burning ? 1.2 : 0.8)
+                        .animation(
+                            .easeInOut(duration: 0.3 + Double(i) * 0.1)
+                                .repeatForever(autoreverses: true),
+                            value: burning
+                        )
+                }
+
+                // Sparks
+                ForEach(0..<6, id: \.self) { i in
+                    Circle()
+                        .fill(Color.yellow.opacity(0.9))
+                        .frame(width: 3)
+                        .offset(
+                            x: CGFloat.random(in: -50...50),
+                            y: burning ? CGFloat(-60 - i * 10) : 20
+                        )
+                        .opacity(burning ? 0 : 0.8)
+                        .animation(
+                            .easeOut(duration: 1.5)
+                                .repeatForever(autoreverses: false)
+                                .delay(Double(i) * 0.3),
+                            value: burning
+                        )
+                }
+            } else {
+                // Cold — faint glow
+                Ellipse()
+                    .fill(Color.red.opacity(showFireplace ? 0.1 : 0))
+                    .frame(width: 80, height: 30)
+                    .blur(radius: 8)
+                    .offset(y: 50)
             }
         }
-        .frame(height: 220)
-    }
-
-    // MARK: - Realistic Flame Shape
-    private func realisticFlame(width: CGFloat, maxHeight: CGFloat, delay: Double, color1: Color, color2: Color, color3: Color) -> some View {
-        Capsule()
-            .fill(
-                LinearGradient(
-                    colors: [color1, color2, color3, Color.clear],
-                    startPoint: .bottom,
-                    endPoint: .top
-                )
-            )
-            .frame(width: width, height: burning ? maxHeight : 5)
-            .animation(
-                .easeInOut(duration: 0.3 + delay)
-                    .repeatForever(autoreverses: true),
-                value: burning
-            )
-            .blur(radius: 1.5)
-            .rotationEffect(.degrees(Double.random(in: -8...8)))
-    }
-
-    private func emberOffset(index: Int) -> CGFloat {
-        burning ? CGFloat(-40 - index * 12) : 40
-    }
-
-    private func emberOpacity(index: Int) -> Double {
-        burning ? Double.random(in: 0.3...0.8) : 0
+        .frame(height: 200)
     }
 
     // MARK: - Actions
