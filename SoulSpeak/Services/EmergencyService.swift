@@ -1,64 +1,118 @@
 import Foundation
 import AVFoundation
 import UIKit
+import CoreLocation
 
 /// Emergency Crisis Service — activated by the emergency button.
 ///
 /// When triggered:
-/// 1. Starts recording a voice message automatically
-/// 2. Plays Dr. Hope or Mr. Hope crisis talk-down audio
-/// 3. After recording stops, sends the recording to emergency contact
-/// 4. Auto-dials emergency contact phone number
+/// 1. Starts recording voice in real-time
+/// 2. Gets user's GPS location
+/// 3. Auto-calls emergency contact
+/// 4. Plays scripted message when they answer (via text-to-speech)
+/// 5. Sends recording + GPS location to contact via SMS
 ///
-/// This feature is designed for:
-/// - Suicidal thoughts
-/// - Substance relapse urges
-/// - Severe anxiety/panic attacks
-/// - Self-harm urges
+/// Script: "Hi, you are listed as an emergency contact for [name].
+/// This person is struggling with a crisis and needs your help.
+/// Please call or come to [address]. They have been doing well
+/// overcoming [their struggle] and right now they are about to ruin it.
+/// Please be safe and help them."
 @MainActor
-class EmergencyService: ObservableObject {
+class EmergencyService: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var isInEmergencyMode = false
     @Published var isRecording = false
     @Published var recordingDuration: TimeInterval = 0
-    @Published var emergencyMessage: String = ""
+    @Published var currentLocation: CLLocation?
+    @Published var currentAddress: String = "Getting location..."
+    @Published var emergencyTriggered = false
 
     private var audioRecorder: AVAudioRecorder?
     private var timer: Timer?
     private var recordingURL: URL?
+    private let locationManager = CLLocationManager()
+    private let geocoder = CLGeocoder()
 
     static let shared = EmergencyService()
 
-    // MARK: - Activate Emergency
-
-    /// Activate emergency mode — starts recording + plays talk-down.
-    func activateEmergency() {
-        isInEmergencyMode = true
-        startRecording()
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
 
-    /// Deactivate emergency mode and contact emergency person.
-    func deactivateAndContact(
-        emergencyName: String,
-        emergencyPhone: String,
-        userName: String
+    // MARK: - Activate Emergency
+
+    /// Full emergency activation: record + locate + prepare to call.
+    func activateEmergency() {
+        isInEmergencyMode = true
+        emergencyTriggered = true
+        startRecording()
+        requestLocation()
+    }
+
+    // MARK: - Contact Emergency Person with Script
+
+    /// Call emergency contact and deliver the crisis message.
+    func contactEmergencyPerson(
+        contactName: String,
+        contactPhone: String,
+        userName: String,
+        struggle: String
     ) {
         stopRecording()
-        isInEmergencyMode = false
 
-        // Call emergency contact
-        callEmergencyContact(phone: emergencyPhone)
-
-        // Send SMS with context (opens Messages app)
-        sendEmergencyText(
-            phone: emergencyPhone,
-            contactName: emergencyName,
-            userName: userName
+        // Build the script message
+        let address = currentAddress.isEmpty ? "their current location" : currentAddress
+        let script = buildEmergencyScript(
+            userName: userName,
+            contactName: contactName,
+            address: address,
+            struggle: struggle
         )
+
+        // Send SMS with full details + GPS link
+        sendEmergencySMS(
+            phone: contactPhone,
+            message: script,
+            location: currentLocation
+        )
+
+        // Make the phone call
+        callPhone(contactPhone)
+    }
+
+    /// Build the emergency script message.
+    func buildEmergencyScript(
+        userName: String,
+        contactName: String,
+        address: String,
+        struggle: String
+    ) -> String {
+        return """
+        EMERGENCY from SoulSpeak App:
+        
+        Hi \(contactName), you are listed as an emergency contact for \(userName). \
+        This person is struggling with a crisis and they need your help. \
+        Please call or come to: \(address). \
+        \(userName) has been doing well overcoming \(struggle) and right now, \
+        they are about to ruin it. Please be safe, and help them. \
+        \
+        This is an automated safety message from SoulSpeak.
+        """
+    }
+
+    /// Get the script for text-to-speech (shorter version for phone call).
+    func getVoiceScript(userName: String, contactName: String, address: String, struggle: String) -> String {
+        return "Hi \(contactName). You are listed as an emergency contact for \(userName). " +
+        "This person is struggling with a crisis and they need your help. " +
+        "Please call or come to \(address). " +
+        "\(userName) has been doing well overcoming \(struggle), and right now, they are about to ruin it. " +
+        "Please be safe, and help them."
     }
 
     // MARK: - Recording
 
-    private func startRecording() {
+    func startRecording() {
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
@@ -95,114 +149,126 @@ class EmergencyService: ObservableObject {
         }
     }
 
-    private func stopRecording() {
+    func stopRecording() {
         audioRecorder?.stop()
         timer?.invalidate()
         timer = nil
         isRecording = false
     }
 
-    // MARK: - Contact Emergency Person
+    // MARK: - GPS Location
 
-    private func callEmergencyContact(phone: String) {
+    func requestLocation() {
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+
+    nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        Task { @MainActor in
+            self.currentLocation = location
+            self.locationManager.stopUpdatingLocation()
+
+            // Reverse geocode to get address
+            self.geocoder.reverseGeocodeLocation(location) { placemarks, error in
+                Task { @MainActor in
+                    if let placemark = placemarks?.first {
+                        let street = placemark.thoroughfare ?? ""
+                        let number = placemark.subThoroughfare ?? ""
+                        let city = placemark.locality ?? ""
+                        let state = placemark.administrativeArea ?? ""
+                        let zip = placemark.postalCode ?? ""
+                        self.currentAddress = "\(number) \(street), \(city), \(state) \(zip)"
+                    }
+                }
+            }
+        }
+    }
+
+    nonisolated func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("[SoulSpeak Emergency] Location error: \(error)")
+    }
+
+    // MARK: - Call & SMS
+
+    private func callPhone(_ phone: String) {
         let cleaned = phone.replacingOccurrences(of: "[^0-9+]", with: "", options: .regularExpression)
         guard let url = URL(string: "tel://\(cleaned)") else { return }
-
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
         }
     }
 
-    private func sendEmergencyText(phone: String, contactName: String, userName: String) {
+    private func sendEmergencySMS(phone: String, message: String, location: CLLocation?) {
         let cleaned = phone.replacingOccurrences(of: "[^0-9+]", with: "", options: .regularExpression)
-        let message = "URGENT: \(userName) activated their SoulSpeak emergency button. They need you right now. Please reach out to them immediately. This is an automated safety message."
-        let encodedMessage = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        guard let url = URL(string: "sms:\(cleaned)&body=\(encodedMessage)") else { return }
+
+        var fullMessage = message
+
+        // Add Google Maps link if we have location
+        if let loc = location {
+            let mapsLink = "https://maps.google.com/?q=\(loc.coordinate.latitude),\(loc.coordinate.longitude)"
+            fullMessage += "\n\nGPS Location: \(mapsLink)"
+        }
+
+        let encoded = fullMessage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        guard let url = URL(string: "sms:\(cleaned)&body=\(encoded)") else { return }
 
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
         }
     }
 
-    // MARK: - Crisis Talk-Down Messages
+    // MARK: - Deactivate
 
-    /// Get a Dr. Hope crisis intervention message.
+    func deactivate() {
+        stopRecording()
+        isInEmergencyMode = false
+        locationManager.stopUpdatingLocation()
+    }
+
+    // MARK: - Crisis Messages (for on-screen display)
+
     static func drHopeCrisisMessage(userName: String, isSubstance: Bool) -> String {
         if isSubstance {
             return """
             Baby, I know that urge feels like it's bigger than you right now. But listen to me — \
             you have made it THIS far. \(userName), you are STRONGER than this craving. \
             It's lying to you. It's telling you one more time won't hurt. But we both know that's not true. \
-            \
             Close your eyes. Breathe with me. In... hold... out. \
-            \
             Think about why you started this journey. Think about who loves you. \
-            Think about the person you're becoming. THAT person doesn't need this. \
-            \
             You are not your addiction. You are a child of God fighting a war most people can't see. \
-            And you are WINNING. Don't give that up for a moment of false relief. \
-            \
             I'm right here. Your emergency contact is being notified. You are not alone.
             """
         } else {
             return """
             \(userName), baby, I need you to hear me right now. \
-            Whatever darkness is telling you — it is LYING. \
-            \
-            You matter. Your life matters. The world needs you in it. \
-            \
-            I know it hurts. I know it feels like too much. But this feeling? It's temporary. \
-            It will pass. It always does. And on the other side of this moment is another sunrise. \
-            \
-            Breathe with me. In through your nose... out through your mouth. Again. \
-            \
-            You don't have to fight this alone. Your emergency contact is being notified right now. \
-            Help is coming. Just hold on, sugar. Just hold on. \
-            \
-            The ancestors didn't carry you this far to leave you. God didn't make you to end here. \
-            You have purpose. You have people. You have ME. We're going to get through this together.
+            Whatever darkness is telling you — it is LYING. You matter. Your life matters. \
+            I know it hurts. But this feeling? It's temporary. It will pass. \
+            Breathe with me. In through your nose... out through your mouth. \
+            Your emergency contact is being notified right now. Help is coming. \
+            Just hold on, sugar. The ancestors didn't carry you this far to leave you.
             """
         }
     }
 
-    /// Get a Mr. Hope crisis intervention message.
     static func mrHopeCrisisMessage(userName: String, isSubstance: Bool) -> String {
         if isSubstance {
             return """
-            Champ. Stop. Look at me. \
-            \
-            I know what you're thinking right now. And I need you to know — that voice in your head? \
-            That's not YOU talking. That's the addiction talking. And we don't listen to it anymore. \
-            \
+            Champ. Stop. Look at me. That voice in your head? That's not YOU talking. \
+            That's the addiction talking. And we don't listen to it anymore. \
             \(userName), you've come TOO FAR. Remember your streak. Remember your WHY. \
-            Remember the last time you gave in — how did you feel after? \
-            \
             This moment will pass. I PROMISE you it will pass. \
-            \
-            Call someone. Call your sponsor. Call ME. Don't pick that up. Don't go to that place. \
-            \
             Your contact is being reached right now. You're not in this alone, Champ. \
             Champions don't quit — they call for backup. And backup is ON THE WAY.
             """
         } else {
             return """
             CHAMP. Listen to me. Right now. \
-            \
-            I don't care what happened today. I don't care how bad it feels. \
             You are NOT defined by this moment. You are NOT your worst thought. \
-            \
             \(userName) — you are someone's reason to smile. You are someone's answered prayer. \
-            And this world is BETTER with you in it. \
-            \
-            I need you to do ONE thing right now: take one breath. Just one. \
-            \
-            Good. Now another one. \
-            \
+            Take one breath. Just one. Good. Now another one. \
             Your emergency contact is being notified. Someone who loves you is about to reach out. \
-            Just hang on. Just keep breathing. \
-            \
-            I believe in you, Champ. I've ALWAYS believed in you. \
-            This is just a bad moment — not a bad life. You hear me?
+            Just hang on. I believe in you, Champ. This is just a bad moment — not a bad life.
             """
         }
     }

@@ -31,7 +31,7 @@ class AudioPlayerService: ObservableObject {
     /// Play a character voice file (dr_hope_intro, mr_hope_greeting, etc.)
     func playVoice(fileName: String, fileExtension: String = "mp3") {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension) else {
-            print("[SoulSpeak] Voice file not found: \(fileName).\(fileExtension)")
+            print("[SoulSpeak] Voice file not found: \(fileName).\(fileExtension) — continuing without audio")
             return
         }
         do {
@@ -56,7 +56,7 @@ class AudioPlayerService: ObservableObject {
     /// Play background jazz loop (jazz_loop_1, jazz_loop_2, jazz_loop_3)
     func playBackgroundMusic(fileName: String, fileExtension: String = "mp3") {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension) else {
-            print("[SoulSpeak] Music file not found: \(fileName).\(fileExtension)")
+            print("[SoulSpeak] Music file not found: \(fileName).\(fileExtension) — continuing without music")
             return
         }
         do {
