@@ -9,7 +9,7 @@ struct EmergencyView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var profiles: [UserProfile]
 
-    @StateObject private var emergency = EmergencyService.shared
+    @ObservedObject private var emergency = EmergencyService.shared
     @State private var selectedHelper: GeminiService.Character = .drHope
     @State private var showMessage = false
     @State private var breatheIn = false
@@ -251,10 +251,12 @@ struct EmergencyView: View {
 
     private func sendToEmergencyContact() {
         guard let p = profile else { return }
-        emergency.deactivateAndContact(
-            emergencyName: p.emergencyContactName,
-            emergencyPhone: p.emergencyContactPhone,
-            userName: p.preferredName.isEmpty ? p.name : p.preferredName
+        let struggle = p.isInRecovery ? (p.substanceType ?? "their struggle") : "their personal challenges"
+        emergency.contactEmergencyPerson(
+            contactName: p.emergencyContactName,
+            contactPhone: p.emergencyContactPhone,
+            userName: p.preferredName.isEmpty ? p.name : p.preferredName,
+            struggle: struggle
         )
         withAnimation { contactSent = true }
     }
