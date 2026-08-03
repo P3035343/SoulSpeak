@@ -1,88 +1,171 @@
 import SwiftUI
 import SwiftData
 
-/// Voice Journal Screen — immersive recording experience.
+/// Voice Journal — Immersive therapy session experience.
 ///
-/// Before recording: Office background with record button prompt.
-/// During recording: Full-screen Dr. Hope "listening" — animated image of her
-/// writing notes and looking up at the user. Feels like a real therapy session.
-/// After recording: Dr. Hope's intelligent feedback + mood selector.
+/// Flow:
+/// 1. Doorway video (walking into Dr. Hope's office)
+/// 2. Office scene: Dr. Hope portrait + "Speak your truth" + Record button
+/// 3. Recording: "Go on, speak your truth" audio plays, user records
+/// 4. Post-recording: Dr. Hope listening video loops while AI analyzes
+/// 5. "Analyze" button: user taps for Dr. Hope's AI advice
+/// 6. AI stores all entries and learns over time
+///
+/// Videos needed:
+/// - journal_door_entry.mp4 (walking through door into office)
+/// - dr_hope_listening_loop.mp4 (Dr. Hope writing/listening, loops)
+/// Audio needed:
+/// - dr_hope_speak_truth.mp3 ("Go on, baby. Speak your truth.")
+enum JournalPhase {
+    case doorEntry        // Walking in video
+    case office           // Ready to record
+    case recording        // User is recording
+    case analyzing        // Dr. Hope listening loop + Analyze button
+    case results          // AI feedback shown
+}
+
 struct VoiceJournalView: View {
     @Environment(\.modelContext) private var modelContext
+    @Query private var profiles: [UserProfile]
     @StateObject private var recorder = VoiceRecorderService()
     @StateObject private var speechService = SpeechRecognitionService()
     @StateObject private var audioPlayer = AudioPlayerService.shared
+    @StateObject private var gemini = GeminiService()
+    @StateObject private var tts = TextToSpeechService()
 
+    @State private var phase: JournalPhase = .doorEntry
     @State private var selectedMood: Mood?
-    @State private var drHopeFeedback: String = ""
-    @State private var drHopeFollowUp: String = ""
-    @State private var showFeedback = false
+    @State private var aiResponse: String = ""
     @State private var showMoodSelector = false
-    @State private var showTranscription = false
-    @State private var drHopeTalking = false
-    @State private var mouthPulse: CGFloat = 1.0
     @State private var savedEntry = false
-    @State private var showPermissionAlert = false
-    @State private var showResponseVideo = false
+
+    private var profile: UserProfile? { profiles.first }
 
     var body: some View {
         ZStack {
-            if recorder.isRecording {
-                // RECORDING STATE: Full-screen Dr. Hope listening
-                recordingSessionView
-                    .transition(.opacity)
-            } else {
-                // IDLE / POST-RECORDING STATE
-                idleAndResultsView
-                    .transition(.opacity)
+            Color.black.ignoresSafeArea()
+
+            switch phase {
+            case .doorEntry:
+                doorEntryView
+
+            case .office:
+                officeView
+
+            case .recording:
+                recordingView
+
+            case .analyzing:
+                analyzingView
+
+            case .results:
+                resultsView
             }
         }
-        .animation(.easeInOut(duration: 0.4), value: recorder.isRecording)
-        .navigationTitle(recorder.isRecording ? "" : "Voice Journal")
+        .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            speechService.requestAuthorization()
-        }
-        .alert("Microphone & Speech Access", isPresented: $showPermissionAlert) {
-            Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
+    }
+
+    // MARK: - Door Entry (Video)
+    private var doorEntryView: some View {
+        FullScreenVideoBackground(
+            videoName: "journal_door_entry",
+            fileExtension: "mp4",
+            looping: false,
+            onFinished: {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    phase = .office
                 }
             }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("SoulSpeak needs microphone and speech recognition access to transcribe your journal entries. Please enable them in Settings.")
+        )
+    }
+
+    // MARK: - Office Scene (Ready to Record)
+    private var officeView: some View {
+        ZStack {
+            // Office background
+            Image("dr_hope_office_render")
+                .resizable()
+                .scaledToFill()
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .clipped()
+                .ignoresSafeArea()
+                .overlay(
+                    LinearGradient(
+                        colors: [
+                            Color.black.opacity(0.1),
+                            Color.black.opacity(0.2),
+                            Color.black.opacity(0.5)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                )
+
+            VStack(spacing: 24) {
+                Spacer()
+
+                // Dr. Hope portrait
+                Image("dr_hope")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 70, height: 70)
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(Color(red: 0.7, green: 0.4, blue: 0.8), lineWidth: 3)
+                    )
+                    .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.5), radius: 10)
+
+                // Quote
+                Text("\"Go on, baby. Speak your truth.\nI'm right here listenin'.\"")
+                    .font(.system(size: 16, weight: .medium, design: .serif))
+                    .foregroundColor(.white.opacity(0.9))
+                    .multilineTextAlignment(.center)
+                    .italic()
+
+                Spacer()
+
+                // Record button
+                Button(action: startRecording) {
+                    ZStack {
+                        Circle()
+                            .stroke(Color.white.opacity(0.3), lineWidth: 3)
+                            .frame(width: 80, height: 80)
+
+                        Circle()
+                            .fill(Color.red)
+                            .frame(width: 60, height: 60)
+                    }
+                }
+
+                Text("Tap to Record")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.white.opacity(0.6))
+
+                Spacer()
+                    .frame(height: 80)
+            }
+            .padding(.horizontal, 32)
         }
     }
 
-    // MARK: - Recording Session View (Full Screen Dr. Hope Listening)
-    private var recordingSessionView: some View {
+    // MARK: - Recording View
+    private var recordingView: some View {
         ZStack {
-            // Full-screen Dr. Hope image — she's writing and listening
+            // Dr. Hope listening image (full screen)
             DrHopeListeningView()
                 .ignoresSafeArea()
 
-            // Overlay gradient at bottom for controls
+            // Bottom controls
             VStack {
-                Spacer()
-                LinearGradient(
-                    colors: [Color.clear, Color.black.opacity(0.7)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .frame(height: 200)
-            }
-            .ignoresSafeArea()
-
-            // Recording controls floating at bottom
-            VStack {
-                // Top: subtle recording indicator
+                // Recording indicator
                 HStack {
                     HStack(spacing: 6) {
                         Circle()
                             .fill(Color.red)
                             .frame(width: 8, height: 8)
-                            .opacity(mouthPulse > 1.0 ? 1.0 : 0.5)
                         Text("Recording")
                             .font(.system(size: 12, weight: .medium))
                             .foregroundColor(.white.opacity(0.7))
@@ -92,10 +175,7 @@ struct VoiceJournalView: View {
                     }
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
-                    .background(
-                        Capsule()
-                            .fill(Color.black.opacity(0.5))
-                    )
+                    .background(Capsule().fill(Color.black.opacity(0.6)))
                     Spacer()
                 }
                 .padding(.horizontal, 20)
@@ -103,24 +183,20 @@ struct VoiceJournalView: View {
 
                 Spacer()
 
-                // Bottom: Stop button + waveform
+                // Waveform + Stop
                 VStack(spacing: 16) {
-                    // Mini waveform
                     WaveformView(levels: recorder.audioLevels, isActive: true, barColor: .white)
                         .frame(height: 30)
                         .padding(.horizontal, 40)
 
-                    // Stop button
                     Button(action: stopRecording) {
                         ZStack {
                             Circle()
                                 .fill(Color.white.opacity(0.15))
                                 .frame(width: 72, height: 72)
-
                             Circle()
                                 .stroke(Color.white.opacity(0.5), lineWidth: 3)
                                 .frame(width: 72, height: 72)
-
                             RoundedRectangle(cornerRadius: 6)
                                 .fill(Color.red)
                                 .frame(width: 26, height: 26)
@@ -134,16 +210,88 @@ struct VoiceJournalView: View {
                 .padding(.bottom, 50)
             }
         }
-        .onAppear {
-            // Animate the recording pulse
-            withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
-                mouthPulse = 1.05
+    }
+
+    // MARK: - Analyzing View (Dr. Hope Listening Loop + Analyze Button)
+    private var analyzingView: some View {
+        ZStack {
+            // Dr. Hope listening video loops
+            FullScreenVideoBackground(
+                videoName: "dr_hope_listening_loop",
+                fileExtension: "mp4",
+                looping: true
+            )
+
+            // Dark overlay at bottom
+            VStack {
+                Spacer()
+                LinearGradient(
+                    colors: [Color.clear, Color.black.opacity(0.8)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 250)
+            }
+            .ignoresSafeArea()
+
+            VStack {
+                Spacer()
+
+                // Status text
+                Text("Dr. Hope is reflecting...")
+                    .font(.system(size: 15, weight: .medium, design: .serif))
+                    .foregroundColor(Color(red: 0.9, green: 0.7, blue: 0.3))
+                    .italic()
+                    .padding(.bottom, 16)
+
+                // Transcription preview (if available)
+                if !speechService.transcribedText.isEmpty {
+                    Text("\"\(speechService.transcribedText.prefix(100))...\"")
+                        .font(.system(size: 12, design: .serif))
+                        .foregroundColor(.white.opacity(0.6))
+                        .lineLimit(2)
+                        .padding(.horizontal, 30)
+                        .padding(.bottom, 12)
+                }
+
+                // ANALYZE BUTTON
+                Button(action: analyzeWithAI) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 18))
+                        Text("Analyze with Dr. Hope")
+                            .font(.system(size: 17, weight: .bold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, 36)
+                    .background(
+                        Capsule()
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color(red: 0.7, green: 0.4, blue: 0.8), Color(red: 0.5, green: 0.25, blue: 0.7)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.5), radius: 12, y: 4)
+                    )
+                }
+
+                // Skip button
+                Button(action: { saveWithoutAnalysis() }) {
+                    Text("Save without analysis")
+                        .font(.system(size: 13))
+                        .foregroundColor(.white.opacity(0.5))
+                }
+                .padding(.top, 10)
+                .padding(.bottom, 50)
             }
         }
     }
 
-    // MARK: - Idle / Results View
-    private var idleAndResultsView: some View {
+    // MARK: - Results View (AI Feedback)
+    private var resultsView: some View {
         ZStack {
             // Office background
             Image("dr_hope_office_render")
@@ -152,56 +300,83 @@ struct VoiceJournalView: View {
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .clipped()
                 .ignoresSafeArea()
-                .overlay(
-                    LinearGradient(
-                        colors: [
-                            Color.black.opacity(0.05),
-                            Color.black.opacity(0.15),
-                            Color.black.opacity(0.45)
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    .ignoresSafeArea()
-                )
+                .overlay(Color.black.opacity(0.6).ignoresSafeArea())
 
             ScrollView {
                 VStack(spacing: 20) {
-                    Spacer(minLength: 220)
+                    Spacer(minLength: 60)
 
-                    // Pre-recording prompt
-                    if !showFeedback && !savedEntry {
-                        preRecordSection
+                    // Dr. Hope's response
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack(spacing: 10) {
+                            Image("dr_hope")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 36, height: 36)
+                                .clipShape(Circle())
+
+                            Text("Dr. Hope's Reflection")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.8))
+
+                            Spacer()
+
+                            // Play voice button
+                            Button(action: {
+                                tts.speak(aiResponse, as: .drHope)
+                            }) {
+                                Image(systemName: "speaker.wave.2.fill")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(Color(red: 0.7, green: 0.4, blue: 0.8))
+                                    .padding(8)
+                                    .background(Circle().fill(Color.white.opacity(0.1)))
+                            }
+                        }
+
+                        if gemini.isProcessing {
+                            HStack(spacing: 8) {
+                                ProgressView().tint(.white)
+                                Text("Thinking...")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.white.opacity(0.6))
+                            }
+                        } else {
+                            Text(aiResponse)
+                                .font(.system(size: 15, weight: .regular, design: .serif))
+                                .foregroundColor(.white.opacity(0.9))
+                                .lineSpacing(5)
+                        }
                     }
+                    .padding(20)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.white.opacity(0.08))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.3), lineWidth: 1)
+                            )
+                    )
 
-                    // Dr. Hope response video (plays after recording stops)
-                    if showResponseVideo {
-                        responseVideoSection
-                            .transition(.opacity)
-                    }
-
-                    // Dr. Hope feedback (appears after video)
-                    if showFeedback {
-                        feedbackCard
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
-
-                    // Live transcription (shown after recording)
-                    if showTranscription && !speechService.transcribedText.isEmpty && !recorder.isRecording {
-                        transcriptionCard
-                            .transition(.opacity)
-                    }
-
-                    // Mood selector (appears after feedback)
+                    // Mood selector
                     if showMoodSelector {
                         moodSelectorSection
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
 
-                    // Save confirmation
+                    // Saved confirmation
                     if savedEntry {
                         savedConfirmation
-                            .transition(.scale.combined(with: .opacity))
+                    }
+
+                    // New entry button
+                    if savedEntry {
+                        Button(action: resetForNewEntry) {
+                            Text("New Journal Entry")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.7))
+                                .padding(.vertical, 12)
+                                .frame(maxWidth: .infinity)
+                                .background(RoundedRectangle(cornerRadius: 12).fill(Color.white.opacity(0.08)))
+                        }
                     }
 
                     Spacer(minLength: 40)
@@ -211,299 +386,109 @@ struct VoiceJournalView: View {
         }
     }
 
-    // MARK: - Pre-Record Section
-    private var preRecordSection: some View {
-        VStack(spacing: 24) {
-            // Small Dr. Hope avatar
-            Image("dr_hope")
-                .resizable()
-                .scaledToFill()
-                .frame(width: 52, height: 52)
-                .clipShape(Circle())
-                .overlay(
-                    Circle()
-                        .stroke(Color(red: 0.7, green: 0.4, blue: 0.8), lineWidth: 2)
-                )
-                .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.4), radius: 6)
-
-            Text("\"Go on, baby. Speak your truth.\nI'm right here listenin'.\"")
-                .font(.system(size: 14, weight: .medium, design: .serif))
-                .foregroundColor(.white.opacity(0.8))
-                .multilineTextAlignment(.center)
-                .italic()
-
-            // Record button
-            Button(action: startRecording) {
-                ZStack {
-                    Circle()
-                        .stroke(Color.white.opacity(0.3), lineWidth: 3)
-                        .frame(width: 80, height: 80)
-
-                    Circle()
-                        .fill(Color.red)
-                        .frame(width: 56, height: 56)
-                }
-            }
-
-            Text("Tap to Record")
-                .font(.system(size: 13, weight: .medium))
-                .foregroundColor(.white.opacity(0.6))
-        }
-    }
-
-    // MARK: - Live Transcription Card
-    private var transcriptionCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 6) {
-                Image(systemName: "text.bubble.fill")
-                    .font(.system(size: 12))
-                    .foregroundColor(.white.opacity(0.5))
-                Text("What you shared")
-                    .font(SSTypography.caption)
-                    .foregroundColor(.white.opacity(0.6))
-                Spacer()
-            }
-
-            Text(speechService.transcribedText)
-                .font(.system(size: 14, weight: .regular, design: .serif))
-                .foregroundColor(.white.opacity(0.9))
-                .lineSpacing(4)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(Color.white.opacity(0.08))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14)
-                        .stroke(Color.white.opacity(0.12), lineWidth: 1)
-                )
-        )
-    }
-
-    // MARK: - Feedback Card
-    private var feedbackCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                Image("dr_hope")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 32, height: 32)
-                    .clipShape(Circle())
-
-                Text("Dr. Hope's Reflection")
-                    .font(SSTypography.caption)
-                    .foregroundColor(SSColors.textSecondary)
-            }
-
-            Text(drHopeFeedback)
-                .font(.system(size: 15, weight: .regular, design: .serif))
-                .foregroundColor(SSColors.textPrimary)
-                .italic()
-                .lineSpacing(4)
-
-            if !drHopeFollowUp.isEmpty {
-                Divider()
-                    .padding(.vertical, 4)
-
-                HStack(spacing: 6) {
-                    Image(systemName: "bubble.left.fill")
-                        .font(.system(size: 10))
-                        .foregroundColor(SSColors.secondary.opacity(0.7))
-                    Text(drHopeFollowUp)
-                        .font(.system(size: 13, weight: .medium, design: .serif))
-                        .foregroundColor(SSColors.secondary)
-                }
-            }
-        }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.92))
-                .shadow(color: Color.black.opacity(0.1), radius: 8, y: 4)
-        )
-    }
-
     // MARK: - Mood Selector
     private var moodSelectorSection: some View {
         VStack(spacing: 16) {
             Text("How are you feeling now?")
-                .font(SSTypography.headline)
+                .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
 
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 14) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
                 ForEach(Mood.allCases) { mood in
-                    moodButton(mood)
+                    Button(action: { selectedMood = mood }) {
+                        VStack(spacing: 4) {
+                            Text(mood.emoji).font(.system(size: 26))
+                            Text(mood.rawValue).font(.system(size: 9, weight: .medium))
+                                .foregroundColor(selectedMood == mood ? .white : .white.opacity(0.6))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(selectedMood == mood ? mood.color.opacity(0.5) : Color.white.opacity(0.05))
+                        )
+                    }
                 }
             }
 
             if selectedMood != nil {
                 Button(action: saveJournalEntry) {
-                    Text("Save Journal Entry")
-                        .font(SSTypography.headline)
+                    Text("Save Entry")
+                        .font(.system(size: 16, weight: .bold))
                         .foregroundColor(.white)
                         .padding(.vertical, 14)
-                        .padding(.horizontal, 32)
-                        .background(
-                            Capsule()
-                                .fill(SSColors.gradientPrimary)
-                        )
+                        .padding(.horizontal, 40)
+                        .background(Capsule().fill(SSColors.gradientPrimary))
                 }
-                .padding(.top, 8)
             }
         }
         .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.08))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white.opacity(0.15), lineWidth: 1)
-                )
-        )
+        .background(RoundedRectangle(cornerRadius: 16).fill(Color.white.opacity(0.06)))
     }
 
-    private func moodButton(_ mood: Mood) -> some View {
-        Button(action: {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                selectedMood = mood
-            }
-        }) {
-            VStack(spacing: 6) {
-                Text(mood.emoji)
-                    .font(.system(size: 28))
-                Text(mood.rawValue)
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(selectedMood == mood ? .white : .white.opacity(0.7))
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(selectedMood == mood ? mood.color.opacity(0.6) : Color.white.opacity(0.05))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(selectedMood == mood ? mood.color : Color.clear, lineWidth: 2)
-            )
-        }
-    }
-
-    // MARK: - Saved Confirmation
     private var savedConfirmation: some View {
         HStack(spacing: 10) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 24))
-                .foregroundColor(SSColors.success)
-            Text("Journal entry saved")
-                .font(SSTypography.body)
-                .foregroundColor(.white)
+            Image(systemName: "checkmark.circle.fill").font(.system(size: 24)).foregroundColor(.green)
+            Text("Journal entry saved").font(.system(size: 15)).foregroundColor(.white)
         }
         .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(SSColors.success.opacity(0.2))
-        )
+        .background(RoundedRectangle(cornerRadius: 12).fill(Color.green.opacity(0.15)))
     }
 
     // MARK: - Actions
     private func startRecording() {
-        // Reset state
-        savedEntry = false
-        showFeedback = false
-        showMoodSelector = false
-        selectedMood = nil
-        drHopeFeedback = ""
-        drHopeFollowUp = ""
+        // Play "Go on, speak your truth" audio
+        audioPlayer.playVoice(fileName: "dr_hope_speak_truth")
 
-        // Check speech permission
-        if speechService.authorizationStatus == .denied || speechService.authorizationStatus == .restricted {
-            showPermissionAlert = true
-            return
+        // Start recording after brief delay (let the audio play first)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            recorder.startRecording()
+            speechService.requestAuthorization()
+            speechService.startTranscribing()
+            withAnimation(.easeInOut(duration: 0.3)) {
+                phase = .recording
+            }
         }
-
-        // Start recording + live transcription
-        recorder.startRecording()
-        speechService.startTranscribing()
-        showTranscription = true
-
-        // Play Dr. Hope intro when starting
-        audioPlayer.playVoice(fileName: "dr_hope_intro")
     }
 
     private func stopRecording() {
         recorder.stopRecording()
         speechService.stopTranscribing()
-
-        // Show Dr. Hope response video first
-        withAnimation(.easeInOut(duration: 0.4)) {
-            showResponseVideo = true
+        withAnimation(.easeInOut(duration: 0.3)) {
+            phase = .analyzing
         }
     }
 
-    // MARK: - Response Video Section
-    private var responseVideoSection: some View {
-        VStack(spacing: 12) {
-            // Play dr_hope_response.mp4 in a rounded frame
-            VideoPlayerView(
-                videoName: "dr_hope_response",
-                fileExtension: "mp4",
-                looping: false,
-                onVideoFinished: {
-                    withAnimation(.easeOut(duration: 0.3)) {
-                        showResponseVideo = false
-                    }
-                    generateIntelligentFeedback()
-                }
-            )
-            .frame(height: 220)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.4), lineWidth: 2)
-            )
-            .shadow(color: Color(red: 0.7, green: 0.4, blue: 0.8).opacity(0.3), radius: 10, y: 4)
+    private func analyzeWithAI() {
+        let text = speechService.transcribedText.isEmpty
+            ? "Voice journal entry - \(recorder.formattedDuration)"
+            : speechService.transcribedText
 
-            Text("Dr. Hope is reflecting...")
-                .font(.system(size: 12, weight: .medium, design: .serif))
-                .foregroundColor(.white.opacity(0.6))
-                .italic()
+        // Build context from user profile for personalized response
+        let context = profile?.aiContext() ?? ""
+
+        Task {
+            await gemini.sendMessage(
+                "\(context)\n\nThe user just recorded this journal entry: \"\(text)\"\n\nProvide your reflection as Dr. Hope. Reference their specific words. Validate their feelings. Offer one piece of wisdom. Ask one follow-up question.",
+                character: .drHope
+            )
+            aiResponse = gemini.lastResponse
+            showMoodSelector = true
+
+            // Speak the response in Dr. Hope's voice
+            tts.speak(aiResponse, as: .drHope)
+        }
+
+        withAnimation(.easeInOut(duration: 0.3)) {
+            phase = .results
         }
     }
 
-    private func generateIntelligentFeedback() {
-        let transcribedText = speechService.transcribedText
-
-        if transcribedText.isEmpty {
-            let fallbacks = [
-                "Mmhmm, I hear you, baby. That took courage to let out. The swamp don't clear itself — you gotta wade through. And you wadin'. I'm proud of you.",
-                "Chile, you just poured out somethin' real. That weight you been carryin'? It's a little lighter now. Trust the process, hear?",
-                "Now that's what healin' sound like. Ain't gotta be pretty. Ain't gotta be perfect. Just gotta be honest. And you was honest just now.",
-            ]
-            drHopeFeedback = fallbacks[Int(recorder.recordingDuration) % fallbacks.count]
-            drHopeFollowUp = "What's one thing you need to hear right now?"
-        } else {
-            drHopeFeedback = DrHopeResponseEngine.generateResponse(for: transcribedText)
-            drHopeFollowUp = DrHopeResponseEngine.generateFollowUp(for: transcribedText)
-        }
-
-        withAnimation(.easeInOut(duration: 0.5)) {
-            showFeedback = true
-            drHopeTalking = true
-        }
-
-        withAnimation(.easeInOut(duration: 0.25).repeatForever(autoreverses: true)) {
-            mouthPulse = 1.04
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            withAnimation(.easeOut(duration: 0.3)) {
-                drHopeTalking = false
-                mouthPulse = 1.0
-            }
-            withAnimation(.easeIn(duration: 0.4)) {
-                showMoodSelector = true
-            }
+    private func saveWithoutAnalysis() {
+        aiResponse = "Entry saved without analysis. Dr. Hope is proud you showed up today."
+        showMoodSelector = true
+        withAnimation(.easeInOut(duration: 0.3)) {
+            phase = .results
         }
     }
 
@@ -518,15 +503,21 @@ struct VoiceJournalView: View {
             content: transcription,
             mood: mood.rawValue,
             duration: recorder.recordingDuration,
-            drHopeFeedback: drHopeFeedback,
+            drHopeFeedback: aiResponse,
             createdAt: Date()
         )
         modelContext.insert(entry)
-
         NotificationService.shared.cancelStreakReminder()
 
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-            savedEntry = true
-        }
+        withAnimation { savedEntry = true }
+    }
+
+    private func resetForNewEntry() {
+        phase = .office
+        selectedMood = nil
+        aiResponse = ""
+        showMoodSelector = false
+        savedEntry = false
+        speechService.transcribedText = ""
     }
 }
