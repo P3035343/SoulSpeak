@@ -33,6 +33,14 @@ class PlayerUIView: UIView {
     func configure(videoName: String, fileExtension: String, looping: Bool) {
         self.looping = looping
 
+        // Ensure audio session allows video playback sound
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("[SoulSpeak] Video audio session error: \(error)")
+        }
+
         guard let url = Bundle.main.url(forResource: videoName, withExtension: fileExtension) else {
             print("[SoulSpeak] Video not found: \(videoName).\(fileExtension)")
             // If video not found, trigger finish callback after brief delay

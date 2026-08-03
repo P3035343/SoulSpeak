@@ -27,6 +27,7 @@ class TextToSpeechService: ObservableObject {
 
     func speak(_ text: String, as character: GeminiService.Character) {
         stop()
+        print("[SoulSpeak TTS] Speaking as \(character.rawValue). ElevenLabs key present: \(!elevenLabsAPIKey.isEmpty)")
         if !elevenLabsAPIKey.isEmpty {
             Task { await speakWithElevenLabs(text, character: character) }
         } else {
