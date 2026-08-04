@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-/// Root content view — shows disclaimer first (one time), then intro sequence, then main app.
+/// Root content view — shows disclaimer first (one time), then intro sequence, then main hub.
 /// No lock screen; app goes straight to content.
 struct ContentView: View {
     @AppStorage("hasAgreedToDisclaimerV2") private var hasAgreedToDisclaimer = false
@@ -24,7 +24,7 @@ struct ContentView: View {
                         }
                     }
             } else {
-                MainTabView()
+                MainHubView()
                     .transition(.opacity)
             }
         }
