@@ -53,6 +53,7 @@
 		C3B2D5CE830F0E67A8954B08 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719BB15EB587617C454D7082; };
 		9C1BFF471A15273AFA7D105B /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED947D9DC9AC2B89E912F7C9; };
 		F1308D16FED7BCE8F41B7A45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B746E13232D5F80C5E3BC77D; };
+		946634B5A8E7BAA2B9731704 /* MainHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644471C63AFB4AE1D22887F0; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +105,7 @@
 		B746E13232D5F80C5E3BC77D = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FF85EAC0B4EE7683D9181CB = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A2B3BDDA075CB87FC3114AB = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		644471C63AFB4AE1D22887F0 /* MainHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHubView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +122,7 @@
 		B4319F8D4C3BB1A7226E2BF5 = { isa = PBXGroup; children = (4BBE9A2B6840726D5D75D096,); path = Theme; sourceTree = "<group>"; };
 		88BBD787958AEA7E986E5D36 = { isa = PBXGroup; children = (112AFAA7081D0FAE9C4F353B,); path = Analytics; sourceTree = "<group>"; };
 		8D84A90E4D079BDD416B785B = { isa = PBXGroup; children = (DC4BAFD8A62420AC5631C986, F8ADC3F436EF80C5399802C7, AB7FDAE56186B5DB20CD101F, 20B20213B28BDE639C6246DC,); path = Centered; sourceTree = "<group>"; };
-		9F900033D81CD1C93A416070 = { isa = PBXGroup; children = (C192B3741060DF62C12DC37B, BA58ABD214EE4AD68A7FB063, 0F4AFF6C6D3AC917272402EB, 8D3F868764740E904F197D0F,); path = Components; sourceTree = "<group>"; };
+		9F900033D81CD1C93A416070 = { isa = PBXGroup; children = (C192B3741060DF62C12DC37B, BA58ABD214EE4AD68A7FB063, 0F4AFF6C6D3AC917272402EB, 8D3F868764740E904F197D0F,, 644471C63AFB4AE1D22887F0); path = Components; sourceTree = "<group>"; };
 		21C295253005621D4C00580A = { isa = PBXGroup; children = (BED0C16270EFFB1AF2AFC142,); path = MoodTracker; sourceTree = "<group>"; };
 		22FCA2C24721FD9782660B42 = { isa = PBXGroup; children = (129ABD48B1EABB86512E3788,); path = Prayer; sourceTree = "<group>"; };
 		2DAF79BBD4B52766FFF3DC0C = { isa = PBXGroup; children = (5F77C31DF58DAAB1AA89AAFB,); path = Settings; sourceTree = "<group>"; };
