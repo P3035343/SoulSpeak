@@ -246,7 +246,7 @@ struct VoiceJournalView: View {
 
                 // Transcription preview (if available)
                 if !speechService.transcribedText.isEmpty {
-                    Text("\"\(speechService.transcribedText.prefix(100))...\"")
+                    Text("\"\(String(speechService.transcribedText.prefix(100)))...\"")
                         .font(.system(size: 12, design: .serif))
                         .foregroundColor(.white.opacity(0.6))
                         .lineLimit(2)
