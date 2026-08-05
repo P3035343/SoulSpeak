@@ -4,6 +4,7 @@ import SwiftData
 /// Mood Tracker Screen: Calendar with emotion icons, mood history chart, and reflection prompt.
 struct MoodTrackerView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     @Query(sort: \MoodEntry.timestamp, order: .reverse) private var moodEntries: [MoodEntry]
 
     @State private var selectedDate: Date = Date()
@@ -42,6 +43,17 @@ struct MoodTrackerView: View {
         .navigationTitle("Mood Tracker")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 14, weight: .semibold))
+                        Text("Back")
+                            .font(.system(size: 15))
+                    }
+                    .foregroundColor(SSColors.primary)
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {

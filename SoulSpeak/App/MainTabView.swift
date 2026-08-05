@@ -115,6 +115,7 @@ struct MainTabView: View {
 
 // MARK: - Talk Tab View (Choose Dr. Hope or Mr. Hope)
 struct TalkTabView: View {
+    @Environment(\.dismiss) private var dismiss
     @Binding var showConversation: Bool
     @Binding var selectedCharacter: GeminiService.Character
     @StateObject private var store = StoreKitService.shared
@@ -186,6 +187,19 @@ struct TalkTabView: View {
         }
         .navigationTitle("Talk")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 14, weight: .semibold))
+                        Text("Back")
+                            .font(.system(size: 15))
+                    }
+                    .foregroundColor(.white.opacity(0.8))
+                }
+            }
+        }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
         }

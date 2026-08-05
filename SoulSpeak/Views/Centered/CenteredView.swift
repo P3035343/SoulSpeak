@@ -32,6 +32,7 @@ enum CenteredSection: String, CaseIterable, Identifiable {
 }
 
 struct CenteredView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var showIntroVideo = true
     @State private var selectedSection: CenteredSection? = nil
     @State private var breatheAnimation = false
@@ -45,9 +46,30 @@ struct CenteredView: View {
                 // Main Centered room
                 centeredMainView
             }
+
+            // Back button overlay (always visible)
+            VStack {
+                HStack {
+                    Button(action: { dismiss() }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 16, weight: .bold))
+                            Text("Back")
+                                .font(.system(size: 15, weight: .semibold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(Capsule().fill(Color.black.opacity(0.5)))
+                    }
+                    .padding(.leading, 16)
+                    .padding(.top, 56)
+                    Spacer()
+                }
+                Spacer()
+            }
         }
-        .navigationTitle(showIntroVideo ? "" : "Centered")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
     }
 
     // MARK: - Intro Video
@@ -57,7 +79,7 @@ struct CenteredView: View {
             fileExtension: "mp4",
             looping: false,
             onFinished: {
-                withAnimation(.easeInOut(duration: 0.5)) {
+                withAnimation(.easeInOut(duration: 0.2)) {
                     showIntroVideo = false
                 }
             }

@@ -26,6 +26,7 @@ enum JournalPhase {
 
 struct VoiceJournalView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     @Query private var profiles: [UserProfile]
     @StateObject private var recorder = VoiceRecorderService()
     @StateObject private var speechService = SpeechRecognitionService()
@@ -61,9 +62,30 @@ struct VoiceJournalView: View {
             case .results:
                 resultsView
             }
+
+            // Back button overlay (always visible)
+            VStack {
+                HStack {
+                    Button(action: { dismiss() }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 16, weight: .bold))
+                            Text("Back")
+                                .font(.system(size: 15, weight: .semibold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(Capsule().fill(Color.black.opacity(0.5)))
+                    }
+                    .padding(.leading, 16)
+                    .padding(.top, 56)
+                    Spacer()
+                }
+                Spacer()
+            }
         }
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
     }
 
     // MARK: - Door Entry (Video)
@@ -73,7 +95,7 @@ struct VoiceJournalView: View {
             fileExtension: "mp4",
             looping: false,
             onFinished: {
-                withAnimation(.easeInOut(duration: 0.3)) {
+                withAnimation(.easeInOut(duration: 0.2)) {
                     phase = .office
                 }
             }
@@ -441,11 +463,11 @@ struct VoiceJournalView: View {
         audioPlayer.playVoice(fileName: "dr_hope_speak_truth")
 
         // Start recording after brief delay (let the audio play first)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             recorder.startRecording()
             speechService.requestAuthorization()
             speechService.startTranscribing()
-            withAnimation(.easeInOut(duration: 0.3)) {
+            withAnimation(.easeInOut(duration: 0.2)) {
                 phase = .recording
             }
         }
@@ -454,7 +476,7 @@ struct VoiceJournalView: View {
     private func stopRecording() {
         recorder.stopRecording()
         speechService.stopTranscribing()
-        withAnimation(.easeInOut(duration: 0.3)) {
+        withAnimation(.easeInOut(duration: 0.2)) {
             phase = .analyzing
         }
     }

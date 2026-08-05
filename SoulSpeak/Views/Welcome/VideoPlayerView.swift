@@ -43,8 +43,8 @@ class PlayerUIView: UIView {
 
         guard let url = Bundle.main.url(forResource: videoName, withExtension: fileExtension) else {
             print("[SoulSpeak] Video not found: \(videoName).\(fileExtension)")
-            // If video not found, trigger finish callback after brief delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            // If video not found, skip immediately
+            DispatchQueue.main.async { [weak self] in
                 self?.onVideoFinished?()
             }
             return
@@ -53,10 +53,12 @@ class PlayerUIView: UIView {
         let asset = AVURLAsset(url: url)
         let playerItem = AVPlayerItem(asset: asset)
         // Buffer immediately for instant playback
-        playerItem.preferredForwardBufferDuration = 2.0
+        playerItem.preferredForwardBufferDuration = 5.0
 
         player = AVPlayer(playerItem: playerItem)
         player?.automaticallyWaitsToMinimizeStalling = false
+        // Preroll for fastest start
+        player?.playImmediately(atRate: 1.0)
 
         let avPlayerLayer = layer as! AVPlayerLayer
         avPlayerLayer.player = player
@@ -70,9 +72,6 @@ class PlayerUIView: UIView {
             name: .AVPlayerItemDidPlayToEndTime,
             object: playerItem
         )
-
-        // Start playing immediately
-        player?.play()
     }
 
     @objc private func videoDidEnd() {

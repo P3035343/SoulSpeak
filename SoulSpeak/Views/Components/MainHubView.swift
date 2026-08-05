@@ -26,97 +26,96 @@ struct MainHubView: View {
                 .clipped()
                 .ignoresSafeArea()
 
-            // Subtle dark overlay at bottom for icons
+            // Stronger dark overlay for better icon visibility
             VStack {
                 Spacer()
                 LinearGradient(
-                    colors: [Color.clear, Color.black.opacity(0.7)],
+                    colors: [Color.clear, Color.black.opacity(0.85)],
                     startPoint: .top,
                     endPoint: .bottom
                 )
-                .frame(height: 300)
+                .frame(height: 350)
             }
             .ignoresSafeArea()
 
             // Content overlay
             VStack {
-                // Emergency button (top right)
-                HStack {
-                    Spacer()
-                    Button(action: { showEmergency = true }) {
-                        Image(systemName: "sos.circle.fill")
-                            .font(.system(size: 32))
-                            .foregroundColor(.red.opacity(0.8))
-                            .shadow(color: .red.opacity(0.4), radius: 8)
-                    }
-                    .padding(.trailing, 20)
-                    .padding(.top, 60)
-                }
-
-                // Settings gear (top left)
+                // Top bar: Settings (left) + Emergency (right)
                 HStack {
                     Button(action: { showSettings = true }) {
                         Image(systemName: "gearshape.fill")
-                            .font(.system(size: 22))
-                            .foregroundColor(.white.opacity(0.6))
+                            .font(.system(size: 24))
+                            .foregroundColor(.white.opacity(0.8))
+                            .padding(10)
+                            .background(Circle().fill(Color.black.opacity(0.4)))
                     }
                     .padding(.leading, 20)
+
                     Spacer()
+
+                    Button(action: { showEmergency = true }) {
+                        Image(systemName: "sos.circle.fill")
+                            .font(.system(size: 36))
+                            .foregroundColor(.red)
+                            .shadow(color: .red.opacity(0.6), radius: 10)
+                    }
+                    .padding(.trailing, 20)
                 }
+                .padding(.top, 60)
 
                 Spacer()
 
-                // Main navigation icons
-                VStack(spacing: 20) {
+                // Main navigation icons — bigger, bolder, more visible
+                VStack(spacing: 24) {
                     // Top row
-                    HStack(spacing: 30) {
+                    HStack(spacing: 28) {
                         hubIcon(
                             name: "Journal",
                             icon: "mic.fill",
-                            color: Color(red: 0.7, green: 0.4, blue: 0.8),
+                            color: Color(red: 0.8, green: 0.4, blue: 0.9),
                             action: { showJournal = true }
                         )
 
                         hubIcon(
                             name: "Talk",
                             icon: "bubble.left.and.bubble.right.fill",
-                            color: Color(red: 0.3, green: 0.6, blue: 0.9),
+                            color: Color(red: 0.3, green: 0.6, blue: 1.0),
                             action: { showTalk = true }
                         )
 
                         hubIcon(
                             name: "Vent",
                             icon: "flame.fill",
-                            color: Color(red: 0.9, green: 0.4, blue: 0.2),
+                            color: Color(red: 1.0, green: 0.4, blue: 0.15),
                             action: { showVent = true }
                         )
                     }
 
                     // Bottom row
-                    HStack(spacing: 30) {
+                    HStack(spacing: 28) {
                         hubIcon(
                             name: "Centered",
                             icon: "leaf.circle.fill",
-                            color: Color(red: 0.4, green: 0.7, blue: 0.5),
+                            color: Color(red: 0.3, green: 0.85, blue: 0.5),
                             action: { showCentered = true }
                         )
 
                         hubIcon(
                             name: "Mood",
                             icon: "face.smiling.fill",
-                            color: Color(red: 0.9, green: 0.7, blue: 0.3),
+                            color: Color(red: 1.0, green: 0.75, blue: 0.2),
                             action: { showMood = true }
                         )
 
                         hubIcon(
                             name: "More",
                             icon: "ellipsis.circle.fill",
-                            color: Color.white.opacity(0.7),
+                            color: Color.white,
                             action: { showSettings = true }
                         )
                     }
                 }
-                .padding(.bottom, 60)
+                .padding(.bottom, 70)
             }
         }
         .onAppear {
@@ -147,28 +146,32 @@ struct MainHubView: View {
         }
     }
 
-    // MARK: - Hub Icon
+    // MARK: - Hub Icon (larger, more vibrant, dark solid background)
     private func hubIcon(name: String, icon: String, color: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             VStack(spacing: 8) {
                 ZStack {
+                    // Dark solid circle background for contrast
                     Circle()
-                        .fill(color.opacity(0.2))
-                        .frame(width: 64, height: 64)
-                        .overlay(
-                            Circle()
-                                .stroke(color.opacity(0.4), lineWidth: 2)
-                        )
-                        .shadow(color: color.opacity(pulseGlow ? 0.4 : 0.1), radius: 8)
+                        .fill(Color.black.opacity(0.7))
+                        .frame(width: 74, height: 74)
 
+                    // Colored ring
+                    Circle()
+                        .stroke(color, lineWidth: 3)
+                        .frame(width: 74, height: 74)
+                        .shadow(color: color.opacity(pulseGlow ? 0.7 : 0.3), radius: 10)
+
+                    // Icon
                     Image(systemName: icon)
-                        .font(.system(size: 26))
+                        .font(.system(size: 30, weight: .semibold))
                         .foregroundColor(color)
                 }
 
                 Text(name)
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.white.opacity(0.8))
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.white)
+                    .shadow(color: .black, radius: 3)
             }
         }
     }

@@ -10,7 +10,7 @@ class TextToSpeechService: ObservableObject {
     private var audioPlayer: AVAudioPlayer?
     private let synthesizer = AVSpeechSynthesizer()
 
-    // ElevenLabs Voice IDs
+    // ElevenLabs Voice IDs (cloned voices)
     private let mrHopeVoiceID = "4OyvWLbRHLsY3GBjrXWX"
     private let drHopeVoiceID = "O8oEKeaG9DHHSKVcRQuq"
 
@@ -27,10 +27,18 @@ class TextToSpeechService: ObservableObject {
 
     func speak(_ text: String, as character: GeminiService.Character) {
         stop()
-        print("[SoulSpeak TTS] Speaking as \(character.rawValue). ElevenLabs key present: \(!elevenLabsAPIKey.isEmpty)")
-        if !elevenLabsAPIKey.isEmpty {
+
+        // Configure audio session for playback FIRST
+        configureAudioSession()
+
+        print("[SoulSpeak TTS] Speaking as \(character.rawValue)")
+        print("[SoulSpeak TTS] ElevenLabs key present: \(!elevenLabsAPIKey.isEmpty), key length: \(elevenLabsAPIKey.count)")
+
+        if !elevenLabsAPIKey.isEmpty && elevenLabsAPIKey != "YOUR_ELEVENLABS_API_KEY" {
+            print("[SoulSpeak TTS] Using ElevenLabs for \(character.rawValue)")
             Task { await speakWithElevenLabs(text, character: character) }
         } else {
+            print("[SoulSpeak TTS] No ElevenLabs key — falling back to Apple TTS")
             speakWithApple(text, character: character)
         }
     }
@@ -42,9 +50,26 @@ class TextToSpeechService: ObservableObject {
         isSpeaking = false
     }
 
+    private func configureAudioSession() {
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playback, mode: .spokenAudio, options: [])
+            try session.setActive(true)
+            print("[SoulSpeak TTS] Audio session configured for playback")
+        } catch {
+            print("[SoulSpeak TTS] Audio session error: \(error)")
+        }
+    }
+
     private func speakWithElevenLabs(_ text: String, character: GeminiService.Character) async {
         let voiceID = character == .drHope ? drHopeVoiceID : mrHopeVoiceID
-        guard let url = URL(string: "\(baseURL)/\(voiceID)") else { return }
+        guard let url = URL(string: "\(baseURL)/\(voiceID)") else {
+            print("[SoulSpeak TTS] Invalid URL for voice ID: \(voiceID)")
+            speakWithApple(text, character: character)
+            return
+        }
+
+        print("[SoulSpeak TTS] Calling ElevenLabs API for voice: \(voiceID)")
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -53,8 +78,11 @@ class TextToSpeechService: ObservableObject {
         request.setValue(elevenLabsAPIKey, forHTTPHeaderField: "xi-api-key")
         request.timeoutInterval = 30
 
+        // Truncate long text to avoid slow generation (ElevenLabs limit)
+        let truncatedText = String(text.prefix(500))
+
         let body: [String: Any] = [
-            "text": text,
+            "text": truncatedText,
             "model_id": "eleven_monolingual_v1",
             "voice_settings": [
                 "stability": character == .drHope ? 0.6 : 0.5,
@@ -68,19 +96,38 @@ class TextToSpeechService: ObservableObject {
             request.httpBody = try JSONSerialization.data(withJSONObject: body)
             let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            guard let http = response as? HTTPURLResponse else {
+                print("[SoulSpeak TTS] No HTTP response")
                 speakWithApple(text, character: character)
                 return
             }
 
+            print("[SoulSpeak TTS] ElevenLabs response status: \(http.statusCode), data size: \(data.count) bytes")
+
+            guard http.statusCode == 200 else {
+                if let errorStr = String(data: data, encoding: .utf8) {
+                    print("[SoulSpeak TTS] ElevenLabs error: \(errorStr)")
+                }
+                speakWithApple(text, character: character)
+                return
+            }
+
+            // Save audio to temp file and play
             let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("el_\(UUID().uuidString).mp3")
             try data.write(to: tempURL)
 
+            // Reconfigure audio session before playback
+            configureAudioSession()
+
             audioPlayer = try AVAudioPlayer(contentsOf: tempURL)
-            audioPlayer?.volume = 0.95
+            audioPlayer?.volume = 1.0
+            audioPlayer?.prepareToPlay()
             audioPlayer?.play()
             isSpeaking = true
 
+            print("[SoulSpeak TTS] ElevenLabs audio playing! Duration: \(audioPlayer?.duration ?? 0)s")
+
+            // Wait for playback to finish
             Task {
                 while audioPlayer?.isPlaying == true {
                     try? await Task.sleep(nanoseconds: 200_000_000)
@@ -89,11 +136,14 @@ class TextToSpeechService: ObservableObject {
                 try? FileManager.default.removeItem(at: tempURL)
             }
         } catch {
+            print("[SoulSpeak TTS] ElevenLabs error: \(error.localizedDescription)")
             speakWithApple(text, character: character)
         }
     }
 
     private func speakWithApple(_ text: String, character: GeminiService.Character) {
+        configureAudioSession()
+
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = character == .drHope ? 0.38 : 0.44

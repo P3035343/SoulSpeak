@@ -6,6 +6,7 @@ import MapKit
 /// Settings Screen: Theme toggle, notifications, mental health resources with GPS locator.
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     @Query private var settings: [UserSettings]
 
     @State private var isDarkMode = false
@@ -37,6 +38,19 @@ struct SettingsView: View {
         .listStyle(.insetGrouped)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 14, weight: .semibold))
+                        Text("Back")
+                            .font(.system(size: 15))
+                    }
+                    .foregroundColor(SSColors.primary)
+                }
+            }
+        }
         .onAppear { loadSettings() }
         .sheet(isPresented: $showResourceLocator) {
             ResourceLocatorView()
