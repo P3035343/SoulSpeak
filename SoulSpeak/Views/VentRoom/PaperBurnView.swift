@@ -126,85 +126,134 @@ struct PaperBurnView: View {
             // Brick fireplace frame
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color(red: 0.08, green: 0.04, blue: 0.02))
-                .frame(width: 260, height: 170)
+                .frame(width: 280, height: 200)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(red: 0.3, green: 0.18, blue: 0.1), lineWidth: 10)
+                        .stroke(Color(red: 0.4, green: 0.22, blue: 0.12), lineWidth: 12)
                 )
-                .shadow(color: burning ? Color.orange.opacity(0.5) : Color.clear, radius: 30)
+                .shadow(color: burning ? Color.orange.opacity(0.6) : Color.clear, radius: 40)
 
             if burning {
-                // Glowing base
-                Ellipse()
-                    .fill(Color.orange.opacity(0.6))
-                    .frame(width: 160, height: 40)
-                    .blur(radius: 12)
-                    .offset(y: 50)
-
-                // Main fire body
+                // Deep ember base
                 Ellipse()
                     .fill(
-                        LinearGradient(
-                            colors: [Color.yellow, Color.orange, Color.red, Color(red: 0.4, green: 0, blue: 0)],
-                            startPoint: .bottom,
-                            endPoint: .top
+                        RadialGradient(
+                            colors: [Color.red.opacity(0.9), Color.orange.opacity(0.4), Color.clear],
+                            center: .center,
+                            startRadius: 5,
+                            endRadius: 90
                         )
                     )
-                    .frame(width: 120, height: 110)
-                    .blur(radius: 8)
-                    .offset(y: -5)
-                    .scaleEffect(x: burning ? 1.05 : 0.95, y: burning ? 1.1 : 0.9)
-                    .animation(.easeInOut(duration: 0.4).repeatForever(autoreverses: true), value: burning)
+                    .frame(width: 200, height: 60)
+                    .offset(y: 60)
 
-                // Bright core
-                Ellipse()
-                    .fill(Color.white.opacity(0.7))
-                    .frame(width: 50, height: 30)
-                    .blur(radius: 10)
-                    .offset(y: 30)
+                // Main fire body - layered for depth
+                ZStack {
+                    // Outer flame (red/dark)
+                    fireFlame(width: 140, height: 130, colors: [Color.red, Color(red: 0.8, green: 0.2, blue: 0)], blur: 12, yOffset: 0, animDelay: 0)
 
-                // Flickering tips
-                ForEach(0..<5, id: \.self) { i in
-                    Capsule()
-                        .fill(Color.orange.opacity(0.8))
-                        .frame(width: CGFloat(6 + i * 2), height: CGFloat(30 + i * 10))
-                        .blur(radius: 3)
-                        .offset(x: CGFloat(i * 15 - 30), y: CGFloat(-20 - i * 8))
-                        .scaleEffect(y: burning ? 1.2 : 0.8)
+                    // Middle flame (orange)
+                    fireFlame(width: 100, height: 110, colors: [Color.orange, Color(red: 1, green: 0.5, blue: 0)], blur: 8, yOffset: 5, animDelay: 0.1)
+
+                    // Inner flame (yellow)
+                    fireFlame(width: 60, height: 80, colors: [Color.yellow, Color.orange], blur: 6, yOffset: 15, animDelay: 0.2)
+
+                    // White-hot core
+                    Ellipse()
+                        .fill(Color.white.opacity(0.8))
+                        .frame(width: 30, height: 20)
+                        .blur(radius: 8)
+                        .offset(y: 45)
+
+                    // Flickering flame tips
+                    ForEach(0..<7, id: \.self) { i in
+                        Capsule()
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color.yellow.opacity(0.9), Color.orange.opacity(0.6), Color.red.opacity(0)],
+                                    startPoint: .bottom,
+                                    endPoint: .top
+                                )
+                            )
+                            .frame(width: CGFloat(4 + i % 3 * 2), height: CGFloat(20 + i * 8))
+                            .blur(radius: 2)
+                            .offset(x: CGFloat(i * 18 - 54), y: CGFloat(-30 - i * 5))
+                            .scaleEffect(y: burning ? CGFloat.random(in: 0.8...1.3) : 0.5)
+                            .animation(
+                                .easeInOut(duration: 0.2 + Double(i) * 0.08)
+                                    .repeatForever(autoreverses: true),
+                                value: burning
+                            )
+                    }
+                }
+
+                // Rising sparks/embers
+                ForEach(0..<10, id: \.self) { i in
+                    Circle()
+                        .fill(Color.yellow.opacity(Double.random(in: 0.5...1.0)))
+                        .frame(width: CGFloat.random(in: 2...4))
+                        .offset(
+                            x: CGFloat.random(in: -60...60),
+                            y: burning ? CGFloat(-80 - i * 12) : 30
+                        )
+                        .opacity(burning ? 0 : 1)
                         .animation(
-                            .easeInOut(duration: 0.3 + Double(i) * 0.1)
-                                .repeatForever(autoreverses: true),
+                            .easeOut(duration: Double.random(in: 1.0...2.5))
+                                .repeatForever(autoreverses: false)
+                                .delay(Double(i) * 0.25),
                             value: burning
                         )
                 }
 
-                // Sparks
-                ForEach(0..<6, id: \.self) { i in
-                    Circle()
-                        .fill(Color.yellow.opacity(0.9))
-                        .frame(width: 3)
+                // Smoke wisps
+                ForEach(0..<3, id: \.self) { i in
+                    Ellipse()
+                        .fill(Color.gray.opacity(0.15))
+                        .frame(width: 30, height: 40)
+                        .blur(radius: 10)
                         .offset(
-                            x: CGFloat.random(in: -50...50),
-                            y: burning ? CGFloat(-60 - i * 10) : 20
+                            x: CGFloat(i * 20 - 20),
+                            y: burning ? CGFloat(-100 - i * 20) : -20
                         )
-                        .opacity(burning ? 0 : 0.8)
+                        .opacity(burning ? 0 : 0.4)
                         .animation(
-                            .easeOut(duration: 1.5)
+                            .easeOut(duration: 3.0)
                                 .repeatForever(autoreverses: false)
-                                .delay(Double(i) * 0.3),
+                                .delay(Double(i) * 0.5),
                             value: burning
                         )
                 }
             } else {
-                // Cold — faint glow
+                // Cold — faint ember glow
                 Ellipse()
-                    .fill(Color.red.opacity(showFireplace ? 0.1 : 0))
-                    .frame(width: 80, height: 30)
-                    .blur(radius: 8)
-                    .offset(y: 50)
+                    .fill(Color.red.opacity(showFireplace ? 0.15 : 0))
+                    .frame(width: 100, height: 40)
+                    .blur(radius: 10)
+                    .offset(y: 60)
             }
         }
-        .frame(height: 200)
+        .frame(height: 240)
+    }
+
+    // Helper for layered flame shapes
+    private func fireFlame(width: CGFloat, height: CGFloat, colors: [Color], blur: CGFloat, yOffset: CGFloat, animDelay: Double) -> some View {
+        Ellipse()
+            .fill(
+                LinearGradient(
+                    colors: colors + [colors.last!.opacity(0)],
+                    startPoint: .bottom,
+                    endPoint: .top
+                )
+            )
+            .frame(width: width, height: height)
+            .blur(radius: blur)
+            .offset(y: yOffset)
+            .scaleEffect(x: burning ? CGFloat.random(in: 0.95...1.05) : 0.9, y: burning ? 1.08 : 0.92)
+            .animation(
+                .easeInOut(duration: 0.35 + animDelay)
+                    .repeatForever(autoreverses: true),
+                value: burning
+            )
     }
 
     // MARK: - Actions

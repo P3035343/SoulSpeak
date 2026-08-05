@@ -130,8 +130,9 @@ class RageRoomSceneManager: ObservableObject {
     }
 
     private func addPunchingBag() {
-        // Try loading 3D model
-        if let modelScene = try? SCNScene(url: Bundle.main.url(forResource: "punching_bag", withExtension: "usdz")!) {
+        // Try loading 3D model safely (no force unwrap)
+        if let modelURL = Bundle.main.url(forResource: "punching_bag", withExtension: "usdz"),
+           let modelScene = try? SCNScene(url: modelURL) {
             let node = modelScene.rootNode.clone()
             node.position = SCNVector3(-1.5, 2, -2)
             node.name = "punching_bag"

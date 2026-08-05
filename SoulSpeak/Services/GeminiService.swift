@@ -19,11 +19,14 @@ class GeminiService: ObservableObject {
         // Try to load from bundle plist first
         if let path = Bundle.main.path(forResource: "GeminiConfig", ofType: "plist"),
            let dict = NSDictionary(contentsOfFile: path),
-           let key = dict["API_KEY"] as? String, !key.isEmpty {
+           let key = dict["API_KEY"] as? String, !key.isEmpty,
+           key != "YOUR_GEMINI_API_KEY" && key != "YOUR_GEMINI_API_KEY_HERE" && key != "PASTE_YOUR_GEMINI_API_KEY_HERE" {
+            print("[SoulSpeak Gemini] API key loaded from plist, length: \(key.count)")
             return key
         }
+        print("[SoulSpeak Gemini] No valid API key found in GeminiConfig.plist")
         // Fallback: hardcode for development (replace with your key)
-        return "YOUR_GEMINI_API_KEY"
+        return ""
     }()
 
     private let baseURL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
@@ -114,8 +117,8 @@ class GeminiService: ObservableObject {
 
     /// Send a message to the AI character and get a response.
     func sendMessage(_ text: String, character: Character) async {
-        guard !apiKey.isEmpty && apiKey != "YOUR_GEMINI_API_KEY" else {
-            // Fallback to local response engine if no API key
+        guard !apiKey.isEmpty else {
+            print("[SoulSpeak Gemini] No API key — using local fallback")
             await generateLocalResponse(text, character: character)
             return
         }
@@ -127,13 +130,17 @@ class GeminiService: ObservableObject {
         let userMessage = ConversationMessage(role: .user, content: text, timestamp: Date())
         conversationHistory.append(userMessage)
 
+        print("[SoulSpeak Gemini] Sending message to \(character.rawValue)...")
+
         do {
             let response = try await callGeminiAPI(text: text, character: character)
             lastResponse = response
+            print("[SoulSpeak Gemini] Got response: \(response.prefix(80))...")
 
             let assistantMessage = ConversationMessage(role: .assistant, content: response, timestamp: Date())
             conversationHistory.append(assistantMessage)
         } catch {
+            print("[SoulSpeak Gemini] API error: \(error.localizedDescription)")
             self.error = "Dr. Hope is taking a moment. Try again, baby."
             // Fallback to local
             await generateLocalResponse(text, character: character)
@@ -205,7 +212,16 @@ class GeminiService: ObservableObject {
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw GeminiError.apiError
+        }
+
+        print("[SoulSpeak Gemini] HTTP status: \(httpResponse.statusCode)")
+
+        guard httpResponse.statusCode == 200 else {
+            if let errorStr = String(data: data, encoding: .utf8) {
+                print("[SoulSpeak Gemini] Error response: \(errorStr.prefix(300))")
+            }
             throw GeminiError.apiError
         }
 

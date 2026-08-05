@@ -22,9 +22,9 @@ struct SoundscapesView: View {
     @State private var selectedCategory: SoundCategory = .nature
 
     enum SoundCategory: String, CaseIterable {
-        case nature = "Nature"
-        case instrumental = "Instrumental"
-        case ambient = "Ambient"
+        case nature = "Meditations"
+        case instrumental = "Pep Talks"
+        case ambient = "Healing"
     }
 
     var body: some View {
@@ -163,8 +163,10 @@ struct SoundscapesView: View {
             stopPlaying()
         } else {
             audioPlayer.stopAll()
+            // Play as background music (loops)
             audioPlayer.playBackgroundMusic(fileName: track.fileName)
             currentlyPlaying = track.fileName
+            print("[SoulSpeak Soundscapes] Playing: \(track.fileName).mp3")
         }
     }
 
@@ -178,27 +180,23 @@ struct SoundscapesView: View {
         switch category {
         case .nature:
             return [
-                SoundTrack(name: "Gentle Rain", fileName: "rain_gentle", duration: "Loop", color: .blue),
-                SoundTrack(name: "Ocean Waves", fileName: "ocean_waves", duration: "Loop", color: .cyan),
-                SoundTrack(name: "Forest Birds", fileName: "forest_birds", duration: "Loop", color: .green),
-                SoundTrack(name: "Flowing Creek", fileName: "creek_flowing", duration: "Loop", color: .teal),
-                SoundTrack(name: "Distant Thunder", fileName: "thunder_distant", duration: "Loop", color: .purple),
-                SoundTrack(name: "Night Crickets", fileName: "night_crickets", duration: "Loop", color: .indigo),
+                SoundTrack(name: "Inner Peace", fileName: "inner_peace_meditation", duration: "Loop", color: .blue),
+                SoundTrack(name: "Stress Release", fileName: "stress_release_meditation", duration: "Loop", color: .cyan),
+                SoundTrack(name: "Returning Love", fileName: "returning_love_to_yourself", duration: "Loop", color: .green),
+                SoundTrack(name: "Internal Conflict", fileName: "internal_conflict_meditation", duration: "Loop", color: .teal),
+                SoundTrack(name: "Rejuvenation (Dr. Hope)", fileName: "rejuvenation_meditation_dh", duration: "Loop", color: .purple),
+                SoundTrack(name: "Rejuvenation (Mr. Hope)", fileName: "rejuvenation_meditation_mh", duration: "Loop", color: .indigo),
             ]
         case .instrumental:
             return [
-                SoundTrack(name: "Calm Piano", fileName: "piano_calm", duration: "Loop", color: .white),
-                SoundTrack(name: "Acoustic Guitar", fileName: "guitar_acoustic", duration: "Loop", color: .orange),
-                SoundTrack(name: "Meditation Flute", fileName: "flute_meditation", duration: "Loop", color: .mint),
-                SoundTrack(name: "Soft Jazz", fileName: "jazz_soft", duration: "Loop", color: .yellow),
-                SoundTrack(name: "Peaceful Harp", fileName: "harp_peaceful", duration: "Loop", color: .pink),
+                SoundTrack(name: "Feminine Energy Pep Talk", fileName: "feminine_energy_pep_talk", duration: "Full", color: .pink),
+                SoundTrack(name: "Masculine Energy Pep Talk", fileName: "masculine_energy_pep_talk", duration: "Full", color: .orange),
+                SoundTrack(name: "Anger Management", fileName: "anger_management_meditation", duration: "Full", color: .red),
             ]
         case .ambient:
             return [
-                SoundTrack(name: "Wind Chimes", fileName: "chimes_wind", duration: "Loop", color: .cyan),
-                SoundTrack(name: "Singing Bowls", fileName: "singing_bowls", duration: "Loop", color: .purple),
-                SoundTrack(name: "Fireplace Crackle", fileName: "fireplace_crackle", duration: "Loop", color: .orange),
-                SoundTrack(name: "Cafe Ambience", fileName: "cafe_ambience", duration: "Loop", color: .brown),
+                SoundTrack(name: "Breaking Free", fileName: "breaking_free_abusive_relationship", duration: "Full", color: .cyan),
+                SoundTrack(name: "Overcoming Harm", fileName: "overcoming_harmful_relationship", duration: "Full", color: .purple),
             ]
         }
     }
