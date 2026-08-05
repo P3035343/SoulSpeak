@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+    SoulSpeak API Configuration
+    ============================
+    
+    1. GEMINI API KEY (required for AI conversations):
+       - Go to: https://aistudio.google.com/app/apikey
+       - Create a key, paste below
+    
+    2. ELEVENLABS API KEY (required for Dr. Hope & Mr. Hope voices):
+       - Go to: https://elevenlabs.io/app/settings/api-keys
+       - Create a key, paste below
+       - Without this key, the app falls back to Apple's built-in TTS
+       
+    IMPORTANT: 
+    - This file is gitignored (never pushed to GitHub)
+    - Copy this file to: SoulSpeak/GeminiConfig.plist
+    - Or put it in ~/SoulSpeakAssets/GeminiConfig.plist and run setup.sh
+    -->
+    <key>API_KEY</key>
+    <string>PASTE_YOUR_GEMINI_API_KEY_HERE</string>
+    <key>ELEVENLABS_API_KEY</key>
+    <string>PASTE_YOUR_ELEVENLABS_API_KEY_HERE</string>
+</dict>
+</plist>
