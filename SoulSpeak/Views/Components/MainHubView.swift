@@ -25,6 +25,7 @@ struct MainHubView: View {
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .clipped()
                 .ignoresSafeArea()
+                .allowsHitTesting(false)
 
             // Stronger dark overlay for better icon visibility
             VStack {
@@ -37,6 +38,7 @@ struct MainHubView: View {
                 .frame(height: 350)
             }
             .ignoresSafeArea()
+            .allowsHitTesting(false)
 
             // Content overlay
             VStack {

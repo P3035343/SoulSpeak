@@ -57,8 +57,6 @@ class PlayerUIView: UIView {
 
         player = AVPlayer(playerItem: playerItem)
         player?.automaticallyWaitsToMinimizeStalling = false
-        // Preroll for fastest start
-        player?.playImmediately(atRate: 1.0)
 
         let avPlayerLayer = layer as! AVPlayerLayer
         avPlayerLayer.player = player
@@ -72,6 +70,13 @@ class PlayerUIView: UIView {
             name: .AVPlayerItemDidPlayToEndTime,
             object: playerItem
         )
+
+        // Preroll then play for faster start
+        player?.preroll(atRate: 1.0) { [weak self] finished in
+            DispatchQueue.main.async {
+                self?.player?.play()
+            }
+        }
     }
 
     @objc private func videoDidEnd() {
@@ -108,14 +113,45 @@ struct FullScreenVideoBackground: View {
     var looping: Bool = true
     var onFinished: (() -> Void)? = nil
 
+    @State private var showSkip = false
+
     var body: some View {
-        VideoPlayerView(
-            videoName: videoName,
-            fileExtension: fileExtension,
-            looping: looping,
-            onVideoFinished: onFinished
-        )
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .ignoresSafeArea()
+        ZStack {
+            VideoPlayerView(
+                videoName: videoName,
+                fileExtension: fileExtension,
+                looping: looping,
+                onVideoFinished: onFinished
+            )
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .ignoresSafeArea()
+
+            // Skip button (appears after 2 seconds for non-looping videos)
+            if showSkip && !looping {
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: { onFinished?() }) {
+                            Text("Skip")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.8))
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(Capsule().fill(Color.black.opacity(0.5)))
+                        }
+                        .padding(.trailing, 20)
+                        .padding(.top, 60)
+                    }
+                    Spacer()
+                }
+            }
+        }
+        .onAppear {
+            if !looping {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    showSkip = true
+                }
+            }
+        }
     }
 }
