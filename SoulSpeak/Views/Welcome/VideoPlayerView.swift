@@ -71,12 +71,8 @@ class PlayerUIView: UIView {
             object: playerItem
         )
 
-        // Preroll then play for faster start
-        player?.preroll(atRate: 1.0) { [weak self] finished in
-            DispatchQueue.main.async {
-                self?.player?.play()
-            }
-        }
+        // Start playing immediately
+        player?.play()
     }
 
     @objc private func videoDidEnd() {
