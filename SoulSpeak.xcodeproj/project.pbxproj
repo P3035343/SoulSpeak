@@ -475,7 +475,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SoulSpeak/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SoulSpeak;
+				INFOPLIST_KEY_CFBundleDisplayName = MySoulSpeak;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -504,7 +504,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SoulSpeak/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SoulSpeak;
+				INFOPLIST_KEY_CFBundleDisplayName = MySoulSpeak;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
