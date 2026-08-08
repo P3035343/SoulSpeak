@@ -292,8 +292,8 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         let breatheAction = SCNAction.customAction(duration: 4.0) { [weak self] node, elapsed in
             guard let self = self else { return }
             let phase = Float(elapsed) / 4.0 * Float.pi * 2
-            let swayX = sin(phase) * 0.008
-            let swayY = cos(phase * 0.7) * 0.005
+            let swayX = sinf(phase) * 0.008
+            let swayY = cosf(phase * 0.7) * 0.005
             let base = self.baseCameraPosition
             node.position = SCNVector3(
                 base.x + swayX,
@@ -595,7 +595,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
             pipe.materials = [pipeMat]
             let pipeNode = SCNNode(geometry: pipe)
             pipeNode.position = SCNVector3(-3.5, 3.7, z)
-            pipeNode.eulerAngles.z = .pi / 2
+            pipeNode.eulerAngles.z = Float.pi / 2
             pipeNode.name = "pipe_horizontal"
             scene.rootNode.addChildNode(pipeNode)
         }
@@ -621,7 +621,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         hPipe.materials = [rustMat]
         let hPipeNode = SCNNode(geometry: hPipe)
         hPipeNode.position = SCNVector3(3.7, 3.7, -1.0)
-        hPipeNode.eulerAngles.x = .pi / 2
+        hPipeNode.eulerAngles.x = Float.pi / 2
         scene.rootNode.addChildNode(hPipeNode)
     }
     
@@ -707,7 +707,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
             tire.materials = [tireMat]
             let tireNode = SCNNode(geometry: tire)
             tireNode.position = SCNVector3(-2.5, 0.35 + Float(i) * 0.3, -2.0)
-            tireNode.eulerAngles.x = .pi / 2
+            tireNode.eulerAngles.x = Float.pi / 2
             tireNode.physicsBody = SCNPhysicsBody.dynamic()
             tireNode.physicsBody?.mass = 8
             tireNode.physicsBody?.friction = 0.8
@@ -981,11 +981,11 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
             plateMat.roughness.contents = 0.12
             plate.materials = [plateMat]
             let node = SCNNode(geometry: plate)
-            let angle = Float(i) * (.pi / 2)
+            let angle = Float(i) * (Float.pi / 2)
             node.position = SCNVector3(
-                -1.0 + cos(angle) * 0.4,
+                -1.0 + cosf(angle) * 0.4,
                 0.86,
-                0.5 + sin(angle) * 0.4
+                0.5 + sinf(angle) * 0.4
             )
             node.physicsBody = SCNPhysicsBody.dynamic()
             node.physicsBody?.mass = 0.35
@@ -1129,7 +1129,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         mirror.materials = [mirrorMat]
         let node = SCNNode(geometry: mirror)
         node.position = SCNVector3(-3.8, 1.8, 1.0)
-        node.eulerAngles.y = .pi / 2
+        node.eulerAngles.y = Float.pi / 2
         node.physicsBody = SCNPhysicsBody.dynamic()
         node.physicsBody?.mass = 5
         node.physicsBody?.friction = 0.3
@@ -1414,7 +1414,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         haze.materials = [hazeMat]
         let hazeNode = SCNNode(geometry: haze)
         hazeNode.position = SCNVector3(0, 0.05, 0)
-        hazeNode.eulerAngles.x = -.pi / 2
+        hazeNode.eulerAngles.x = -Float.pi / 2
         hazeNode.name = "floor_haze"
         hazeNode.opacity = 0.6
         scene.rootNode.addChildNode(hazeNode)
@@ -2413,10 +2413,10 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
             crackPos.z = wallZ + 0.01
         } else if abs(position.x - leftX) < 1.5 {
             crackPos.x = leftX + 0.01
-            crackRotation.y = .pi / 2
+            crackRotation.y = Float.pi / 2
         } else if abs(position.x - rightX) < 1.5 {
             crackPos.x = rightX - 0.01
-            crackRotation.y = -.pi / 2
+            crackRotation.y = -Float.pi / 2
         } else {
             crackPos.z = wallZ + 0.01
         }
