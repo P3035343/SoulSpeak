@@ -70,7 +70,7 @@ struct VentRoomView: View {
                 Spacer()
             }
         }
-        .sheet(isPresented: ) {
+        .sheet(isPresented: $showPaywall) {
             PaywallView()
         }
     }
