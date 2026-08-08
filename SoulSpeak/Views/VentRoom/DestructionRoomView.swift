@@ -2,13 +2,15 @@ import SwiftUI
 import SceneKit
 
 /// Realistic 3D Vent/Rage Room built with SceneKit.
-/// Features: bright industrial room, ragdoll dummy, tires, bottles, TV,
-/// physics destruction, haptic feedback, and system sound effects.
+/// Features: industrial concrete warehouse, ragdoll dummy, tires, bottles, TV,
+/// dining set with chairs, picture frames, physics destruction, haptic feedback,
+/// spray paint on walls, varied sound effects, and background rock music.
 ///
 /// Optional sound files (.mp3) for enhanced audio:
 /// - glass_break.mp3, sledgehammer_hit.mp3, punch_impact.mp3
 /// - plate_shatter.mp3, wood_break.mp3, spray_sound.mp3
-/// (App works without these — uses system sounds as fallback)
+/// - rock_instrumental.mp3 (background music)
+/// (App works without these - uses system sounds as fallback)
 struct DestructionRoomView: View {
     let onRelease: () -> Void
 
@@ -19,7 +21,18 @@ struct DestructionRoomView: View {
     @State private var comboCount: Int = 0
     @State private var showCombo = false
     @State private var lastHitTime: Date = Date()
+    @State private var selectedSprayColor: Color = .red
     @StateObject private var sceneManager = RageRoomSceneManager()
+
+    private let sprayColors: [(Color, UIColor, String)] = [
+        (.red, UIColor.red, "Red"),
+        (.blue, UIColor.blue, "Blue"),
+        (.green, UIColor.green, "Green"),
+        (.yellow, UIColor.yellow, "Yellow"),
+        (.purple, UIColor.purple, "Purple"),
+        (.white, UIColor.white, "White"),
+        (.orange, UIColor.orange, "Orange"),
+    ]
 
     var body: some View {
         ZStack {
@@ -112,7 +125,7 @@ struct DestructionRoomView: View {
 
                 // Instruction text (fades after first hit)
                 if hitCount == 0 {
-                    Text("TAP to smash • SWIPE to throw")
+                    Text("TAP to smash \u{2022} SWIPE to throw \u{2022} SPRAY to paint")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.white.opacity(0.7))
                         .padding(.horizontal, 20)
@@ -120,6 +133,11 @@ struct DestructionRoomView: View {
                         .background(Capsule().fill(Color.black.opacity(0.5)))
                         .transition(.opacity)
                         .padding(.bottom, 10)
+                }
+
+                // Spray color picker (only shows when spray tool is selected)
+                if selectedTool == .spray {
+                    sprayColorPicker
                 }
 
                 // Tool selector at bottom
@@ -209,6 +227,10 @@ struct DestructionRoomView: View {
                     withAnimation(.spring(response: 0.25)) {
                         selectedTool = tool
                     }
+                    if tool == .spray {
+                        // Set initial spray color
+                        sceneManager.setSprayColor(UIColor.red)
+                    }
                 }) {
                     VStack(spacing: 4) {
                         ZStack {
@@ -243,6 +265,42 @@ struct DestructionRoomView: View {
                 )
         )
         .padding(.bottom, 16)
+    }
+
+    // MARK: - Spray Color Picker
+    private var sprayColorPicker: some View {
+        HStack(spacing: 10) {
+            ForEach(Array(sprayColors.enumerated()), id: \.offset) { index, colorInfo in
+                Button(action: {
+                    selectedSprayColor = colorInfo.0
+                    sceneManager.setSprayColor(colorInfo.1)
+                }) {
+                    Circle()
+                        .fill(colorInfo.0)
+                        .frame(width: 28, height: 28)
+                        .overlay(
+                            Circle()
+                                .stroke(
+                                    selectedSprayColor == colorInfo.0 ? Color.white : Color.clear,
+                                    lineWidth: 2.5
+                                )
+                        )
+                        .shadow(color: colorInfo.0.opacity(0.6), radius: selectedSprayColor == colorInfo.0 ? 4 : 0)
+                }
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black.opacity(0.7))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.green.opacity(0.3), lineWidth: 1)
+                )
+        )
+        .padding(.bottom, 8)
+        .transition(.opacity.combined(with: .move(edge: .bottom)))
     }
 }
 
