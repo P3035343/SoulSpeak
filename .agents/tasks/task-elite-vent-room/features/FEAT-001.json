@@ -1,0 +1,41 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Complete rewrite of RageRoomSceneManager.swift to create an elite-tier 3D rage room with premium physics, particle systems, visual effects, progressive room deterioration, camera shake, slow-motion impacts, material-specific debris, spark/dust/shard particles, and an emotional arc system that makes the room feel alive and responsive to destruction.",
+  "status": "completed",
+  "steps": [
+    "Rewrite RageRoomSceneManager.swift completely. Keep @MainActor, ObservableObject, SCNScene setup pattern but add the following systems:",
+    "1. PHYSICS SYSTEM - Implement weight/momentum-aware physics: heavy objects (table, dummy) resist more and feel weighty. Light objects (plates, bottles) shatter and fly dramatically. Add angular velocity on impacts for realistic tumbling. Objects near edges should be flingable off-screen. Physics contact delegate for collision detection between objects.",
+    "2. PARTICLE SYSTEM - Built entirely with SCNParticleSystem (no SpriteKit): (a) SPARKS - bright orange/yellow point particles that spray on metal pipe/beam hits with short lifespan, high speed, gravity-affected. (b) GLASS SHARDS - translucent angular particles on bottle/TV hits that scatter with high initial velocity then settle. (c) DUST CLOUDS - soft grey billboard particles that billow on heavy impacts (sledgehammer), slow-moving, fade over 2-3 seconds. (d) WOOD SPLINTERS - brown elongated particles on table/chair hits. (e) CERAMIC FRAGMENTS - white small particles on plate hits. (f) WALL CRACK DUST - fine particles when walls are hit repeatedly.",
+    "3. CAMERA SHAKE SYSTEM - Implement camera shake by temporarily offsetting cameraNode.position with decaying random offsets. Intensity scales with tool power (fists=light, sledgehammer=heavy). Use SCNAction sequence with random offsets that decay over 0.3-0.5 seconds. Add subtle constant camera sway (breathing effect) during destruction phase.",
+    "4. SLOW-MOTION SYSTEM - On powerful hits (sledgehammer combo x3+, or bat x5+), temporarily reduce scene.physicsWorld.speed to 0.3 for 0.8 seconds then ramp back to 1.0 using SCNAction. During slow-mo, slightly zoom camera FOV in by 5 degrees for dramatic effect.",
+    "5. PROGRESSIVE ROOM DETERIORATION - Track a destructionLevel (0.0 to 1.0). As it increases: (a) 0-25%: lights flicker occasionally (SCNAction intensity oscillation), small cracks appear on walls (thin dark SCNPlane overlays). (b) 25-50%: one overhead light swings (pendulum SCNAction), more cracks, floor gets scattered with more debris automatically. (c) 50-75%: red lights intensify, main lights dim, sparking from a broken pipe (constant particle emitter), ceiling dust falls. (d) 75-100%: emergency red lighting dominance, lights strobing, heavy dust/smoke particles, the room looks DESTROYED.",
+    "6. SCREEN FLASH / IMPACT FEEDBACK - Expose @Published properties for the SwiftUI view layer: screenFlashColor (Color?), screenFlashOpacity (Double), cameraShakeOffset (CGSize). On big hits, set screenFlashColor to white/orange briefly. On combos, flash intensifies.",
+    "7. MATERIAL-AWARE TARGETING - Instead of random target selection, implement hit testing. The hitObject function should pick the NEAREST destructible node to camera center (or a random one in the forward cone). Different materials produce different effects: metal nodes produce sparks, glass nodes produce shards, wood nodes produce splinters, ceramic nodes produce fragments.",
+    "8. COMBO MULTIPLIER PHYSICS - When combo count is high (5+), physics forces increase, more debris spawns, particles are more dramatic. At combo 10+, every hit triggers slow-mo. At combo 15+, screen shakes on every hit.",
+    "9. ENVIRONMENTAL DESTRUCTION DETAILS - Add destructible hanging light fixture (swings then falls at high destruction). Add a car door panel leaning against wall (dents visually via material color change on hits). Add a mirror/glass panel that 'cracks' (overlay crack pattern planes). Add a fire extinguisher that sprays white particles when hit hard.",
+    "10. AUDIO ENHANCEMENT - Vary system sound selection based on material type hit. Add reverb-like effect by playing the same sound twice with slight delay and lower volume. Play multiple sounds simultaneously on big hits (impact + debris scatter). Add low rumble sounds (deeper system sounds) on sledgehammer hits.",
+    "11. HAPTIC ENHANCEMENT - Layer haptics: on sledgehammer, trigger heavy impact followed by medium 50ms later for 'aftershock'. On glass break, trigger light followed by soft for 'tinkle'. Use UINotificationFeedbackGenerator for combo milestones (5, 10, 15).",
+    "12. ADD NEW OBJECTS - Car door panel (flat box with metallic material, dents on hit), mirror/glass panel on wall (reflective material, cracks then shatters), fire extinguisher (red cylinder, sprays particles), toolbox (metal box with tools inside that scatter), stacked cinder blocks (concrete colored boxes that topple), old CRT monitor (boxy, screen cracks), wooden crate (breaks into planks).",
+    "13. AMBIENT ATMOSPHERE - Subtle dust motes floating in light beams (very slow particle system, always on). Occasional dripping sound from pipes. Flickering fluorescent light effect on one light source. Faint fog/haze at floor level (low-opacity plane with animated material)."
+  ],
+  "acceptance_criteria": [
+    "RageRoomSceneManager.swift compiles as valid Swift with all referenced types correctly defined",
+    "All @Published properties for HUD communication are present: screenFlashColor, screenFlashOpacity, destructionLevel, comboCount, isSlowMotion",
+    "SceneKit particle systems are created programmatically (no .scnp files needed)",
+    "Camera shake uses SCNAction sequences on the camera node",
+    "Slow-motion uses scene.physicsWorld.speed manipulation",
+    "Progressive deterioration modifies lighting intensity and spawns crack overlays",
+    "Material-aware hit detection returns different particle types per object",
+    "All new objects are added with physics bodies and appropriate materials",
+    "Performance-conscious: particle systems have birthRate limits, debris cleanup timers, max node counts"
+  ],
+  "verification": [
+    "Run swift syntax check on the file to verify it parses correctly",
+    "Verify no external imports beyond SceneKit, AVFoundation, UIKit",
+    "Verify @MainActor annotation is present on class",
+    "Verify all public methods match what DestructionRoomView expects to call"
+  ],
+  "blocked_reason": null,
+  "findings": "Complete rewrite from 1032 lines to 1528+ lines. All 13 systems implemented: physics with material weight/momentum, 7 particle generators (sparks, glass shards, dust clouds, wood splinters, ceramic fragments, wall crack dust, plastic chips), camera shake with breathing sway, slow-motion with FOV zoom, progressive room deterioration (4 phases), screen flash via @Published, material-aware targeting via camera cone, combo multiplier system, 7 new environmental objects (car door, mirror, fire extinguisher, toolbox, cinder blocks, CRT monitor, wooden crate), layered haptics with aftershock, multi-sound audio with pseudo-reverb, and ambient atmosphere (dust motes, floor haze, fluorescent flicker, drip sounds). Physics contact delegate for inter-object collisions. File parses cleanly with swiftc -parse. All @Published properties present for FEAT-002 HUD integration. Public API matches DestructionRoomView expectations exactly."
+}

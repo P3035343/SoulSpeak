@@ -1,0 +1,31 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Upgrade the supporting vent room views (PaperBurnView, VentRecordingView, VentPlaybackView, ReleaseView) to match the elite quality bar. Each view gets premium animations, atmospheric effects, and polished transitions that create a cohesive emotional arc from recording rage to cathartic release.",
+  "status": "completed",
+  "steps": [
+    "1. PAPER BURN VIEW UPGRADE (PaperBurnView.swift) - (a) Paper has realistic crumple effect as it's dragged (rotation on multiple axes based on drag position). (b) Paper catches fire from the bottom edge up with spreading orange glow. (c) Paper curls as it burns (scale reduction from bottom). (d) Ash particles float up from burning paper. (e) Ember particles scatter from the paper. (f) Fireplace fire is more volumetric with layered gradients and animated tips. (g) Heat distortion effect above fire (subtle scale animation on content above). (h) Room gradually illuminates as fire grows. (i) Satisfying crackle haptic when paper ignites (multiple light haptics in sequence).",
+    "2. VENT RECORDING VIEW UPGRADE (VentRecordingView.swift) - (a) Add atmospheric particle dust floating in the moody room. (b) Waveform visualization is larger and more dramatic with gradient colors that shift from cool blue to hot red as recording continues. (c) Add a subtle heartbeat pulse to the red recording indicator. (d) Room ambient light subtly pulses with audio levels (background gradient shifts). (e) Timer has a glowing red outline. (f) Add motivational micro-text that appears/fades: 'Let it out...', 'It is safe here...', 'Release the weight...'. (g) Recording button has magnetic pull animation when approaching (scale up slightly). (h) When stopping recording, brief flash + haptic confirms capture.",
+    "3. VENT PLAYBACK VIEW UPGRADE (VentPlaybackView.swift) - (a) Audio visualizer during playback (animated bars or waveform that responds to playback). (b) Words appear to float/dissolve from the speaker icon as audio plays. (c) Progress bar has a glowing head that leaves a trail. (d) Background subtly shifts darker as playback progresses (tension building). (e) 'Burn it now' button glows more intensely as playback continues. (f) Add subtle quotes that fade in/out during playback: 'These words no longer serve you', 'Ready to let go?'. (g) Smooth crossfade transition to PaperBurnView.",
+    "4. RELEASE VIEW UPGRADE (ReleaseView.swift) - (a) Dramatic contrast from destruction: the view opens with a breath of white light that fades to reveal peaceful scene. (b) Healing particles are more organic - floating golden/green orbs with soft glow. (c) Add a 'breathing circle' animation that expands and contracts (guides user to take a deep breath). (d) Text appears word-by-word with typewriter effect. (e) Background has gentle aurora-like color waves. (f) Soft success haptic sequence when the view appears. (g) 'Released.' text has a gentle float/bob animation. (h) Add a completion stat: 'Objects destroyed: X | Time: Xs | Peak combo: Xx'. (i) Buttons have gentle hover glow and responsive spring on press.",
+    "5. EMOTIONAL ARC COHERENCE - Ensure transitions between phases feel seamless: (a) VentRoomView.swift phase transitions use matched geometry or smooth crossfades. (b) Color temperature shifts: recording (warm dark red) -> playback (cooler) -> paper burn (hot orange) -> destruction (intense red/dark) -> release (cool green/gold). (c) Each phase transition includes a brief haptic pulse."
+  ],
+  "acceptance_criteria": [
+    "All four view files compile as valid Swift with correct SwiftUI types",
+    "PaperBurnView maintains the drag-to-burn interaction and onFinished callback",
+    "VentRecordingView maintains VoiceRecorderService integration and onFinished callback",
+    "VentPlaybackView maintains AVAudioPlayer playback and onFinished callback",
+    "ReleaseView maintains onComplete and onExit callbacks",
+    "VentRoomView phase enum and flow logic preserved (intro -> recording -> playback -> paperBurn -> destruction -> release)",
+    "No external dependencies added",
+    "All animations use standard SwiftUI animation APIs",
+    "Haptic feedback uses UIImpactFeedbackGenerator and UINotificationFeedbackGenerator"
+  ],
+  "verification": [
+    "Run swift syntax check on all modified supporting view files",
+    "Verify all callback signatures match what VentRoomView passes in",
+    "Verify VentRoomView still references all child views with correct parameters"
+  ],
+  "blocked_reason": null,
+  "findings": "All 5 files parse cleanly with swiftc -parse. Total 2515 lines of elite SwiftUI code. No external dependencies. Callback signatures preserved exactly. UIKit imported for UIImpactFeedbackGenerator and UINotificationFeedbackGenerator haptics. AVFoundation imported in VentPlaybackView for AVAudioPlayer with metering. Python string escaping caused newline literals in two places which were fixed manually. SpringButtonStyle is defined as a private struct inside ReleaseView.swift for button press animations."
+}

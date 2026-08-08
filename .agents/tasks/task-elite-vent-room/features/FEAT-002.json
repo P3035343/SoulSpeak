@@ -1,0 +1,37 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Complete rewrite of DestructionRoomView.swift to create an elite-tier HUD with screen effects (flash, shake, vignette), animated combo system with text that scales/rotates/glows, rage meter with fire particles, dynamic tool selector with power indicators, destruction phase indicators, slow-motion visual overlay, and cinematic transitions. Also integrate with the new RageRoomSceneManager published properties.",
+  "status": "completed",
+  "steps": [
+    "Rewrite DestructionRoomView.swift completely. Keep the same struct name, onRelease callback, and tool enum but upgrade everything visual:",
+    "1. SCREEN EFFECTS LAYER - Add overlay layers that respond to sceneManager published properties: (a) Screen flash - full screen color overlay that flashes white on big hits, red on combos, fades in 0.15s. (b) Camera shake simulation - offset the entire SceneView by sceneManager.cameraShakeOffset. (c) Vignette that darkens edges, intensifies with destruction level. (d) Red pulse border on high combos. (e) Slow-motion overlay - subtle blue tint + motion lines when isSlowMotion is true.",
+    "2. COMBO SYSTEM OVERHAUL - Combo text that POPS: (a) Text scales up from 0 to 1.5x then settles at 1x with spring animation. (b) Different combo tiers with different styles: 3x='COMBO' in yellow, 5x='RAMPAGE' in orange, 10x='UNSTOPPABLE' in red with glow, 15x='GODLIKE' in white with screen-wide flash. (c) Each combo tier plays notification haptic. (d) Combo text should rotate slightly randomly on each increment. (e) Floating damage numbers that rise and fade from center of screen.",
+    "3. RAGE METER REDESIGN - Replace simple progress bar with: (a) Animated flame-shaped meter that fills with liquid fire effect. (b) Meter shakes when increasing rapidly. (c) At each 25% milestone, a burst animation plays. (d) When full (100%), the meter pulses and glows intensely. (e) Small particle embers rise from the top of the meter.",
+    "4. TOOL SELECTOR UPGRADE - (a) Selected tool has a pulsing glow ring. (b) Tool icons scale up slightly when selected with spring. (c) Power indicator dots below each tool (shows relative strength). (d) When switching tools, brief whoosh animation. (e) During slow-mo, tool selector dims slightly.",
+    "5. DESTRUCTION PHASE HUD - Visual indicator of room state: (a) At 25%, show 'WARMING UP' text briefly. (b) At 50%, show 'GETTING INTENSE' with orange flash. (c) At 75%, show 'TOTAL CHAOS' with red flash and screen shake. (d) At 100%, show 'MAXIMUM DESTRUCTION' with white flash and heavy screen effects. (e) Background darkens progressively.",
+    "6. GESTURE HANDLING IMPROVEMENT - (a) Multi-touch support via simultaneous gesture recognition. (b) Long-press for charged attacks (hold 1s for 3x power hit with dramatic effects). (c) Double-tap for rapid-fire hits. (d) Swipe velocity affects throw force (faster swipe = more powerful throw with more particles).",
+    "7. CINEMATIC INTRO - When DestructionRoomView first appears: (a) Camera starts zoomed in on a single object, then pulls back to reveal the full room over 2 seconds. (b) Tool selector slides up from bottom. (c) HUD elements fade in sequentially. (d) A brief text 'DESTROY EVERYTHING' appears and shatters (opacity pieces).",
+    "8. RELEASE BUTTON UPGRADE - (a) Button appears with dramatic spring animation. (b) Button pulses with green glow when room is highly destroyed. (c) Floating leaf particles around the button. (d) Text breathes (subtle scale animation).",
+    "9. AMBIENT HUD EFFECTS - (a) Subtle scan-line overlay (very low opacity horizontal lines moving down slowly). (b) Corner brackets that frame the scene (tactical HUD aesthetic). (c) Hit counter that clicks up like a mechanical counter (spring per digit). (d) Floating destruction percentage in corner."
+  ],
+  "acceptance_criteria": [
+    "DestructionRoomView.swift compiles as valid Swift with all SwiftUI types correctly referenced",
+    "View subscribes to sceneManager @Published properties for screen effects",
+    "Combo system has tiered text with different animations per tier",
+    "Screen flash overlay responds to hits with rapid fade-in/fade-out",
+    "Tool selector maintains all 5 tools with RageTool enum",
+    "Release button still triggers onRelease callback at 60% damage threshold",
+    "Gestures include tap, drag, and enhanced interactions (long press, double tap)",
+    "All animations use SwiftUI animation system (withAnimation, .animation modifier)",
+    "No external dependencies imported"
+  ],
+  "verification": [
+    "Run swift syntax check to verify the file parses correctly",
+    "Verify RageTool enum is still present with all 5 cases",
+    "Verify onRelease callback is preserved",
+    "Verify SceneView usage with sceneManager.scene and sceneManager.cameraNode"
+  ],
+  "blocked_reason": null,
+  "findings": "File is 1712 lines. Swift -parse validates clean. -typecheck cannot run (no SwiftUI SDK in sandbox, expected). All 9 feature areas implemented: screen effects layer with flash/vignette/border pulse, tiered combo system (3x/5x/10x/15x with spring animations), fire-gradient rage meter with ember particles and milestone bursts, tool selector with glow ring and power dots, destruction phase announcements at 25/50/75/100%, gesture handling with long-press charge and double-tap rapid fire, cinematic intro sequence, release button with leaf particles and breathing animation, ambient HUD with corner brackets and scan lines. View reads destructionLevel and comboCount from sceneManager published properties. onRelease still triggers at 0.6 threshold."
+}

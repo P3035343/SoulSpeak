@@ -1,0 +1,25 @@
+{
+  "project_type": "iOS SwiftUI App with SceneKit 3D scene",
+  "language": "Swift 5.0",
+  "build_system": "Xcode 15.2 / xcodeproj",
+  "test_framework": "No automated tests found - iOS app validated by build success",
+  "build_command": "cd /projects/sandbox/SoulSpeak && xcodebuild -project SoulSpeak.xcodeproj -scheme SoulSpeak -destination 'platform=iOS Simulator,name=iPhone 15 Pro' build 2>&1 | tail -20",
+  "test_command": "Swift syntax validation via swiftc -typecheck on modified files",
+  "verification_instructions": "Verify Swift files parse without syntax errors. No Xcode build available in sandbox.",
+  "snapshot_or_generated_files": null,
+  "setup_instructions": "No setup needed - direct file modifications to existing Swift source files",
+  "environment_constraints": "No Xcode/xcodebuild available in sandbox. Verification limited to Swift syntax checking. No external packages allowed. SceneKit only (no Metal shaders, no SpriteKit). System sounds as fallback (no mp3 files required). @MainActor on scene manager class. Must target iPhone 15 Pro performance.",
+  "contribution_requirements": "Keep existing flow: intro video -> recording -> playback -> paper burn -> destruction -> release. All SwiftUI views. No external dependencies.",
+  "key_patterns": "RageRoomSceneManager is @MainActor ObservableObject with SCNScene. DestructionRoomView is SwiftUI with SceneView wrapper. RageTool enum defines tools. AudioServicesPlaySystemSound for fallback audio. UIImpactFeedbackGenerator for haptics. Destructible nodes tracked in array. Debris spawned with physics bodies. Spray paint uses SCNPlane nodes.",
+  "relevant_files": [
+    "SoulSpeak/SoulSpeak/Views/VentRoom/RageRoomSceneManager.swift",
+    "SoulSpeak/SoulSpeak/Views/VentRoom/DestructionRoomView.swift",
+    "SoulSpeak/SoulSpeak/Views/VentRoom/PaperBurnView.swift",
+    "SoulSpeak/SoulSpeak/Views/VentRoom/VentRoomView.swift",
+    "SoulSpeak/SoulSpeak/Views/VentRoom/VentRecordingView.swift",
+    "SoulSpeak/SoulSpeak/Views/VentRoom/VentPlaybackView.swift",
+    "SoulSpeak/SoulSpeak/Views/VentRoom/ReleaseView.swift",
+    "SoulSpeak/SoulSpeak/Services/AudioPlayerService.swift"
+  ],
+  "directory_structure": "SoulSpeak/SoulSpeak/Views/VentRoom/ contains all 7 vent room files. Services/ has AudioPlayerService and VoiceRecorderService. Theme/ has SSColors. Views/VoiceJournal/ has WaveformView. Views/Welcome/ has FullScreenVideoBackground."
+}
