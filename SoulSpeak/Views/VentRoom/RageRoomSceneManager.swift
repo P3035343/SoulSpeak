@@ -217,6 +217,16 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
     private var dripTimer: Timer?
     private var flickerTimer: Timer?
     
+    // MARK: - Cached Particle Images
+    private lazy var cachedCircleImage8White: UIImage = createCircleImage(size: 8, color: .white)
+    private lazy var cachedCircleImage6White: UIImage = createCircleImage(size: 6, color: .white)
+    private lazy var cachedSoftCircleImage32: UIImage = createSoftCircleImage(size: 32)
+    private lazy var cachedSoftCircleImage16: UIImage = createSoftCircleImage(size: 16)
+    private lazy var cachedSoftCircleImage24: UIImage = createSoftCircleImage(size: 24)
+    private lazy var cachedDiamondImage12: UIImage = createDiamondImage(size: 12)
+    private lazy var cachedDiamondImage8: UIImage = createDiamondImage(size: 8)
+    private lazy var cachedSplinterImage16: UIImage = createSplinterImage(size: 16)
+    
     // MARK: - Destruction Tracking
     private var wallHitCounts: [String: Int] = [:]
     private var hangingLightFallen: Bool = false
@@ -1382,7 +1392,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         dustSystem.blendMode = .additive
         dustSystem.isAffectedByGravity = false
         dustSystem.isAffectedByPhysicsFields = false
-        dustSystem.particleImage = createCircleImage(size: 8, color: .white)
+        dustSystem.particleImage = cachedCircleImage8White
         
         let emitter = SCNNode()
         emitter.position = SCNVector3(0, 2.5, 0)
@@ -1760,7 +1770,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         sparks.blendMode = .additive
         sparks.isAffectedByGravity = true
         sparks.acceleration = SCNVector3(0, -6, 0)
-        sparks.particleImage = createCircleImage(size: 8, color: .white)
+        sparks.particleImage = cachedCircleImage8White
         sparks.emitterShape = SCNSphere(radius: 0.05)
         
         // Color animation: bright yellow to orange to dark red
@@ -1805,7 +1815,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         shards.acceleration = SCNVector3(0, -8, 0)
         shards.particleAngularVelocity = CGFloat(Float.pi * 4)
         shards.particleAngularVelocityVariation = CGFloat(Float.pi * 2)
-        shards.particleImage = createDiamondImage(size: 12)
+        shards.particleImage = cachedDiamondImage12
         shards.emitterShape = SCNSphere(radius: 0.08)
         
         // Fade out
@@ -1842,7 +1852,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         dust.particleColorVariation = SCNVector4(0.05, 0.05, 0.05, 0.1)
         dust.blendMode = .alpha
         dust.isAffectedByGravity = false
-        dust.particleImage = createSoftCircleImage(size: 32)
+        dust.particleImage = cachedSoftCircleImage32
         dust.emitterShape = SCNSphere(radius: 0.15)
         
         // Grow and fade
@@ -1889,7 +1899,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         splinters.acceleration = SCNVector3(0, -7, 0)
         splinters.particleAngularVelocity = CGFloat(Float.pi * 6)
         splinters.particleAngularVelocityVariation = CGFloat(Float.pi * 3)
-        splinters.particleImage = createSplinterImage(size: 16)
+        splinters.particleImage = cachedSplinterImage16
         splinters.emitterShape = SCNSphere(radius: 0.06)
         
         let emitterNode = SCNNode()
@@ -1921,7 +1931,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         fragments.acceleration = SCNVector3(0, -9, 0)
         fragments.particleAngularVelocity = CGFloat(Float.pi * 8)
         fragments.particleAngularVelocityVariation = CGFloat(Float.pi * 4)
-        fragments.particleImage = createDiamondImage(size: 8)
+        fragments.particleImage = cachedDiamondImage8
         fragments.emitterShape = SCNSphere(radius: 0.05)
         
         let emitterNode = SCNNode()
@@ -1951,7 +1961,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         crackDust.blendMode = .alpha
         crackDust.isAffectedByGravity = true
         crackDust.acceleration = SCNVector3(0, -2, 0)
-        crackDust.particleImage = createSoftCircleImage(size: 16)
+        crackDust.particleImage = cachedSoftCircleImage16
         crackDust.emitterShape = SCNSphere(radius: 0.1)
         
         let emitterNode = SCNNode()
@@ -1984,7 +1994,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         chips.blendMode = .alpha
         chips.isAffectedByGravity = true
         chips.acceleration = SCNVector3(0, -8, 0)
-        chips.particleImage = createCircleImage(size: 6, color: .white)
+        chips.particleImage = cachedCircleImage6White
         
         let emitterNode = SCNNode()
         emitterNode.position = position
@@ -2013,7 +2023,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         spray.blendMode = .alpha
         spray.isAffectedByGravity = true
         spray.acceleration = SCNVector3(0, -2, 0)
-        spray.particleImage = createSoftCircleImage(size: 24)
+        spray.particleImage = cachedSoftCircleImage24
         spray.emitterShape = SCNSphere(radius: 0.03)
         
         let sizeAnim = CAKeyframeAnimation(keyPath: "size")
@@ -2325,7 +2335,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         sparkSystem.blendMode = .additive
         sparkSystem.isAffectedByGravity = true
         sparkSystem.acceleration = SCNVector3(0, -5, 0)
-        sparkSystem.particleImage = createCircleImage(size: 6, color: .white)
+        sparkSystem.particleImage = cachedCircleImage6White
         
         let emitter = SCNNode()
         emitter.position = SCNVector3(pipeNode.position.x, pipeNode.position.y + 1.5, pipeNode.position.z)

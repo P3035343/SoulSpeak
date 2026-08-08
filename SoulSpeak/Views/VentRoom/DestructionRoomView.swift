@@ -153,6 +153,11 @@ struct DestructionRoomView: View {
     @State private var chargeLevel: Double = 0
     @State private var chargeTimer: Timer? = nil
     
+    // MARK: - Lifecycle Management
+    @State private var emberTimer: Timer? = nil
+    @State private var leafTimer: Timer? = nil
+    @State private var viewActive: Bool = true
+    
     // MARK: - Vignette & Effects
     @State private var vignetteIntensity: Double = 0.3
     @State private var borderPulseOpacity: Double = 0
@@ -222,6 +227,15 @@ struct DestructionRoomView: View {
             startEmberSystem()
             startScanLineAnimation()
             playCinematicIntro()
+        }
+        .onDisappear {
+            viewActive = false
+            emberTimer?.invalidate()
+            emberTimer = nil
+            leafTimer?.invalidate()
+            leafTimer = nil
+            chargeTimer?.invalidate()
+            chargeTimer = nil
         }
         .onChange(of: sceneManager.comboCount) { _, newValue in
             handleComboChange(newValue)
@@ -1137,18 +1151,8 @@ extension DestructionRoomView {
             }
         }
         
-        // Update combo display from sceneManager
+        // Combo display is driven by sceneManager.comboCount via onChange handler
         lastHitTime = Date()
-        
-        // Hide combo text after delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            if Date().timeIntervalSince(self.lastHitTime) >= 1.5 {
-                withAnimation(.easeOut(duration: 0.3)) {
-                    showCombo = false
-                    comboOpacity = 0
-                }
-            }
-        }
     }
     
     private func performRapidFire() {
@@ -1518,8 +1522,9 @@ extension DestructionRoomView {
     }
     
     private func startEmberSystem() {
-        // Generate ember particles continuously
-        Timer.scheduledTimer(withTimeInterval: 0.4, repeats: true) { _ in
+        // Generate ember particles continuously - store timer for cleanup
+        emberTimer = Timer.scheduledTimer(withTimeInterval: 0.4, repeats: true) { [weak sceneManager] _ in
+            guard let sceneManager = sceneManager else { return }
             guard sceneManager.destructionLevel > 0.1 else { return }
             
             let particleCount = Int(sceneManager.destructionLevel * 3) + 1
@@ -1557,7 +1562,7 @@ extension DestructionRoomView {
     }
     
     private func startLeafParticles() {
-        Timer.scheduledTimer(withTimeInterval: 0.8, repeats: true) { _ in
+        leafTimer = Timer.scheduledTimer(withTimeInterval: 0.8, repeats: true) { _ in
             let leaf = LeafParticle(
                 xOffset: CGFloat.random(in: -60...60),
                 yOffset: CGFloat.random(in: -20...20),
@@ -1623,9 +1628,11 @@ extension DestructionRoomView {
     
     private func playCinematicIntro() {
         // Sequence: dark -> text appears -> text fades -> HUD slides in
+        // Each stage checks viewActive to prevent firing after dismissal
         
         // Step 1: After brief pause, show text
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            guard self.viewActive else { return }
             withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                 introTextOpacity = 1.0
                 introTextScale = 1.0
@@ -1634,6 +1641,7 @@ extension DestructionRoomView {
         
         // Step 2: Text holds then begins to fade
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            guard self.viewActive else { return }
             withAnimation(.easeOut(duration: 0.5)) {
                 introTextOpacity = 0
                 introTextScale = 1.3
@@ -1642,6 +1650,7 @@ extension DestructionRoomView {
         
         // Step 3: HUD elements fade in
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.3) {
+            guard self.viewActive else { return }
             withAnimation(.easeOut(duration: 0.4)) {
                 hudOpacity = 1.0
             }
@@ -1649,6 +1658,7 @@ extension DestructionRoomView {
         
         // Step 4: Tool selector slides up
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            guard self.viewActive else { return }
             withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                 toolSelectorOffset = 0
             }
@@ -1656,6 +1666,7 @@ extension DestructionRoomView {
         
         // Step 5: Corner brackets fade in
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.8) {
+            guard self.viewActive else { return }
             withAnimation(.easeOut(duration: 0.6)) {
                 cornerBracketOpacity = 1.0
             }
@@ -1663,6 +1674,7 @@ extension DestructionRoomView {
         
         // Step 6: Intro complete
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
+            guard self.viewActive else { return }
             withAnimation(.easeOut(duration: 0.3)) {
                 introActive = false
             }
