@@ -79,7 +79,7 @@ enum ComboTier {
 }
 
 // MARK: - Ember Particle Model
-struct EmberParticle: Identifiable {
+struct RageEmberParticle: Identifiable {
     let id = UUID()
     var xOffset: CGFloat
     var yOffset: CGFloat
@@ -123,7 +123,7 @@ struct DestructionRoomView: View {
     @State private var rageMeterPulse: CGFloat = 1.0
     @State private var lastMilestone: Int = 0
     @State private var milestoneFlash: Bool = false
-    @State private var emberParticles: [EmberParticle] = []
+    @State private var emberParticles: [RageEmberParticle] = []
     @State private var leafParticles: [LeafParticle] = []
     @State private var toolSwitchAnimation: Bool = false
     @State private var previousTool: RageTool = .fists
@@ -1530,7 +1530,7 @@ extension DestructionRoomView {
             let particleCount = Int(sceneManager.destructionLevel * 3) + 1
             
             for _ in 0..<particleCount {
-                let ember = EmberParticle(
+                let ember = RageEmberParticle(
                     xOffset: CGFloat.random(in: -10...10),
                     yOffset: 0,
                     size: CGFloat.random(in: 3...7),

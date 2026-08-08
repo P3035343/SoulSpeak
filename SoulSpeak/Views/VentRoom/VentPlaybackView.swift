@@ -404,7 +404,7 @@ struct VentPlaybackView: View {
 
                 // Animate word floating up and dissolving
                 withAnimation(.easeOut(duration: 2.5)) {
-                    if let idx = floatingWords.firstIndex(where: { /bin/sh.id == word.id }) {
+                    if let idx = floatingWords.firstIndex(where: { $0.id == word.id }) {
                         floatingWords[idx].y -= CGFloat.random(in: 40...80)
                         floatingWords[idx].x += CGFloat.random(in: -50...50)
                         floatingWords[idx].opacity = 0
@@ -414,7 +414,7 @@ struct VentPlaybackView: View {
 
                 // Cleanup old words
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                    floatingWords.removeAll { /bin/sh.opacity <= 0.01 }
+                    floatingWords.removeAll { $0.opacity <= 0.01 }
                     if floatingWords.count > 15 { floatingWords.removeFirst(5) }
                 }
             }

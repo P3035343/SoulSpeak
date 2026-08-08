@@ -644,7 +644,7 @@ struct PaperBurnView: View {
 
         // Animate upward
         withAnimation(.easeOut(duration: Double.random(in: 2.0...4.0))) {
-            if let idx = ashParticles.firstIndex(where: { /bin/sh.id == particle.id }) {
+            if let idx = ashParticles.firstIndex(where: { $0.id == particle.id }) {
                 ashParticles[idx].y -= CGFloat.random(in: 200...500)
                 ashParticles[idx].x += CGFloat.random(in: -60...60)
                 ashParticles[idx].opacity = 0
@@ -666,7 +666,7 @@ struct PaperBurnView: View {
         emberParticles.append(particle)
 
         withAnimation(.easeOut(duration: Double.random(in: 0.8...1.5))) {
-            if let idx = emberParticles.firstIndex(where: { /bin/sh.id == particle.id }) {
+            if let idx = emberParticles.firstIndex(where: { $0.id == particle.id }) {
                 emberParticles[idx].y -= CGFloat.random(in: 80...160)
                 emberParticles[idx].x += CGFloat.random(in: -40...40)
                 emberParticles[idx].opacity = 0
@@ -675,8 +675,8 @@ struct PaperBurnView: View {
     }
 
     private func cleanupParticles() {
-        ashParticles.removeAll { /bin/sh.opacity <= 0.01 }
-        emberParticles.removeAll { /bin/sh.opacity <= 0.01 }
+        ashParticles.removeAll { $0.opacity <= 0.01 }
+        emberParticles.removeAll { $0.opacity <= 0.01 }
         // Cap particle count
         if ashParticles.count > 30 { ashParticles.removeFirst(5) }
         if emberParticles.count > 20 { emberParticles.removeFirst(3) }
