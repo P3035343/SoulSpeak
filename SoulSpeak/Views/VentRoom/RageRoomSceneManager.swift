@@ -825,7 +825,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         
         // 4 Chairs
         let chairPositions: [(Float, Float)] = [(-1.0, -0.5), (-1.0, 1.5), (-2.0, 0.5), (0.0, 0.5)]
-        let chairRotations: [Float] = [0, .pi, .pi / 2, -.pi / 2]
+        let chairRotations: [Float] = [0, Float.pi, Float.pi / 2, -Float.pi / 2]
         
         for (i, (cx, cz)) in chairPositions.enumerated() {
             addChair(at: SCNVector3(cx, 0, cz), rotation: chairRotations[i], index: i, woodMat: woodMat, legMat: legMat)
@@ -1028,11 +1028,11 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         
         // Left wall frames
         let leftWallX: Float = -3.85
-        addFrame(position: SCNVector3(leftWallX, 1.8, 0.6), size: (0.5, 0.5), rotation: SCNVector3(0, .pi / 2, 0), color: pictureColors[3], frameMat: frameMat, name: "frame_left_0")
-        addFrame(position: SCNVector3(leftWallX, 2.2, -1.5), size: (0.65, 0.5), rotation: SCNVector3(0, .pi / 2, 0), color: pictureColors[4], frameMat: frameMat, name: "frame_left_1")
+        addFrame(position: SCNVector3(leftWallX, 1.8, 0.6), size: (0.5, 0.5), rotation: SCNVector3(0, Float.pi / 2, 0), color: pictureColors[3], frameMat: frameMat, name: "frame_left_0")
+        addFrame(position: SCNVector3(leftWallX, 2.2, -1.5), size: (0.65, 0.5), rotation: SCNVector3(0, Float.pi / 2, 0), color: pictureColors[4], frameMat: frameMat, name: "frame_left_1")
         
         // Right wall frame
-        addFrame(position: SCNVector3(3.85, 2.0, -1.0), size: (0.8, 0.55), rotation: SCNVector3(0, -.pi / 2, 0), color: pictureColors[5], frameMat: frameMat, name: "frame_right_0")
+        addFrame(position: SCNVector3(3.85, 2.0, -1.0), size: (0.8, 0.55), rotation: SCNVector3(0, -Float.pi / 2, 0), color: pictureColors[5], frameMat: frameMat, name: "frame_right_0")
     }
     
     private func addFrame(position: SCNVector3, size: (CGFloat, CGFloat), rotation: SCNVector3, color: UIColor, frameMat: SCNMaterial, name: String) {
@@ -2042,7 +2042,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         
         let emitterNode = SCNNode()
         emitterNode.position = position
-        emitterNode.eulerAngles = SCNVector3(-.pi / 4, 0, 0)
+        emitterNode.eulerAngles = SCNVector3(-Float.pi / 4, 0, 0)
         emitterNode.addParticleSystem(spray)
         scene.rootNode.addChildNode(emitterNode)
         

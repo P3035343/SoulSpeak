@@ -188,7 +188,7 @@ struct PaperBurnView: View {
 
             // Subtle flicker on walls
             if burning {
-                Color.orange.opacity(roomWarmth * 0.05 * (1 + sin(flamePhase * 3) * 0.5))
+                Color.orange.opacity(roomWarmth * 0.05 * (1 + Foundation.sin(flamePhase * 3) * 0.5))
                     .ignoresSafeArea()
                     .allowsHitTesting(false)
             }
@@ -426,8 +426,8 @@ struct PaperBurnView: View {
                                 )
                                 .frame(width: CGFloat(1 + i % 3), height: CGFloat(1 + i % 3))
                                 .offset(
-                                    x: CGFloat(sin(Double(i) * 0.7 + Double(flamePhase)) * 50),
-                                    y: CGFloat(-60 - Double(i) * 12) + CGFloat(sin(Double(flamePhase) + Double(i)) * 8)
+                                    x: CGFloat(Foundation.sin(Double(i) * 0.7 + Double(flamePhase)) * 50),
+                                    y: CGFloat(-60 - Double(i) * 12) + CGFloat(Foundation.sin(Double(flamePhase) + Double(i)) * 8)
                                 )
                                 .opacity(Double(1.0 - CGFloat(i) / 15.0) * Double(fireIntensity))
                         }
@@ -444,7 +444,7 @@ struct PaperBurnView: View {
                         .frame(width: CGFloat(20 + i * 5), height: CGFloat(40 + i * 10))
                         .blur(radius: 12)
                         .offset(
-                            x: CGFloat(sin(Double(flamePhase) * 0.5 + Double(i)) * 30),
+                            x: CGFloat(Foundation.sin(Double(flamePhase) * 0.5 + Double(i)) * 30),
                             y: CGFloat(-120 - i * 15)
                         )
                 }
@@ -467,8 +467,8 @@ struct PaperBurnView: View {
             .blur(radius: blur)
             .offset(y: yOffset)
             .scaleEffect(
-                x: 1.0 + CGFloat(sin(Double(flamePhase + phaseOffset) * 2)) * 0.05,
-                y: 1.0 + CGFloat(cos(Double(flamePhase + phaseOffset) * 1.5)) * 0.08
+                x: 1.0 + CGFloat(Foundation.sin(Double(flamePhase + phaseOffset) * 2)) * 0.05,
+                y: 1.0 + CGFloat(Foundation.cos(Double(flamePhase + phaseOffset) * 1.5)) * 0.08
             )
     }
 
