@@ -2,24 +2,13 @@ import SwiftUI
 import SceneKit
 
 /// Realistic 3D Vent/Rage Room built with SceneKit.
-/// Features: 3D room with physics, destructible objects (plates, walls, dummy),
-/// tools (sledgehammer, boxing gloves), realistic sound effects, and haptic feedback.
+/// Features: bright industrial room, ragdoll dummy, tires, bottles, TV,
+/// physics destruction, haptic feedback, and system sound effects.
 ///
-/// 3D Model files expected (.usdz format) — add to project bundle:
-/// - sledgehammer.usdz
-/// - punching_bag.usdz
-/// - boxing_gloves.usdz
-/// - plate.usdz
-/// - room.usdz (optional — will generate programmatically if missing)
-///
-/// Sound files expected (.mp3):
-/// - glass_break.mp3
-/// - sledgehammer_hit.mp3
-/// - punch_impact.mp3
-/// - wall_crack.mp3
-/// - plate_shatter.mp3
-/// - wood_break.mp3
-/// - spray_sound.mp3
+/// Optional sound files (.mp3) for enhanced audio:
+/// - glass_break.mp3, sledgehammer_hit.mp3, punch_impact.mp3
+/// - plate_shatter.mp3, wood_break.mp3, spray_sound.mp3
+/// (App works without these — uses system sounds as fallback)
 struct DestructionRoomView: View {
     let onRelease: () -> Void
 
@@ -27,91 +16,127 @@ struct DestructionRoomView: View {
     @State private var roomDamage: Double = 0
     @State private var hitCount: Int = 0
     @State private var showRelease = false
+    @State private var comboCount: Int = 0
+    @State private var showCombo = false
+    @State private var lastHitTime: Date = Date()
     @StateObject private var sceneManager = RageRoomSceneManager()
 
     var body: some View {
         ZStack {
-            // 3D SceneKit View — the actual room
+            // 3D SceneKit View — the rage room
             SceneView(
                 scene: sceneManager.scene,
                 pointOfView: sceneManager.cameraNode,
-                options: [.allowsCameraControl, .autoenablesDefaultLighting]
+                options: [.allowsCameraControl]
             )
             .ignoresSafeArea()
+            .onTapGesture { location in
+                performHit()
+            }
             .gesture(
-                TapGesture()
-                    .onEnded { _ in
-                        sceneManager.hitObject(with: selectedTool)
-                        hitCount += 1
-                        roomDamage = min(1.0, roomDamage + 0.05)
-                        if roomDamage >= 0.6 { showRelease = true }
-                    }
-            )
-            .gesture(
-                DragGesture()
+                DragGesture(minimumDistance: 20)
                     .onChanged { value in
                         sceneManager.swipeAction(translation: value.translation, tool: selectedTool)
                     }
-                    .onEnded { _ in
-                        sceneManager.endSwipe(tool: selectedTool)
-                        hitCount += 1
-                        roomDamage = min(1.0, roomDamage + 0.03)
-                        if roomDamage >= 0.6 { showRelease = true }
+                    .onEnded { value in
+                        performSwipe(value)
                     }
             )
 
             // HUD Overlay
             VStack {
-                // Top bar — damage meter
+                // Top bar — damage meter + combo
                 HStack {
-                    // Damage percentage
-                    HStack(spacing: 6) {
-                        Image(systemName: "flame.fill")
-                            .font(.system(size: 12))
-                            .foregroundColor(.orange)
-                        Text("\(Int(roomDamage * 100))%")
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .foregroundColor(.white)
+                    // Damage bar
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "flame.fill")
+                                .font(.system(size: 12))
+                                .foregroundColor(.orange)
+                            Text("RAGE: \(Int(roomDamage * 100))%")
+                                .font(.system(size: 13, weight: .bold, design: .monospaced))
+                                .foregroundColor(.white)
+                        }
+
+                        // Progress bar
+                        GeometryReader { geo in
+                            ZStack(alignment: .leading) {
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(Color.white.opacity(0.2))
+                                    .frame(height: 6)
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [.yellow, .orange, .red],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .frame(width: geo.size.width * CGFloat(roomDamage), height: 6)
+                            }
+                        }
+                        .frame(width: 120, height: 6)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Capsule().fill(Color.black.opacity(0.6)))
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 10)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.black.opacity(0.7)))
 
                     Spacer()
 
-                    // Hit counter
-                    HStack(spacing: 4) {
-                        Image(systemName: "bolt.fill")
-                            .font(.system(size: 11))
-                            .foregroundColor(.yellow)
-                        Text("\(hitCount)")
-                            .font(.system(size: 13, weight: .bold, design: .monospaced))
-                            .foregroundColor(.white)
+                    // Hit counter + combo
+                    VStack(spacing: 2) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "bolt.fill")
+                                .font(.system(size: 11))
+                                .foregroundColor(.yellow)
+                            Text("\(hitCount)")
+                                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                .foregroundColor(.white)
+                        }
+
+                        if showCombo && comboCount > 2 {
+                            Text("\(comboCount)x COMBO!")
+                                .font(.system(size: 10, weight: .black))
+                                .foregroundColor(.yellow)
+                                .transition(.scale.combined(with: .opacity))
+                        }
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(Capsule().fill(Color.black.opacity(0.6)))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.black.opacity(0.7)))
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 60)
 
                 Spacer()
 
+                // Instruction text (fades after first hit)
+                if hitCount == 0 {
+                    Text("TAP to smash • SWIPE to throw")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.7))
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(Capsule().fill(Color.black.opacity(0.5)))
+                        .transition(.opacity)
+                        .padding(.bottom, 10)
+                }
+
                 // Tool selector at bottom
                 toolSelector
 
-                // Release button
+                // Release button (appears at 60% damage)
                 if showRelease {
                     Button(action: onRelease) {
                         HStack(spacing: 10) {
                             Image(systemName: "leaf.fill")
                                 .font(.system(size: 18))
-                            Text("Release")
-                                .font(.system(size: 18, weight: .bold, design: .serif))
+                            Text("Release & Let Go")
+                                .font(.system(size: 17, weight: .bold, design: .serif))
                         }
                         .foregroundColor(.white)
                         .padding(.vertical, 16)
-                        .padding(.horizontal, 40)
+                        .padding(.horizontal, 36)
                         .background(
                             Capsule()
                                 .fill(
@@ -121,7 +146,7 @@ struct DestructionRoomView: View {
                                         endPoint: .trailing
                                     )
                                 )
-                                .shadow(color: Color.green.opacity(0.4), radius: 10, y: 4)
+                                .shadow(color: Color.green.opacity(0.5), radius: 12, y: 4)
                         )
                     }
                     .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -134,31 +159,74 @@ struct DestructionRoomView: View {
         }
     }
 
+    // MARK: - Actions
+    private func performHit() {
+        sceneManager.hitObject(with: selectedTool)
+        hitCount += 1
+
+        // Combo system
+        let now = Date()
+        if now.timeIntervalSince(lastHitTime) < 1.0 {
+            comboCount += 1
+            withAnimation(.spring(response: 0.2)) { showCombo = true }
+        } else {
+            comboCount = 1
+            showCombo = false
+        }
+        lastHitTime = now
+
+        // Damage increases faster with combos
+        let damageAmount = 0.03 + (Double(comboCount) * 0.01)
+        roomDamage = min(1.0, roomDamage + damageAmount)
+
+        if roomDamage >= 0.6 && !showRelease {
+            withAnimation(.spring()) { showRelease = true }
+        }
+
+        // Hide combo text after delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            if Date().timeIntervalSince(lastHitTime) >= 1.0 {
+                withAnimation { showCombo = false }
+            }
+        }
+    }
+
+    private func performSwipe(_ value: DragGesture.Value) {
+        sceneManager.endSwipe(tool: selectedTool)
+        hitCount += 1
+        roomDamage = min(1.0, roomDamage + 0.04)
+
+        if roomDamage >= 0.6 && !showRelease {
+            withAnimation(.spring()) { showRelease = true }
+        }
+    }
+
     // MARK: - Tool Selector
     private var toolSelector: some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 16) {
             ForEach(RageTool.allCases, id: \.self) { tool in
                 Button(action: {
-                    withAnimation(.spring(response: 0.3)) {
+                    withAnimation(.spring(response: 0.25)) {
                         selectedTool = tool
                     }
                 }) {
                     VStack(spacing: 4) {
                         ZStack {
                             Circle()
-                                .fill(selectedTool == tool ? tool.color.opacity(0.3) : Color.black.opacity(0.4))
-                                .frame(width: 56, height: 56)
+                                .fill(selectedTool == tool ? tool.color.opacity(0.4) : Color.black.opacity(0.5))
+                                .frame(width: 52, height: 52)
                                 .overlay(
                                     Circle()
-                                        .stroke(selectedTool == tool ? tool.color : Color.white.opacity(0.2), lineWidth: 2)
+                                        .stroke(selectedTool == tool ? tool.color : Color.white.opacity(0.2), lineWidth: selectedTool == tool ? 3 : 1)
                                 )
+                                .shadow(color: selectedTool == tool ? tool.color.opacity(0.5) : .clear, radius: 8)
 
                             Image(systemName: tool.icon)
-                                .font(.system(size: 22))
-                                .foregroundColor(selectedTool == tool ? tool.color : .white.opacity(0.6))
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundColor(selectedTool == tool ? .white : .white.opacity(0.6))
                         }
                         Text(tool.rawValue)
-                            .font(.system(size: 9, weight: .semibold))
+                            .font(.system(size: 9, weight: .bold))
                             .foregroundColor(selectedTool == tool ? .white : .white.opacity(0.5))
                     }
                 }
@@ -167,10 +235,10 @@ struct DestructionRoomView: View {
         .padding(.vertical, 14)
         .padding(.horizontal, 20)
         .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color.black.opacity(0.7))
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.black.opacity(0.75))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 24)
+                    RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.white.opacity(0.1), lineWidth: 1)
                 )
         )
@@ -182,17 +250,17 @@ struct DestructionRoomView: View {
 enum RageTool: String, CaseIterable {
     case fists = "Fists"
     case sledgehammer = "Sledge"
-    case throwPlates = "Plates"
-    case spray = "Spray"
     case bat = "Bat"
+    case throwPlates = "Throw"
+    case spray = "Spray"
 
     var icon: String {
         switch self {
         case .fists: return "hand.raised.fill"
         case .sledgehammer: return "hammer.fill"
+        case .bat: return "figure.baseball"
         case .throwPlates: return "circle.slash"
         case .spray: return "paintbrush.fill"
-        case .bat: return "figure.baseball"
         }
     }
 
@@ -200,9 +268,9 @@ enum RageTool: String, CaseIterable {
         switch self {
         case .fists: return .red
         case .sledgehammer: return .orange
+        case .bat: return .purple
         case .throwPlates: return .cyan
         case .spray: return .green
-        case .bat: return .purple
         }
     }
 
@@ -210,9 +278,9 @@ enum RageTool: String, CaseIterable {
         switch self {
         case .fists: return "punch_impact"
         case .sledgehammer: return "sledgehammer_hit"
+        case .bat: return "wood_break"
         case .throwPlates: return "plate_shatter"
         case .spray: return "spray_sound"
-        case .bat: return "wood_break"
         }
     }
 }
