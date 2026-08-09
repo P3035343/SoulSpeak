@@ -1127,7 +1127,7 @@ extension DestructionRoomView {
         
         // Mechanical hit counter spring
         hitCounterSpring = 1.3
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
             hitCounterSpring = 1.0
         }
         
@@ -1137,7 +1137,7 @@ extension DestructionRoomView {
         
         // Rage meter shake on hit
         rageMeterShake = CGFloat.random(in: -3...3)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
             rageMeterShake = 0
         }
         
@@ -1160,7 +1160,7 @@ extension DestructionRoomView {
         
         // Double-tap = 3 rapid hits
         for i in 0..<3 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.1) { [self] in
                 sceneManager.hitObject(with: selectedTool)
                 hitCount += 1
                 
@@ -1173,18 +1173,18 @@ extension DestructionRoomView {
         
         // Rage meter rapid shake
         rageMeterShake = 5
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
             rageMeterShake = 0
         }
         
         // Hit counter spring
         hitCounterSpring = 1.5
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [self] in
             hitCounterSpring = 1.0
         }
         
         // Check release
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
             if sceneManager.destructionLevel >= 0.6 && !showRelease {
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
                     showRelease = true
@@ -1274,7 +1274,7 @@ extension DestructionRoomView {
         
         // Dramatic rage meter shake for charged hit
         rageMeterShake = CGFloat(powerMultiplier) * 4
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [self] in
             rageMeterShake = 0
         }
         
@@ -1302,7 +1302,7 @@ extension DestructionRoomView {
         impact.impactOccurred()
         
         // Reset switch animation
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
             withAnimation(.easeOut(duration: 0.2)) {
                 toolSwitchAnimation = false
             }
@@ -1350,7 +1350,7 @@ extension DestructionRoomView {
             comboOpacity = 1.0
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [self] in
             withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
                 comboScale = 1.0
             }
@@ -1360,7 +1360,7 @@ extension DestructionRoomView {
         withAnimation(.easeIn(duration: 0.1)) {
             borderPulseOpacity = tier == .godlike ? 0.8 : (tier == .unstoppable ? 0.5 : 0.3)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [self] in
             withAnimation(.easeOut(duration: 0.6)) {
                 borderPulseOpacity = 0
             }
@@ -1378,7 +1378,7 @@ extension DestructionRoomView {
                 withAnimation(.easeIn(duration: 0.05)) {
                     borderPulseOpacity = 1.0
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
                     withAnimation(.easeOut(duration: 0.8)) {
                         borderPulseOpacity = 0
                     }
@@ -1419,7 +1419,7 @@ extension DestructionRoomView {
         withAnimation(.easeIn(duration: 0.1)) {
             milestoneFlash = true
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
             withAnimation(.easeOut(duration: 0.4)) {
                 milestoneFlash = false
             }
@@ -1445,7 +1445,7 @@ extension DestructionRoomView {
         
         // Rage meter shake burst
         rageMeterShake = CGFloat(milestone) * 3
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             rageMeterShake = 0
         }
     }
@@ -1461,19 +1461,19 @@ extension DestructionRoomView {
             phaseTextOpacity = 1.0
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             withAnimation(.spring(response: 0.2, dampingFraction: 0.7)) {
                 phaseTextScale = 1.0
             }
         }
         
         // Fade out after 2 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [self] in
             withAnimation(.easeOut(duration: 0.5)) {
                 phaseTextOpacity = 0
                 phaseTextScale = 0.8
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
                 showPhaseText = false
             }
         }
@@ -1516,14 +1516,14 @@ extension DestructionRoomView {
         }
         
         // Remove after animation
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) { [self] in
             damageNumbers.removeAll { $0.id == numberId }
         }
     }
     
     private func startEmberSystem() {
         // Generate ember particles continuously - store timer for cleanup
-        emberTimer = Timer.scheduledTimer(withTimeInterval: 0.4, repeats: true) { [weak sceneManager] _ in
+        emberTimer = Timer.scheduledTimer(withTimeInterval: 0.4, repeats: true) { [self, weak sceneManager] _ in
             guard let sceneManager = sceneManager else { return }
             guard sceneManager.destructionLevel > 0.1 else { return }
             
@@ -1554,7 +1554,7 @@ extension DestructionRoomView {
                 }
                 
                 // Remove
-                DispatchQueue.main.asyncAfter(deadline: .now() + ember.speed + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + ember.speed + 0.1) { [self] in
                     emberParticles.removeAll { $0.id == emberId }
                 }
             }
@@ -1562,7 +1562,7 @@ extension DestructionRoomView {
     }
     
     private func startLeafParticles() {
-        leafTimer = Timer.scheduledTimer(withTimeInterval: 0.8, repeats: true) { _ in
+        leafTimer = Timer.scheduledTimer(withTimeInterval: 0.8, repeats: true) { [self] _ in
             let leaf = LeafParticle(
                 xOffset: CGFloat.random(in: -60...60),
                 yOffset: CGFloat.random(in: -20...20),
@@ -1586,7 +1586,7 @@ extension DestructionRoomView {
                 }
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.6) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.6) { [self] in
                 leafParticles.removeAll { $0.id == leafId }
             }
         }
@@ -1631,7 +1631,7 @@ extension DestructionRoomView {
         // Each stage checks viewActive to prevent firing after dismissal
         
         // Step 1: After brief pause, show text
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             guard self.viewActive else { return }
             withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                 introTextOpacity = 1.0
@@ -1640,7 +1640,7 @@ extension DestructionRoomView {
         }
         
         // Step 2: Text holds then begins to fade
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [self] in
             guard self.viewActive else { return }
             withAnimation(.easeOut(duration: 0.5)) {
                 introTextOpacity = 0
@@ -1649,7 +1649,7 @@ extension DestructionRoomView {
         }
         
         // Step 3: HUD elements fade in
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.3) { [self] in
             guard self.viewActive else { return }
             withAnimation(.easeOut(duration: 0.4)) {
                 hudOpacity = 1.0
@@ -1657,7 +1657,7 @@ extension DestructionRoomView {
         }
         
         // Step 4: Tool selector slides up
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [self] in
             guard self.viewActive else { return }
             withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                 toolSelectorOffset = 0
@@ -1665,7 +1665,7 @@ extension DestructionRoomView {
         }
         
         // Step 5: Corner brackets fade in
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.8) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.8) { [self] in
             guard self.viewActive else { return }
             withAnimation(.easeOut(duration: 0.6)) {
                 cornerBracketOpacity = 1.0
@@ -1673,7 +1673,7 @@ extension DestructionRoomView {
         }
         
         // Step 6: Intro complete
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) { [self] in
             guard self.viewActive else { return }
             withAnimation(.easeOut(duration: 0.3)) {
                 introActive = false

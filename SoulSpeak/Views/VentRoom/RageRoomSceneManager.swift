@@ -124,6 +124,11 @@ struct PhysicsCategory {
     static let projectile: Int = 16
 }
 
+/// Reference type for mutable counter captured in concurrent closures
+private class RampState: @unchecked Sendable {
+    var step: Int = 0
+}
+
 
 // MARK: - Elite Rage Room Scene Manager
 /// The ultimate rage room experience engine. Manages a fully destructible 3D environment
@@ -1464,7 +1469,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
     private func scheduleDrip() {
         let delay = Double.random(in: 8.0...20.0)
         dripTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 guard let self = self else { return }
                 // Subtle drip sound
                 let dripSounds: [UInt32] = [1104, 1100, 1054]
@@ -1696,7 +1701,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         // Reset combo after timeout
         comboTimer?.invalidate()
         comboTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { [weak self] _ in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 self?.internalComboCount = 0
                 self?.comboCount = 0
             }
@@ -2149,7 +2154,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         // Ramp back to normal after 0.8 seconds
         slowMotionTimer?.invalidate()
         slowMotionTimer = Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false) { [weak self] _ in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 guard let self = self else { return }
                 self.rampUpFromSlowMotion()
             }
@@ -2158,17 +2163,17 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
     
     private func rampUpFromSlowMotion() {
         // Gradual ramp back to 1.0 over 0.3s
-        var rampStep = 0
+        let rampState = RampState()
         let totalSteps = 6
         slowMotionRampTimer?.invalidate()
         slowMotionRampTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] timer in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 guard let self = self else { timer.invalidate(); return }
-                rampStep += 1
-                let progress = Float(rampStep) / Float(totalSteps)
+                rampState.step += 1
+                let progress = Float(rampState.step) / Float(totalSteps)
                 self.scene.physicsWorld.speed = CGFloat(0.3 + 0.7 * progress)
                 
-                if rampStep >= totalSteps {
+                if rampState.step >= totalSteps {
                     timer.invalidate()
                     self.scene.physicsWorld.speed = 1.0
                     self.isSlowMotion = false
@@ -2822,17 +2827,19 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         let impulse = contact.collisionImpulse
         guard impulse > 1.0 else { return }
         
-        Task { @MainActor in
+        let contactPoint = contact.contactPoint
+        let nodeA = contact.nodeA
+        let nodeB = contact.nodeB
+        
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             let position = SCNVector3(
-                contact.contactPoint.x,
-                contact.contactPoint.y,
-                contact.contactPoint.z
+                contactPoint.x,
+                contactPoint.y,
+                contactPoint.z
             )
             
             // Determine material of colliding objects
-            let nodeA = contact.nodeA
-            let nodeB = contact.nodeB
-            
             var material: ObjectMaterial = .concrete
             if let obj = self.destructibleObjects.first(where: { $0.node == nodeA || $0.node == nodeB }) {
                 material = obj.material

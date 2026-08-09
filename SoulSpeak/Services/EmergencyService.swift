@@ -165,13 +165,15 @@ class EmergencyService: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             self.currentLocation = location
             self.locationManager.stopUpdatingLocation()
 
             // Reverse geocode to get address
-            self.geocoder.reverseGeocodeLocation(location) { placemarks, error in
-                Task { @MainActor in
+            self.geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, _ in
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
                     if let placemark = placemarks?.first {
                         let street = placemark.thoroughfare ?? ""
                         let number = placemark.subThoroughfare ?? ""
