@@ -661,7 +661,7 @@ struct PaperBurnView: View {
             size: CGFloat.random(in: 2...5),
             opacity: 1.0,
             velocityX: CGFloat.random(in: -3...3),
-            velocityY: CGFloat.random(in: -5...-2)
+            velocityY: CGFloat.random(in: (-5)...(-2))
         )
         emberParticles.append(particle)
 

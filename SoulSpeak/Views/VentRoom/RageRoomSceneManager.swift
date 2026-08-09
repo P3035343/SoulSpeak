@@ -1613,7 +1613,7 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
                 let throwForce = SCNVector3(
                     Float.random(in: -4...4),
                     Float.random(in: 2...5),
-                    Float.random(in: -12...-6)
+                    Float.random(in: (-12)...(-6))
                 )
                 target.node.physicsBody?.applyForce(throwForce, asImpulse: true)
                 target.node.physicsBody?.applyTorque(SCNVector4(1, 0.5, 0, 15), asImpulse: true)
