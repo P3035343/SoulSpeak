@@ -74,9 +74,15 @@ struct SoundscapesView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
-                        .foregroundColor(.white.opacity(0.7))
+                    Button("Done") {
+                        stopPlaying()
+                        dismiss()
+                    }
+                    .foregroundColor(.white.opacity(0.7))
                 }
+            }
+            .onDisappear {
+                stopPlaying()
             }
         }
     }
@@ -128,33 +134,46 @@ struct SoundscapesView: View {
 
     // MARK: - Now Playing Bar
     private var nowPlayingBar: some View {
-        HStack(spacing: 12) {
-            // Animated bars
-            HStack(spacing: 2) {
-                ForEach(0..<4, id: \.self) { i in
-                    RoundedRectangle(cornerRadius: 1)
-                        .fill(Color(red: 0.4, green: 0.7, blue: 0.9))
-                        .frame(width: 3, height: CGFloat.random(in: 8...18))
+        VStack(spacing: 0) {
+            Divider().overlay(Color.white.opacity(0.1))
+
+            HStack(spacing: 12) {
+                // Animated bars
+                HStack(spacing: 2) {
+                    ForEach(0..<4, id: \.self) { _ in
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(Color(red: 0.4, green: 0.7, blue: 0.9))
+                            .frame(width: 3, height: CGFloat.random(in: 8...18))
+                    }
+                }
+
+                Text("Now Playing")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.white.opacity(0.7))
+
+                Spacer()
+
+                // STOP button — prominent and clear
+                Button(action: stopPlaying) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "stop.fill")
+                            .font(.system(size: 14, weight: .bold))
+                        Text("Stop")
+                            .font(.system(size: 13, weight: .bold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(
+                        Capsule()
+                            .fill(Color.red.opacity(0.8))
+                    )
                 }
             }
-
-            Text("Now Playing")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(.white.opacity(0.7))
-
-            Spacer()
-
-            Button(action: stopPlaying) {
-                Image(systemName: "stop.fill")
-                    .font(.system(size: 14))
-                    .foregroundColor(.white.opacity(0.6))
-                    .padding(10)
-                    .background(Circle().fill(Color.white.opacity(0.1)))
-            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color.black.opacity(0.9))
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
-        .background(Color.black.opacity(0.8))
     }
 
     // MARK: - Actions
@@ -171,6 +190,8 @@ struct SoundscapesView: View {
     }
 
     private func stopPlaying() {
+        audioPlayer.stopVoice()
+        audioPlayer.stopBackgroundMusic()
         audioPlayer.stopAll()
         currentlyPlaying = nil
     }

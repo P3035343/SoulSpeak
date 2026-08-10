@@ -6,6 +6,7 @@ struct MeditationCatalogView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var audioPlayer = AudioPlayerService.shared
     @State private var currentlyPlaying: String? = nil
+    @State private var progressAnimation = false
 
     var body: some View {
         NavigationStack {
@@ -20,35 +21,49 @@ struct MeditationCatalogView: View {
                 )
                 .ignoresSafeArea()
 
-                ScrollView {
-                    LazyVStack(spacing: 14) {
-                        ForEach(sessions) { session in
-                            sessionCard(session)
+                VStack(spacing: 0) {
+                    ScrollView {
+                        LazyVStack(spacing: 14) {
+                            ForEach(sessions) { session in
+                                sessionCard(session)
+                            }
                         }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 16)
+                        .padding(.bottom, currentlyPlaying != nil ? 120 : 40)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                    .padding(.bottom, 40)
+
+                    // Now Playing bar with STOP button
+                    if currentlyPlaying != nil {
+                        nowPlayingBar
+                    }
                 }
             }
             .navigationTitle("Meditations")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
-                        .foregroundColor(.white.opacity(0.7))
+                    Button("Done") {
+                        stopPlaying()
+                        dismiss()
+                    }
+                    .foregroundColor(.white.opacity(0.7))
                 }
+            }
+            .onDisappear {
+                // Stop audio when leaving the view
+                stopPlaying()
             }
         }
     }
 
     // MARK: - Session Card
     private func sessionCard(_ session: MeditationSession) -> some View {
-        Button(action: { playSession(session) }) {
+        Button(action: { toggleSession(session) }) {
             HStack(spacing: 14) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(session.color.opacity(0.15))
+                        .fill(session.color.opacity(currentlyPlaying == session.fileName ? 0.25 : 0.15))
                         .frame(width: 50, height: 50)
                     Image(systemName: session.icon)
                         .font(.system(size: 20))
@@ -66,9 +81,28 @@ struct MeditationCatalogView: View {
 
                 Spacer()
 
-                Image(systemName: currentlyPlaying == session.fileName ? "pause.circle.fill" : "play.circle.fill")
-                    .font(.system(size: 28))
-                    .foregroundColor(currentlyPlaying == session.fileName ? session.color : .white.opacity(0.3))
+                // Play/Pause indicator
+                if currentlyPlaying == session.fileName {
+                    // Animated equalizer bars
+                    HStack(spacing: 2) {
+                        ForEach(0..<3, id: \.self) { i in
+                            RoundedRectangle(cornerRadius: 1)
+                                .fill(session.color)
+                                .frame(width: 3, height: progressAnimation ? CGFloat.random(in: 8...18) : 6)
+                                .animation(
+                                    .easeInOut(duration: 0.4)
+                                        .repeatForever(autoreverses: true)
+                                        .delay(Double(i) * 0.15),
+                                    value: progressAnimation
+                                )
+                        }
+                    }
+                    .frame(width: 20)
+                } else {
+                    Image(systemName: "play.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundColor(.white.opacity(0.3))
+                }
             }
             .padding(14)
             .background(
@@ -82,16 +116,91 @@ struct MeditationCatalogView: View {
         }
     }
 
-    // MARK: - Play
-    private func playSession(_ session: MeditationSession) {
+    // MARK: - Now Playing Bar (with prominent STOP button)
+    private var nowPlayingBar: some View {
+        VStack(spacing: 0) {
+            Divider().overlay(Color.white.opacity(0.1))
+
+            HStack(spacing: 16) {
+                // Animated bars
+                HStack(spacing: 2) {
+                    ForEach(0..<4, id: \.self) { i in
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(Color(red: 0.7, green: 0.4, blue: 0.8))
+                            .frame(width: 3, height: progressAnimation ? CGFloat.random(in: 8...20) : 6)
+                            .animation(
+                                .easeInOut(duration: 0.5)
+                                    .repeatForever(autoreverses: true)
+                                    .delay(Double(i) * 0.12),
+                                value: progressAnimation
+                            )
+                    }
+                }
+
+                // Track name
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Now Playing")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundColor(.white.opacity(0.5))
+                    Text(currentSessionName)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+                }
+
+                Spacer()
+
+                // STOP BUTTON — prominent red square
+                Button(action: stopPlaying) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "stop.fill")
+                            .font(.system(size: 14, weight: .bold))
+                        Text("Stop")
+                            .font(.system(size: 13, weight: .bold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(
+                        Capsule()
+                            .fill(Color.red.opacity(0.8))
+                    )
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 14)
+            .background(Color.black.opacity(0.9))
+        }
+    }
+
+    // MARK: - Actions
+    private func toggleSession(_ session: MeditationSession) {
         if currentlyPlaying == session.fileName {
-            audioPlayer.stopAll()
-            currentlyPlaying = nil
+            // STOP — not just pause
+            stopPlaying()
         } else {
-            audioPlayer.stopAll()
+            // Stop any currently playing audio first
+            stopPlaying()
+
+            // Play the new session
             audioPlayer.playVoice(fileName: session.fileName)
             currentlyPlaying = session.fileName
+            progressAnimation = true
         }
+    }
+
+    private func stopPlaying() {
+        audioPlayer.stopVoice()
+        audioPlayer.stopBackgroundMusic()
+        audioPlayer.stopAll()
+        currentlyPlaying = nil
+        progressAnimation = false
+    }
+
+    // MARK: - Helpers
+    private var currentSessionName: String {
+        guard let fileName = currentlyPlaying else { return "" }
+        return sessions.first(where: { $0.fileName == fileName })?.name ?? fileName
     }
 
     // MARK: - Sessions (matches your actual MP3 files)
