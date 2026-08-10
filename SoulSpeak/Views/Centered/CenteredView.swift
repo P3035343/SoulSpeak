@@ -12,7 +12,6 @@ struct CenteredView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var audioPlayer = AudioPlayerService.shared
     @State private var showIntroVideo = true
-    @State private var breatheAnimation = false
     @State private var selectedCategory: AudioCategory = .meditations
     @State private var currentlyPlaying: String? = nil
     @State private var progressAnimation = false
@@ -110,10 +109,10 @@ struct CenteredView: View {
             )
             .ignoresSafeArea()
 
-            // Ambient glow
+            // Subtle ambient glow (static, no animation)
             RadialGradient(
                 colors: [
-                    selectedCategory.color.opacity(breatheAnimation ? 0.08 : 0.04),
+                    selectedCategory.color.opacity(0.06),
                     Color.clear
                 ],
                 center: .center,
@@ -150,9 +149,7 @@ struct CenteredView: View {
             }
         }
         .onAppear {
-            withAnimation(.easeInOut(duration: 3.0).repeatForever(autoreverses: true)) {
-                breatheAnimation = true
-            }
+            // Static view — no repeating animations
         }
     }
 
@@ -162,7 +159,6 @@ struct CenteredView: View {
             Image(systemName: "leaf.circle.fill")
                 .font(.system(size: 44))
                 .foregroundColor(selectedCategory.color)
-                .scaleEffect(breatheAnimation ? 1.05 : 1.0)
 
             Text("Find Your Center")
                 .font(.system(size: 24, weight: .bold, design: .serif))
