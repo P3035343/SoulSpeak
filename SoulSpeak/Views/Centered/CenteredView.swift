@@ -1,56 +1,62 @@
 import SwiftUI
 
-/// Centered — A peaceful interactive office session space.
+/// Centered — A peaceful interactive session space for guided audio.
 ///
 /// Features:
 /// - Walking intro video (entering the Centered room)
-/// - Soundscapes & relaxation music playlist (free)
-/// - Ethiopian Bible audio (free, clickable chapters)
-/// - Meditation session catalog (scripted by Mr. Hope & Dr. Hope)
-/// - Interactive office atmosphere
+/// - Categorized audio: Meditations, Pep Talks, Healing, Dr. Hope Closings
+/// - Interactive office atmosphere with breathing animation
 ///
 /// Video expected: centered_room_intro.mp4
-enum CenteredSection: String, CaseIterable, Identifiable {
-    case soundscapes = "Soundscapes"
-    case meditations = "Meditations"
-
-    var id: String { rawValue }
-
-    var icon: String {
-        switch self {
-        case .soundscapes: return "waveform.circle.fill"
-        case .meditations: return "sparkles"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .soundscapes: return Color(red: 0.4, green: 0.7, blue: 0.9)
-        case .meditations: return Color(red: 0.7, green: 0.4, blue: 0.8)
-        }
-    }
-}
-
 struct CenteredView: View {
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var audioPlayer = AudioPlayerService.shared
     @State private var showIntroVideo = true
-    @State private var selectedSection: CenteredSection? = nil
     @State private var breatheAnimation = false
+    @State private var selectedCategory: AudioCategory = .meditations
+    @State private var currentlyPlaying: String? = nil
+    @State private var progressAnimation = false
+
+    enum AudioCategory: String, CaseIterable {
+        case meditations = "Meditations"
+        case pepTalks = "Pep Talks"
+        case healing = "Healing"
+        case closings = "Closings"
+
+        var icon: String {
+            switch self {
+            case .meditations: return "sparkles"
+            case .pepTalks: return "bolt.fill"
+            case .healing: return "heart.fill"
+            case .closings: return "hands.and.sparkles.fill"
+            }
+        }
+
+        var color: Color {
+            switch self {
+            case .meditations: return Color(red: 0.4, green: 0.7, blue: 0.9)
+            case .pepTalks: return Color(red: 0.9, green: 0.6, blue: 0.3)
+            case .healing: return Color(red: 0.8, green: 0.4, blue: 0.6)
+            case .closings: return Color(red: 0.7, green: 0.4, blue: 0.8)
+            }
+        }
+    }
 
     var body: some View {
         ZStack {
             if showIntroVideo {
-                // Walking intro video
                 centeredIntroVideo
             } else {
-                // Main Centered room
                 centeredMainView
             }
 
-            // Back button overlay (always visible)
+            // Back button overlay
             VStack {
                 HStack {
-                    Button(action: { dismiss() }) {
+                    Button(action: {
+                        stopPlaying()
+                        dismiss()
+                    }) {
                         HStack(spacing: 6) {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 16, weight: .bold))
@@ -70,6 +76,9 @@ struct CenteredView: View {
             }
         }
         .navigationBarHidden(true)
+        .onDisappear {
+            stopPlaying()
+        }
     }
 
     // MARK: - Intro Video
@@ -89,7 +98,7 @@ struct CenteredView: View {
     // MARK: - Main View
     private var centeredMainView: some View {
         ZStack {
-            // Peaceful office background
+            // Background
             LinearGradient(
                 colors: [
                     Color(red: 0.08, green: 0.1, blue: 0.14),
@@ -104,7 +113,7 @@ struct CenteredView: View {
             // Ambient glow
             RadialGradient(
                 colors: [
-                    Color(red: 0.4, green: 0.6, blue: 0.8).opacity(breatheAnimation ? 0.08 : 0.04),
+                    selectedCategory.color.opacity(breatheAnimation ? 0.08 : 0.04),
                     Color.clear
                 ],
                 center: .center,
@@ -113,21 +122,31 @@ struct CenteredView: View {
             )
             .ignoresSafeArea()
 
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Header
-                    headerSection
-                        .padding(.top, 20)
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Header
+                        headerSection
+                            .padding(.top, 80)
 
-                    // Section cards
-                    ForEach(CenteredSection.allCases) { section in
-                        sectionCard(section)
+                        // Category picker
+                        categoryPicker
+
+                        // Track list
+                        LazyVStack(spacing: 12) {
+                            ForEach(tracks(for: selectedCategory)) { track in
+                                trackRow(track)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, currentlyPlaying != nil ? 100 : 40)
                     }
-
-                    // Now Playing mini player (if something is playing)
-                    Spacer(minLength: 40)
                 }
-                .padding(.horizontal, 20)
+
+                // Now Playing bar with STOP
+                if currentlyPlaying != nil {
+                    nowPlayingBar
+                }
             }
         }
         .onAppear {
@@ -135,23 +154,14 @@ struct CenteredView: View {
                 breatheAnimation = true
             }
         }
-        .sheet(item: $selectedSection) { section in
-            switch section {
-            case .soundscapes:
-                SoundscapesView()
-            case .meditations:
-                MeditationCatalogView()
-            }
-        }
     }
 
     // MARK: - Header
     private var headerSection: some View {
         VStack(spacing: 12) {
-            // Lotus/peace icon
             Image(systemName: "leaf.circle.fill")
                 .font(.system(size: 44))
-                .foregroundColor(Color(red: 0.4, green: 0.7, blue: 0.9))
+                .foregroundColor(selectedCategory.color)
                 .scaleEffect(breatheAnimation ? 1.05 : 1.0)
 
             Text("Find Your Center")
@@ -165,57 +175,219 @@ struct CenteredView: View {
         }
     }
 
-    // MARK: - Section Card
-    private func sectionCard(_ section: CenteredSection) -> some View {
-        Button(action: { selectedSection = section }) {
-            HStack(spacing: 16) {
+    // MARK: - Category Picker
+    private var categoryPicker: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                ForEach(AudioCategory.allCases, id: \.self) { category in
+                    Button(action: { selectedCategory = category }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: category.icon)
+                                .font(.system(size: 12))
+                            Text(category.rawValue)
+                                .font(.system(size: 13, weight: .semibold))
+                        }
+                        .foregroundColor(selectedCategory == category ? .white : .white.opacity(0.6))
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 10)
+                        .background(
+                            Capsule()
+                                .fill(selectedCategory == category ? category.color.opacity(0.3) : Color.white.opacity(0.06))
+                                .overlay(
+                                    Capsule()
+                                        .stroke(selectedCategory == category ? category.color.opacity(0.5) : Color.clear, lineWidth: 1)
+                                )
+                        )
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+
+    // MARK: - Track Row
+    private func trackRow(_ track: CenteredTrack) -> some View {
+        Button(action: { toggleTrack(track) }) {
+            HStack(spacing: 14) {
                 // Icon
                 ZStack {
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(section.color.opacity(0.15))
-                        .frame(width: 56, height: 56)
+                    Circle()
+                        .fill(currentlyPlaying == track.fileName ? track.color.opacity(0.25) : track.color.opacity(0.1))
+                        .frame(width: 48, height: 48)
 
-                    Image(systemName: section.icon)
-                        .font(.system(size: 24))
-                        .foregroundColor(section.color)
+                    if currentlyPlaying == track.fileName {
+                        // Animated equalizer
+                        HStack(spacing: 2) {
+                            ForEach(0..<3, id: \.self) { i in
+                                RoundedRectangle(cornerRadius: 1)
+                                    .fill(track.color)
+                                    .frame(width: 3, height: progressAnimation ? CGFloat.random(in: 8...16) : 6)
+                                    .animation(
+                                        .easeInOut(duration: 0.4)
+                                            .repeatForever(autoreverses: true)
+                                            .delay(Double(i) * 0.15),
+                                        value: progressAnimation
+                                    )
+                            }
+                        }
+                    } else {
+                        Image(systemName: track.icon)
+                            .font(.system(size: 18))
+                            .foregroundColor(track.color)
+                    }
                 }
 
-                // Text
+                // Track info
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(section.rawValue)
-                        .font(.system(size: 18, weight: .semibold))
+                    Text(track.name)
+                        .font(.system(size: 15, weight: .medium))
                         .foregroundColor(.white)
-
-                    Text(sectionDescription(section))
-                        .font(.system(size: 12))
-                        .foregroundColor(.white.opacity(0.6))
-                        .lineLimit(2)
+                    Text(track.subtitle)
+                        .font(.system(size: 11))
+                        .foregroundColor(track.color.opacity(0.7))
                 }
 
                 Spacer()
 
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.white.opacity(0.3))
+                // Play/Stop icon
+                Image(systemName: currentlyPlaying == track.fileName ? "stop.circle.fill" : "play.circle.fill")
+                    .font(.system(size: 28))
+                    .foregroundColor(currentlyPlaying == track.fileName ? .red.opacity(0.8) : .white.opacity(0.3))
             }
-            .padding(18)
+            .padding(14)
             .background(
-                RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.white.opacity(0.05))
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(currentlyPlaying == track.fileName ? track.color.opacity(0.06) : Color.white.opacity(0.03))
                     .overlay(
-                        RoundedRectangle(cornerRadius: 18)
-                            .stroke(section.color.opacity(0.15), lineWidth: 1)
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(currentlyPlaying == track.fileName ? track.color.opacity(0.3) : Color.clear, lineWidth: 1)
                     )
             )
         }
     }
 
-    private func sectionDescription(_ section: CenteredSection) -> String {
-        switch section {
-        case .soundscapes:
-            return "Free relaxing soundscapes, nature sounds, and instrumental music"
-        case .meditations:
-            return "Guided meditations from Dr. Hope & Mr. Hope"
+    // MARK: - Now Playing Bar
+    private var nowPlayingBar: some View {
+        VStack(spacing: 0) {
+            Divider().overlay(Color.white.opacity(0.1))
+
+            HStack(spacing: 16) {
+                // Animated bars
+                HStack(spacing: 2) {
+                    ForEach(0..<4, id: \.self) { i in
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(selectedCategory.color)
+                            .frame(width: 3, height: progressAnimation ? CGFloat.random(in: 8...20) : 6)
+                            .animation(
+                                .easeInOut(duration: 0.5)
+                                    .repeatForever(autoreverses: true)
+                                    .delay(Double(i) * 0.12),
+                                value: progressAnimation
+                            )
+                    }
+                }
+
+                // Track name
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Now Playing")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundColor(.white.opacity(0.5))
+                    Text(currentTrackName)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+                }
+
+                Spacer()
+
+                // STOP BUTTON
+                Button(action: stopPlaying) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "stop.fill")
+                            .font(.system(size: 14, weight: .bold))
+                        Text("Stop")
+                            .font(.system(size: 13, weight: .bold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(
+                        Capsule()
+                            .fill(Color.red.opacity(0.8))
+                    )
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 14)
+            .background(Color.black.opacity(0.9))
         }
     }
+
+    // MARK: - Actions
+    private func toggleTrack(_ track: CenteredTrack) {
+        if currentlyPlaying == track.fileName {
+            stopPlaying()
+        } else {
+            stopPlaying()
+            audioPlayer.playVoice(fileName: track.fileName)
+            currentlyPlaying = track.fileName
+            progressAnimation = true
+        }
+    }
+
+    private func stopPlaying() {
+        audioPlayer.stopVoice()
+        audioPlayer.stopBackgroundMusic()
+        audioPlayer.stopAll()
+        currentlyPlaying = nil
+        progressAnimation = false
+    }
+
+    private var currentTrackName: String {
+        guard let fileName = currentlyPlaying else { return "" }
+        let allTracks = AudioCategory.allCases.flatMap { tracks(for: $0) }
+        return allTracks.first(where: { $0.fileName == fileName })?.name ?? fileName
+    }
+
+    // MARK: - Track Data (organized by category)
+    private func tracks(for category: AudioCategory) -> [CenteredTrack] {
+        switch category {
+        case .meditations:
+            return [
+                CenteredTrack(name: "Cooling the Fire", fileName: "anger_management_meditation", subtitle: "Anger Management", icon: "flame.fill", color: .red),
+                CenteredTrack(name: "The Quiet Place Within", fileName: "inner_peace_meditation", subtitle: "Inner Peace", icon: "leaf.fill", color: Color(red: 0.3, green: 0.7, blue: 0.5)),
+                CenteredTrack(name: "Making Peace Within", fileName: "internal_conflict_meditation", subtitle: "Internal Conflict", icon: "arrow.triangle.branch", color: Color(red: 0.5, green: 0.5, blue: 0.8)),
+                CenteredTrack(name: "Lay the Weight Down", fileName: "stress_release_meditation", subtitle: "Stress Release", icon: "cloud.rain.fill", color: Color(red: 0.4, green: 0.6, blue: 0.8)),
+                CenteredTrack(name: "Restoring Your Energy", fileName: "rejuvenation_meditation_dh", subtitle: "With Dr. Hope", icon: "bolt.heart.fill", color: Color(red: 0.7, green: 0.4, blue: 0.8)),
+                CenteredTrack(name: "Restoring Your Energy", fileName: "rejuvenation_meditation_mh", subtitle: "With Mr. Hope", icon: "bolt.heart.fill", color: Color(red: 0.3, green: 0.6, blue: 0.9)),
+            ]
+        case .pepTalks:
+            return [
+                CenteredTrack(name: "Feminine Energy Pep Talk", fileName: "feminine_energy_pep_talk", subtitle: "Empowerment & Confidence", icon: "sparkles", color: Color(red: 0.9, green: 0.5, blue: 0.7)),
+                CenteredTrack(name: "Masculine Energy Pep Talk", fileName: "masculine_energy_pep_talk", subtitle: "Strength & Purpose", icon: "shield.fill", color: Color(red: 0.3, green: 0.5, blue: 0.9)),
+            ]
+        case .healing:
+            return [
+                CenteredTrack(name: "Breaking Free", fileName: "breaking_free_abusive_relationship", subtitle: "Abusive Relationship Recovery", icon: "link.badge.plus", color: Color(red: 0.8, green: 0.4, blue: 0.5)),
+                CenteredTrack(name: "Reclaiming Your Heart", fileName: "overcoming_harmful_relationship", subtitle: "Harmful Relationship Recovery", icon: "heart.fill", color: Color(red: 0.7, green: 0.3, blue: 0.4)),
+                CenteredTrack(name: "Returning Love to Yourself", fileName: "returning_love_to_yourself", subtitle: "Self-Love Journey", icon: "heart.circle.fill", color: Color(red: 0.9, green: 0.6, blue: 0.4)),
+            ]
+        case .closings:
+            return [
+                CenteredTrack(name: "Closing Prayer", fileName: "dr_hope_closing prayer", subtitle: "Dr. Hope's Prayer", icon: "hands.and.sparkles.fill", color: Color(red: 0.7, green: 0.4, blue: 0.8)),
+                CenteredTrack(name: "Closing Message", fileName: "dr_hope_closing", subtitle: "Dr. Hope's Farewell", icon: "hand.wave.fill", color: Color(red: 0.6, green: 0.4, blue: 0.7)),
+                CenteredTrack(name: "Journaling Guidance", fileName: "dr_hope_journing", subtitle: "Dr. Hope Guides Your Writing", icon: "pencil.and.scribble", color: Color(red: 0.5, green: 0.6, blue: 0.8)),
+            ]
+        }
+    }
+}
+
+// MARK: - Track Model
+struct CenteredTrack: Identifiable {
+    let id = UUID()
+    let name: String
+    let fileName: String
+    let subtitle: String
+    let icon: String
+    let color: Color
 }
