@@ -54,6 +54,10 @@
 		7D1A30B87136802701132170 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAFDFB19356D8D858F7B85E; };
 		C58F33007F5FD51CF10177EC /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7063063F457E1AF2546F0CF9; };
 		1B17D9220D3967B7470B7197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BFF27C7E987F9099D6AED79; };
+		1599A50263E2F9F6800C08FF /* MirrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F28651935E9238F4F41132; };
+		80FA9C3D9F4F93FE960D69EB /* MirrorSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF46BC7E76AA4F738E3DDEA3; };
+		814143D57128ED28BFD35CAF /* MirrorProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60172B53D0795D6F9FAF0B04; };
+		43583A8ED01A90F7BFE8BC32 /* MirrorAffirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741420197A85F433F334FAE; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +107,10 @@
 		4E5D4EF1CCB3FBCE13AB11A0 /* IntroSequenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSequenceView.swift; sourceTree = "<group>"; };
 		5FAFDFB19356D8D858F7B85E /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		7063063F457E1AF2546F0CF9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		08F28651935E9238F4F41132 /* MirrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorView.swift; sourceTree = "<group>"; };
+		AF46BC7E76AA4F738E3DDEA3 /* MirrorSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorSessionView.swift; sourceTree = "<group>"; };
+		60172B53D0795D6F9FAF0B04 /* MirrorProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorProgressView.swift; sourceTree = "<group>"; };
+		E741420197A85F433F334FAE /* MirrorAffirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorAffirmationView.swift; sourceTree = "<group>"; };
 		0BFF27C7E987F9099D6AED79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04C165BFC61BB770D0529EA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D91517BFBDECE389497A425B /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,6 +205,7 @@
 				411FB2E6D36F4B114885A8BE /* Analytics */,
 				E7CF8A8769B2CBF51B4E35BB /* Centered */,
 				6A4A5194513E89696377E642 /* Components */,
+				0D7743AC6BC5A2B3CCB76996 /* Mirror */,
 				4F35D123D1144C57E8444C35 /* MoodTracker */,
 				6C584B4931B663D6E04F2B0E /* Prayer */,
 				4F60404FBFDF40A2513E2919 /* Settings */,
@@ -273,6 +282,17 @@
 				4449234CBF64681D35CBA321 /* VentRoomView.swift */,
 			);
 			path = VentRoom;
+			sourceTree = "<group>";
+		};
+		0D7743AC6BC5A2B3CCB76996 /* Mirror */ = {
+			isa = PBXGroup;
+			children = (
+				08F28651935E9238F4F41132 /* MirrorView.swift */,
+				AF46BC7E76AA4F738E3DDEA3 /* MirrorSessionView.swift */,
+				60172B53D0795D6F9FAF0B04 /* MirrorProgressView.swift */,
+				E741420197A85F433F334FAE /* MirrorAffirmationView.swift */,
+			);
+			path = Mirror;
 			sourceTree = "<group>";
 		};
 		98E8C311A466173B522EF595 /* VoiceJournal */ = {
@@ -402,6 +422,10 @@
 				E3875200222C4BF1DE385922 /* VentPlaybackView.swift in Sources */,
 				D9BC7039F6F75897546141A4 /* VentRecordingView.swift in Sources */,
 				E73C7A77A13E6B9F620C3580 /* VentRoomView.swift in Sources */,
+				1599A50263E2F9F6800C08FF /* MirrorView.swift in Sources */,
+				80FA9C3D9F4F93FE960D69EB /* MirrorSessionView.swift in Sources */,
+				814143D57128ED28BFD35CAF /* MirrorProgressView.swift in Sources */,
+				43583A8ED01A90F7BFE8BC32 /* MirrorAffirmationView.swift in Sources */,
 				AC7AF23C30103B3698EEFAB4 /* DrHopeListeningView.swift in Sources */,
 				6782BBE50FC09BD864E2B68F /* VoiceJournalView.swift in Sources */,
 				4A5F0EC6E220B74EE19DB95A /* WaveformView.swift in Sources */,

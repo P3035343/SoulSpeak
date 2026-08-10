@@ -12,6 +12,7 @@ struct MainHubView: View {
     @State private var showVent = false
     @State private var showCentered = false
     @State private var showMood = false
+    @State private var showMirror = false
     @State private var showEmergency = false
     @State private var showSettings = false
     @State private var pulseGlow = false
@@ -35,7 +36,7 @@ struct MainHubView: View {
                     startPoint: .top,
                     endPoint: .bottom
                 )
-                .frame(height: 350)
+                .frame(height: 400)
             }
             .ignoresSafeArea()
             .allowsHitTesting(false)
@@ -67,10 +68,10 @@ struct MainHubView: View {
 
                 Spacer()
 
-                // Main navigation icons — bigger, bolder, more visible
-                VStack(spacing: 24) {
-                    // Top row
-                    HStack(spacing: 28) {
+                // Main navigation icons
+                VStack(spacing: 22) {
+                    // Row 1: Journal, Talk, Vent
+                    HStack(spacing: 26) {
                         hubIcon(
                             name: "Journal",
                             icon: "mic.fill",
@@ -93,8 +94,8 @@ struct MainHubView: View {
                         )
                     }
 
-                    // Bottom row
-                    HStack(spacing: 28) {
+                    // Row 2: Centered, Mirror, Mood
+                    HStack(spacing: 26) {
                         hubIcon(
                             name: "Centered",
                             icon: "leaf.circle.fill",
@@ -103,17 +104,17 @@ struct MainHubView: View {
                         )
 
                         hubIcon(
+                            name: "Mirror",
+                            icon: "person.crop.circle",
+                            color: Color(red: 0.85, green: 0.75, blue: 1.0),
+                            action: { showMirror = true }
+                        )
+
+                        hubIcon(
                             name: "Mood",
                             icon: "face.smiling.fill",
                             color: Color(red: 1.0, green: 0.75, blue: 0.2),
                             action: { showMood = true }
-                        )
-
-                        hubIcon(
-                            name: "More",
-                            icon: "ellipsis.circle.fill",
-                            color: Color.white,
-                            action: { showSettings = true }
                         )
                     }
                 }
@@ -136,6 +137,9 @@ struct MainHubView: View {
         }
         .fullScreenCover(isPresented: $showCentered) {
             NavigationStack { CenteredView() }
+        }
+        .fullScreenCover(isPresented: $showMirror) {
+            NavigationStack { MirrorView() }
         }
         .fullScreenCover(isPresented: $showMood) {
             NavigationStack { MoodTrackerView() }
