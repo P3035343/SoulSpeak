@@ -15,6 +15,8 @@ struct MainHubView: View {
     @State private var showMirror = false
     @State private var showEmergency = false
     @State private var showSettings = false
+    @State private var showConversation = false
+    @State private var selectedCharacter: GeminiService.Character = .drHope
     @State private var pulseGlow = false
 
     var body: some View {
@@ -130,7 +132,10 @@ struct MainHubView: View {
             NavigationStack { VoiceJournalView() }
         }
         .fullScreenCover(isPresented: $showTalk) {
-            NavigationStack { TalkTabView(showConversation: .constant(false), selectedCharacter: .constant(.drHope)) }
+            NavigationStack { TalkTabView(showConversation: $showConversation, selectedCharacter: $selectedCharacter) }
+        }
+        .fullScreenCover(isPresented: $showConversation) {
+            ConversationView(character: selectedCharacter)
         }
         .fullScreenCover(isPresented: $showVent) {
             VentRoomView()
