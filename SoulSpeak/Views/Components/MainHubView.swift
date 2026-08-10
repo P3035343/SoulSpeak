@@ -8,13 +8,13 @@ import SwiftUI
 /// (The warm office room with brick walls, books, plants, leather chair)
 struct MainHubView: View {
     @State private var showJournal = false
-    @State private var showTalk = false
     @State private var showVent = false
     @State private var showCentered = false
     @State private var showMood = false
     @State private var showMirror = false
     @State private var showEmergency = false
     @State private var showSettings = false
+    @State private var showCharacterPicker = false
     @State private var showConversation = false
     @State private var selectedCharacter: GeminiService.Character = .drHope
     @State private var pulseGlow = false
@@ -85,7 +85,7 @@ struct MainHubView: View {
                             name: "Talk",
                             icon: "bubble.left.and.bubble.right.fill",
                             color: Color(red: 0.3, green: 0.6, blue: 1.0),
-                            action: { showTalk = true }
+                            action: { showCharacterPicker = true }
                         )
 
                         hubIcon(
@@ -122,6 +122,11 @@ struct MainHubView: View {
                 }
                 .padding(.bottom, 70)
             }
+
+            // MARK: - Character Picker Overlay
+            if showCharacterPicker {
+                characterPickerOverlay
+            }
         }
         .onAppear {
             withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true)) {
@@ -130,9 +135,6 @@ struct MainHubView: View {
         }
         .fullScreenCover(isPresented: $showJournal) {
             NavigationStack { VoiceJournalView() }
-        }
-        .fullScreenCover(isPresented: $showTalk) {
-            NavigationStack { TalkTabView(showConversation: $showConversation, selectedCharacter: $selectedCharacter) }
         }
         .fullScreenCover(isPresented: $showConversation) {
             ConversationView(character: selectedCharacter)
@@ -154,6 +156,131 @@ struct MainHubView: View {
         }
         .fullScreenCover(isPresented: $showSettings) {
             NavigationStack { SettingsView() }
+        }
+    }
+
+    // MARK: - Character Picker (inline overlay — no nested fullScreenCover)
+    private var characterPickerOverlay: some View {
+        ZStack {
+            // Dimmed background
+            Color.black.opacity(0.85)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        showCharacterPicker = false
+                    }
+                }
+
+            VStack(spacing: 28) {
+                // Close button
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        withAnimation(.easeOut(duration: 0.25)) {
+                            showCharacterPicker = false
+                        }
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(.white.opacity(0.5))
+                    }
+                    .padding(.trailing, 24)
+                }
+
+                Spacer()
+
+                Text("Who would you like\nto talk to?")
+                    .font(.system(size: 26, weight: .bold, design: .serif))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+
+                Text("AI-powered conversations that listen and talk back")
+                    .font(.system(size: 14))
+                    .foregroundColor(.white.opacity(0.6))
+
+                Spacer()
+
+                // Dr. Hope card
+                characterPickerCard(
+                    character: .drHope,
+                    imageName: "dr_hope",
+                    subtitle: "Spiritual Therapist",
+                    description: "Deep, healing conversations with Gullah wisdom",
+                    color: Color(red: 0.7, green: 0.4, blue: 0.8)
+                )
+
+                // Mr. Hope card
+                characterPickerCard(
+                    character: .mrHope,
+                    imageName: "mr_hope",
+                    subtitle: "Wellness Companion",
+                    description: "Uplifting, motivational talks — hey Champ!",
+                    color: Color(red: 0.3, green: 0.6, blue: 0.9)
+                )
+
+                Spacer()
+                Spacer()
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 60)
+        }
+        .transition(.opacity)
+    }
+
+    private func characterPickerCard(character: GeminiService.Character, imageName: String, subtitle: String, description: String, color: Color) -> some View {
+        Button(action: {
+            selectedCharacter = character
+            withAnimation(.easeOut(duration: 0.2)) {
+                showCharacterPicker = false
+            }
+            // Small delay so the overlay dismisses before presenting fullScreenCover
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                showConversation = true
+            }
+        }) {
+            HStack(spacing: 16) {
+                // Avatar
+                Image(imageName)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 60, height: 60)
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(color.opacity(0.6), lineWidth: 2)
+                    )
+                    .shadow(color: color.opacity(0.3), radius: 6)
+
+                // Info
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(character.rawValue)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.white)
+
+                    Text(subtitle)
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(color.opacity(0.8))
+
+                    Text(description)
+                        .font(.system(size: 12))
+                        .foregroundColor(.white.opacity(0.6))
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.4))
+            }
+            .padding(18)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.white.opacity(0.06))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(color.opacity(0.2), lineWidth: 1)
+                    )
+            )
         }
     }
 
