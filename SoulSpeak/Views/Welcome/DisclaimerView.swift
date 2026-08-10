@@ -1,20 +1,31 @@
 import SwiftUI
 
 /// Legal Disclaimer Screen — user MUST agree before using the app.
-/// Protects against liability. Checkbox required before proceeding.
-/// Shows only once on first launch (persisted via @AppStorage).
+/// Shows automatically on first launch. Cannot be bypassed or dismissed.
+/// User must check BOTH agreement boxes before the Continue button activates.
+/// Persisted via @AppStorage — only shows once per install.
 struct DisclaimerView: View {
     @Binding var hasAgreed: Bool
-    @State private var checkboxChecked = false
+    @State private var agreesDisclaimer = false
+    @State private var agreesNotMedical = false
     @State private var showError = false
+    @State private var shakeOffset: CGFloat = 0
+
+    private var bothChecked: Bool {
+        agreesDisclaimer && agreesNotMedical
+    }
 
     var body: some View {
         ZStack {
-            // Background
+            // Background — completely opaque, no tapping through
+            Color(red: 0.06, green: 0.04, blue: 0.12)
+                .ignoresSafeArea()
+
             LinearGradient(
                 colors: [
                     Color(red: 0.08, green: 0.06, blue: 0.14),
-                    Color(red: 0.12, green: 0.08, blue: 0.18)
+                    Color(red: 0.12, green: 0.08, blue: 0.18),
+                    Color(red: 0.06, green: 0.04, blue: 0.12)
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -23,28 +34,30 @@ struct DisclaimerView: View {
 
             ScrollView {
                 VStack(spacing: 24) {
-                    Spacer(minLength: 40)
+                    Spacer(minLength: 50)
 
                     // Header
                     VStack(spacing: 12) {
                         Image(systemName: "shield.checkered")
-                            .font(.system(size: 44))
+                            .font(.system(size: 48))
                             .foregroundColor(Color(red: 0.9, green: 0.7, blue: 0.3))
+                            .shadow(color: Color(red: 0.9, green: 0.7, blue: 0.3).opacity(0.3), radius: 10)
 
                         Text("Important Disclaimer")
-                            .font(.system(size: 26, weight: .bold, design: .serif))
+                            .font(.system(size: 28, weight: .bold, design: .serif))
                             .foregroundColor(.white)
 
-                        Text("Please read carefully before continuing")
+                        Text("You must read and agree before using MySoulSpeak")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.white.opacity(0.6))
+                            .multilineTextAlignment(.center)
                     }
 
-                    // Disclaimer text
+                    // Disclaimer content
                     VStack(alignment: .leading, spacing: 16) {
                         disclaimerSection(
                             title: "Not a Medical Service",
-                            text: "SoulSpeak is a wellness and self-reflection app designed for entertainment and general wellness purposes ONLY. It is NOT a substitute for professional medical advice, diagnosis, or treatment."
+                            text: "MySoulSpeak is a wellness and self-reflection app designed for entertainment and general wellness purposes ONLY. It is NOT a substitute for professional medical advice, diagnosis, or treatment."
                         )
 
                         disclaimerSection(
@@ -58,116 +71,165 @@ struct DisclaimerView: View {
                         )
 
                         disclaimerSection(
-                            title: "Seek Professional Help",
+                            title: "Crisis Resources",
                             text: "If you are experiencing a mental health crisis, suicidal thoughts, or any medical emergency, please immediately contact 911, the 988 Suicide & Crisis Lifeline, or your local emergency services. Do NOT rely on this app for crisis support."
                         )
 
                         disclaimerSection(
                             title: "Use at Your Own Risk",
-                            text: "By using SoulSpeak, you acknowledge that you use this app at your own risk. The creators, developers, and operators of SoulSpeak shall not be held liable for any damages, harm, or adverse effects resulting from the use of this application."
+                            text: "By using MySoulSpeak, you acknowledge that you use this app at your own risk. The creators, developers, and operators shall not be held liable for any damages, harm, or adverse effects resulting from the use of this application."
                         )
 
                         disclaimerSection(
                             title: "No Guarantee of Results",
-                            text: "SoulSpeak makes no guarantees regarding outcomes, improvements in mental health, or any specific results from using this app. Individual experiences may vary."
+                            text: "MySoulSpeak makes no guarantees regarding outcomes, improvements in mental health, or any specific results. Individual experiences may vary."
                         )
 
                         disclaimerSection(
                             title: "Data & Privacy",
-                            text: "Your voice recordings, journal entries, and mood data are stored locally on your device. SoulSpeak is not responsible for any data loss. AI conversation data may be processed through third-party APIs subject to their respective privacy policies."
+                            text: "Your voice recordings, journal entries, and mood data are stored locally on your device. AI conversation data may be processed through third-party APIs subject to their respective privacy policies."
                         )
                     }
                     .padding(20)
                     .background(
                         RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.white.opacity(0.05))
+                            .fill(Color.white.opacity(0.04))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 16)
                                     .stroke(Color.white.opacity(0.1), lineWidth: 1)
                             )
                     )
 
-                    // Checkbox agreement
-                    Button(action: {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                            checkboxChecked.toggle()
-                            showError = false
-                        }
-                    }) {
-                        HStack(alignment: .top, spacing: 14) {
-                            // Checkbox
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 6)
-                                    .stroke(checkboxChecked ? Color(red: 0.9, green: 0.7, blue: 0.3) : Color.white.opacity(0.4), lineWidth: 2)
-                                    .frame(width: 26, height: 26)
+                    // MARK: - Agreement Checkboxes (BOTH required)
+                    VStack(spacing: 16) {
+                        // Checkbox 1: Read and understand
+                        agreementCheckbox(
+                            isChecked: $agreesDisclaimer,
+                            text: "I have read and understand this disclaimer. I acknowledge that MySoulSpeak is for wellness/entertainment purposes only and does NOT provide real medical or therapeutic services."
+                        )
 
-                                if checkboxChecked {
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .fill(Color(red: 0.9, green: 0.7, blue: 0.3))
-                                        .frame(width: 26, height: 26)
-
-                                    Image(systemName: "checkmark")
-                                        .font(.system(size: 14, weight: .bold))
-                                        .foregroundColor(.black)
-                                }
-                            }
-
-                            // Agreement text
-                            Text("I have read, understand, and agree to this disclaimer. I acknowledge that SoulSpeak does NOT provide real medical, therapeutic, or counseling services, and that \"Dr. Hope\" and \"Mr. Hope\" are fictional AI characters — NOT real healthcare professionals.")
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(.white.opacity(0.85))
-                                .multilineTextAlignment(.leading)
-                                .lineSpacing(3)
-                        }
+                        // Checkbox 2: Characters are fictional
+                        agreementCheckbox(
+                            isChecked: $agreesNotMedical,
+                            text: "I understand that \"Dr. Hope\" and \"Mr. Hope\" are fictional AI characters — NOT real healthcare professionals — and I will seek real professional help for serious mental health needs."
+                        )
                     }
                     .padding(.top, 8)
 
-                    // Error message if they try to proceed without checking
+                    // Error message
                     if showError {
                         HStack(spacing: 6) {
                             Image(systemName: "exclamationmark.triangle.fill")
-                                .font(.system(size: 12))
-                            Text("You must agree to the disclaimer to continue")
-                                .font(.system(size: 12, weight: .medium))
+                                .font(.system(size: 13))
+                            Text("You must check both boxes to continue")
+                                .font(.system(size: 13, weight: .semibold))
                         }
                         .foregroundColor(.red)
-                        .transition(.opacity)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background(
+                            Capsule()
+                                .fill(Color.red.opacity(0.1))
+                        )
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
                     }
 
-                    // Continue button
-                    Button(action: {
-                        if checkboxChecked {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                hasAgreed = true
+                    // MARK: - Continue Button (disabled until both checked)
+                    Button(action: attemptContinue) {
+                        HStack(spacing: 10) {
+                            if bothChecked {
+                                Image(systemName: "checkmark.shield.fill")
+                                    .font(.system(size: 16))
                             }
-                        } else {
-                            withAnimation(.spring(response: 0.3)) {
-                                showError = true
-                            }
+                            Text(bothChecked ? "I Agree — Continue" : "Check Both Boxes to Continue")
+                                .font(.system(size: 16, weight: .bold))
                         }
-                    }) {
-                        Text("I Agree — Continue to SoulSpeak")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(checkboxChecked ? .white : .white.opacity(0.4))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 18)
-                            .background(
-                                RoundedRectangle(cornerRadius: 14)
-                                    .fill(checkboxChecked
-                                          ? LinearGradient(colors: [Color(red: 0.7, green: 0.4, blue: 0.8), Color(red: 0.5, green: 0.25, blue: 0.7)], startPoint: .leading, endPoint: .trailing)
-                                          : LinearGradient(colors: [Color.white.opacity(0.1), Color.white.opacity(0.05)], startPoint: .leading, endPoint: .trailing)
-                                    )
-                            )
+                        .foregroundColor(bothChecked ? .white : .white.opacity(0.3))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(bothChecked
+                                      ? LinearGradient(colors: [Color(red: 0.7, green: 0.4, blue: 0.8), Color(red: 0.5, green: 0.25, blue: 0.7)], startPoint: .leading, endPoint: .trailing)
+                                      : LinearGradient(colors: [Color.white.opacity(0.08), Color.white.opacity(0.04)], startPoint: .leading, endPoint: .trailing)
+                                )
+                        )
                     }
+                    .disabled(!bothChecked)
+                    .offset(x: shakeOffset)
                     .padding(.top, 8)
 
                     // Legal footer
-                    Text("Last updated: July 2026 | Version 1.0")
+                    Text("Last updated: August 2026 | Version 1.0")
                         .font(.system(size: 10))
                         .foregroundColor(.white.opacity(0.3))
-                        .padding(.bottom, 30)
+                        .padding(.bottom, 40)
                 }
                 .padding(.horizontal, 24)
+            }
+        }
+        .interactiveDismissDisabled(true)
+    }
+
+    // MARK: - Attempt Continue
+    private func attemptContinue() {
+        if bothChecked {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                hasAgreed = true
+            }
+        } else {
+            // Shake the button
+            withAnimation(.spring(response: 0.1, dampingFraction: 0.3)) {
+                shakeOffset = 10
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.spring(response: 0.1, dampingFraction: 0.3)) {
+                    shakeOffset = -10
+                }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation(.spring(response: 0.1, dampingFraction: 0.5)) {
+                    shakeOffset = 0
+                }
+            }
+            withAnimation(.spring(response: 0.3)) {
+                showError = true
+            }
+        }
+    }
+
+    // MARK: - Agreement Checkbox
+    private func agreementCheckbox(isChecked: Binding<Bool>, text: String) -> some View {
+        Button(action: {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                isChecked.wrappedValue.toggle()
+                showError = false
+            }
+        }) {
+            HStack(alignment: .top, spacing: 14) {
+                // Checkbox
+                ZStack {
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(isChecked.wrappedValue ? Color(red: 0.4, green: 0.85, blue: 0.5) : Color.white.opacity(0.4), lineWidth: 2)
+                        .frame(width: 28, height: 28)
+
+                    if isChecked.wrappedValue {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(Color(red: 0.4, green: 0.85, blue: 0.5))
+                            .frame(width: 28, height: 28)
+
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                }
+
+                // Text
+                Text(text)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.white.opacity(0.85))
+                    .multilineTextAlignment(.leading)
+                    .lineSpacing(3)
             }
         }
     }
