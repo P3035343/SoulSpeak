@@ -13,7 +13,7 @@ import SwiftData
 /// - hasAgreedToDisclaimerV2: once true, disclaimer never shows again
 /// - hasSeenIntroV3: once true, intro sequence is skipped
 struct ContentView: View {
-    @AppStorage("hasAgreedToDisclaimerV2") private var hasAgreedToDisclaimer = false
+    @State private var hasAgreedToDisclaimer = false
     @AppStorage("hasSeenIntroV3") private var hasSeenIntro = false
     @State private var introComplete = false
     @Query private var settings: [UserSettings]
