@@ -44,7 +44,11 @@ struct VentRoomView: View {
             // Back button overlay (always visible)
             VStack {
                 HStack {
-                    Button(action: { dismiss() }) {
+                    Button(action: {
+                        AudioPlayerService.shared.stopBackgroundMusic()
+                        AudioPlayerService.shared.stopAll()
+                        dismiss()
+                    }) {
                         HStack(spacing: 6) {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 16, weight: .bold))
@@ -72,6 +76,11 @@ struct VentRoomView: View {
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
+        }
+        .onDisappear {
+            // Stop rock instrumental and all audio when leaving Vent Room
+            AudioPlayerService.shared.stopBackgroundMusic()
+            AudioPlayerService.shared.stopAll()
         }
     }
 
