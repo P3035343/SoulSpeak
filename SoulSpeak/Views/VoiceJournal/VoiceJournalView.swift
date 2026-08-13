@@ -496,13 +496,13 @@ struct VoiceJournalView: View {
                 
                 The user just recorded this journal entry: "\(text)"
                 
-                You are Dr. Hope analyzing this journal entry. Respond in EXACTLY two paragraphs:
+                You are Dr. Hope analyzing this journal entry. Respond in EXACTLY two paragraphs (3 max):
                 
                 PARAGRAPH 1 - DIAGNOSIS & OBSERVATION: Identify the core emotional pattern, struggle, or theme you hear in their words. Name it clearly. Reference their specific words. Tell them what you observe about their emotional state — like a real therapist giving an assessment. Be direct and insightful, not vague.
                 
                 PARAGRAPH 2 - GUIDANCE & ACTION: Give them ONE specific, actionable piece of advice or a reframe that could help. Not generic — tailored to exactly what they said. End with one powerful question that makes them think deeper.
                 
-                Keep your warm Southern personality but prioritize being USEFUL and INSIGHTFUL over being poetic. Be the therapist, not just the grandmother.
+                Keep your warm Southern personality but prioritize being USEFUL and INSIGHTFUL over being poetic. Be the therapist, not just the grandmother. MAX 3 short paragraphs total.
                 """,
                 character: .drHope
             )

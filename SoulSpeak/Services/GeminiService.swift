@@ -160,7 +160,7 @@ class GeminiService: ObservableObject {
         // System instruction as first user message
         contents.append([
             "role": "user",
-            "parts": [["text": character.systemPrompt + "\n\n---\nRespond to the following naturally. Be helpful, accurate, and conversational.\n\nUser: \"\(text)\""]]
+            "parts": [["text": character.systemPrompt + "\n\n---\nRESPONSE LENGTH RULE: Keep your response to a MAXIMUM of 3 short paragraphs. Be concise and conversational — like texting a smart friend, not writing an essay.\n\n---\nRespond to the following naturally. Be helpful, accurate, and conversational.\n\nUser: \"\(text)\""]]
         ])
 
         // Add recent conversation history (last 10 messages for context)
