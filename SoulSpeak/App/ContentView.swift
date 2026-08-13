@@ -1,21 +1,22 @@
 import SwiftUI
 import SwiftData
+import CoreLocation
+import UserNotifications
+import AVFAudio
 
 /// Root content view — shows disclaimer FIRST (mandatory, cannot bypass).
-/// After agreement: intro sequence (one time), then main hub.
+/// After agreement: requests permissions, then intro sequence, then main hub.
 ///
 /// Flow:
 /// 1. DisclaimerView — blocks EVERYTHING until both checkboxes checked
-/// 2. IntroSequenceView — plays once (Mr. Hope greeting, office walkthrough)
-/// 3. MainHubView — the main app experience
-///
-/// Persistence:
-/// - hasAgreedToDisclaimerV2: once true, disclaimer never shows again
-/// - hasSeenIntroV3: once true, intro sequence is skipped
+/// 2. Permission requests (location, notifications)
+/// 3. IntroSequenceView — plays once (Mr. Hope greeting, office walkthrough)
+/// 4. MainHubView — the main app experience
 struct ContentView: View {
     @State private var hasAgreedToDisclaimer = false
     @AppStorage("hasSeenIntroV3") private var hasSeenIntro = false
     @State private var introComplete = false
+    @State private var permissionsRequested = false
     @Query private var settings: [UserSettings]
 
     var body: some View {
@@ -37,11 +38,10 @@ struct ContentView: View {
             }
 
             // Disclaimer overlay — BLOCKS EVERYTHING if not agreed
-            // This is a ZStack overlay so it sits on TOP and cannot be dismissed
             if !hasAgreedToDisclaimer {
                 DisclaimerView(hasAgreed: $hasAgreedToDisclaimer)
                     .transition(.opacity)
-                    .zIndex(999) // Always on top
+                    .zIndex(999)
             }
         }
         .animation(.easeInOut(duration: 0.5), value: hasAgreedToDisclaimer)
@@ -52,6 +52,30 @@ struct ContentView: View {
             }
             UIApplication.shared.isIdleTimerDisabled = true
         }
+        .onChange(of: hasAgreedToDisclaimer) { _, agreed in
+            if agreed && !permissionsRequested {
+                permissionsRequested = true
+                requestAllPermissions()
+            }
+        }
         .preferredColorScheme(settings.first?.isDarkMode == true ? .dark : .light)
+    }
+
+    // MARK: - Request All Permissions
+    private func requestAllPermissions() {
+        // 1. Notifications
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+            print("[SoulSpeak] Notifications permission: \(granted)")
+        }
+
+        // 2. Location (for Emergency feature + resource finder)
+        let locationManager = CLLocationManager()
+        locationManager.requestWhenInUseAuthorization()
+        print("[SoulSpeak] Location permission requested")
+
+        // 3. Microphone (for voice journal + speech recognition)
+        AVAudioApplication.requestRecordPermission { granted in
+            print("[SoulSpeak] Microphone permission: \(granted)")
+        }
     }
 }
