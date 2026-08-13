@@ -410,10 +410,11 @@ struct AccountabilityCalendarView: View {
                     .frame(width: 60, height: 60)
                     .shadow(color: Color(red: 0.2, green: 0.5, blue: 0.8).opacity(0.4), radius: 8, y: 4)
 
-                // Calvin icon (person with headset)
-                Image(systemName: "person.crop.circle.badge.checkmark")
-                    .font(.system(size: 26))
-                    .foregroundColor(.white)
+                Image("calvin")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 56, height: 56)
+                    .clipShape(Circle())
             }
         }
         .padding(.trailing, 20)

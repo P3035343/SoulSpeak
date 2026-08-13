@@ -73,9 +73,11 @@ struct CalvinChatView: View {
                     )
                     .frame(width: 40, height: 40)
 
-                Image(systemName: "person.crop.circle.badge.checkmark")
-                    .font(.system(size: 18))
-                    .foregroundColor(.white)
+                Image("calvin")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
             }
 
             VStack(alignment: .leading, spacing: 2) {
@@ -146,14 +148,11 @@ struct CalvinChatView: View {
         HStack(alignment: .top, spacing: 10) {
             if message.role == .calvin {
                 // Calvin avatar
-                ZStack {
-                    Circle()
-                        .fill(Color(red: 0.2, green: 0.4, blue: 0.7).opacity(0.3))
-                        .frame(width: 28, height: 28)
-                    Image(systemName: "person.crop.circle.badge.checkmark")
-                        .font(.system(size: 13))
-                        .foregroundColor(Color(red: 0.3, green: 0.6, blue: 0.9))
-                }
+                Image("calvin")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 28, height: 28)
+                    .clipShape(Circle())
             }
 
             if message.role == .user { Spacer() }
@@ -188,9 +187,11 @@ struct CalvinChatView: View {
                 Circle()
                     .fill(Color(red: 0.2, green: 0.4, blue: 0.7).opacity(0.3))
                     .frame(width: 28, height: 28)
-                Image(systemName: "person.crop.circle.badge.checkmark")
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(red: 0.3, green: 0.6, blue: 0.9))
+                Image("calvin")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 28, height: 28)
+                    .clipShape(Circle())
             }
 
             HStack(spacing: 4) {
