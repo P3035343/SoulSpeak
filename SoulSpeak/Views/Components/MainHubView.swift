@@ -162,14 +162,21 @@ struct MainHubView: View {
     // MARK: - Character Picker (inline overlay — no nested fullScreenCover)
     private var characterPickerOverlay: some View {
         ZStack {
-            // Dimmed background
-            Color.black.opacity(0.85)
+            // Fully opaque background — nothing shows through
+            Color.black
                 .ignoresSafeArea()
-                .onTapGesture {
-                    withAnimation(.easeOut(duration: 0.25)) {
-                        showCharacterPicker = false
-                    }
-                }
+
+            // Gradient on top for style
+            LinearGradient(
+                colors: [
+                    Color(red: 0.1, green: 0.08, blue: 0.18),
+                    Color(red: 0.14, green: 0.1, blue: 0.22),
+                    Color(red: 0.08, green: 0.06, blue: 0.14)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
 
             VStack(spacing: 28) {
                 // Close button
@@ -181,8 +188,8 @@ struct MainHubView: View {
                         }
                     }) {
                         Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 28))
-                            .foregroundColor(.white.opacity(0.5))
+                            .font(.system(size: 30))
+                            .foregroundColor(.white.opacity(0.6))
                     }
                     .padding(.trailing, 24)
                 }

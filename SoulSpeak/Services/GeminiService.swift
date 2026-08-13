@@ -167,7 +167,7 @@ class GeminiService: ObservableObject {
         // System instruction as first user message
         contents.append([
             "role": "user",
-            "parts": [["text": character.systemPrompt + "\n\n---\nThe user just said to you: \"\(text)\"\n\nRespond as \(character.rawValue). Remember: reference their SPECIFIC words, make them feel heard, then offer your wisdom or ask a follow-up question."]]
+            "parts": [["text": character.systemPrompt + "\n\n---\nIMPORTANT: You are a SMART AI assistant who speaks in character. If the user asks a factual question (like the date, time, weather, math, definitions, general knowledge), ANSWER IT ACCURATELY while staying in character. Only give emotional support/pep talks when the user is actually sharing feelings or struggles. Be helpful AND warm — not ONLY warm.\n\n---\nThe user just said: \"\(text)\""]]
         ])
 
         // Add recent conversation history (last 10 messages for context)
