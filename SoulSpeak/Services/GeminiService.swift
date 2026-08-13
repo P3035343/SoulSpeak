@@ -31,7 +31,7 @@ class GeminiService: ObservableObject {
         return key
     }()
 
-    private let baseURL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent"
+    private let baseURL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
     // MARK: - Character Personalities
 
