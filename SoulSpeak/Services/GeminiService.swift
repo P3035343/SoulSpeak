@@ -185,7 +185,7 @@ class GeminiService: ObservableObject {
                 "temperature": 0.85,
                 "topP": 0.92,
                 "topK": 40,
-                "maxOutputTokens": 256,
+                "maxOutputTokens": 1024,
             ],
             "safetySettings": [
                 ["category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_ONLY_HIGH"],
