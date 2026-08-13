@@ -32,6 +32,8 @@
     <string>MySoulSpeak needs continuous location access during emergencies to send your GPS coordinates to your emergency contact.</string>
     <key>NSCameraUsageDescription</key>
     <string>MySoulSpeak may use the camera for future profile features.</string>
+    <key>NSCalendarsFullAccessUsageDescription</key>
+    <string>MySoulSpeak syncs your Accountability events with your calendar so Calvin can help you stay on track.</string>
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>

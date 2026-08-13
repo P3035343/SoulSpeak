@@ -12,6 +12,7 @@ struct MainHubView: View {
     @State private var showCentered = false
     @State private var showMood = false
     @State private var showMirror = false
+    @State private var showAccountability = false
     @State private var showEmergency = false
     @State private var showSettings = false
     @State private var showCharacterPicker = false
@@ -119,6 +120,16 @@ struct MainHubView: View {
                             action: { showMood = true }
                         )
                     }
+
+                    // Row 3: Accountability (Calvin)
+                    HStack(spacing: 26) {
+                        hubIcon(
+                            name: "Accountability",
+                            icon: "calendar.badge.clock",
+                            color: Color(red: 0.3, green: 0.7, blue: 0.9),
+                            action: { showAccountability = true }
+                        )
+                    }
                 }
                 .padding(.bottom, 70)
             }
@@ -150,6 +161,9 @@ struct MainHubView: View {
         }
         .fullScreenCover(isPresented: $showMood) {
             NavigationStack { MoodTrackerView() }
+        }
+        .fullScreenCover(isPresented: $showAccountability) {
+            NavigationStack { AccountabilityCalendarView() }
         }
         .fullScreenCover(isPresented: $showEmergency) {
             EmergencyView()
