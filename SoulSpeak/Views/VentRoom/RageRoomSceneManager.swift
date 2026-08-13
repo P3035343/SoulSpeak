@@ -2167,14 +2167,16 @@ class RageRoomSceneManager: NSObject, ObservableObject, SCNPhysicsContactDelegat
         let totalSteps = 6
         slowMotionRampTimer?.invalidate()
         slowMotionRampTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] timer in
+            guard let self = self else { timer.invalidate(); return }
             Task { @MainActor [weak self] in
-                guard let self = self else { timer.invalidate(); return }
+                guard let self = self else { return }
                 rampState.step += 1
                 let progress = Float(rampState.step) / Float(totalSteps)
                 self.scene.physicsWorld.speed = CGFloat(0.3 + 0.7 * progress)
                 
                 if rampState.step >= totalSteps {
-                    timer.invalidate()
+                    self.slowMotionRampTimer?.invalidate()
+                    self.slowMotionRampTimer = nil
                     self.scene.physicsWorld.speed = 1.0
                     self.isSlowMotion = false
                     
