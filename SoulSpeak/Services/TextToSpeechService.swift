@@ -12,7 +12,7 @@ class TextToSpeechService: ObservableObject {
 
     // ElevenLabs Voice IDs (cloned voices)
     private let mrHopeVoiceID = "4OyvWLbRHLsY3GBjrXWX"
-    private let drHopeVoiceID = "O8oEKeaG9DHHSKVcRQuq"
+    private let drHopeVoiceID = "QiFYnas7Ng0eMYxiSuML"
 
     private let elevenLabsAPIKey: String = {
         if let path = Bundle.main.path(forResource: "GeminiConfig", ofType: "plist"),
