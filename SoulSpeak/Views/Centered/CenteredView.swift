@@ -12,11 +12,12 @@ struct CenteredView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var audioPlayer = AudioPlayerService.shared
     @State private var showIntroVideo = true
-    @State private var selectedCategory: AudioCategory = .meditations
+    @State private var selectedCategory: AudioCategory = .music
     @State private var currentlyPlaying: String? = nil
     @State private var progressAnimation = false
 
     enum AudioCategory: String, CaseIterable {
+        case music = "Music"
         case meditations = "Meditations"
         case pepTalks = "Pep Talks"
         case healing = "Healing"
@@ -24,6 +25,7 @@ struct CenteredView: View {
 
         var icon: String {
             switch self {
+            case .music: return "music.note.list"
             case .meditations: return "sparkles"
             case .pepTalks: return "bolt.fill"
             case .healing: return "heart.fill"
@@ -33,6 +35,7 @@ struct CenteredView: View {
 
         var color: Color {
             switch self {
+            case .music: return Color(red: 0.5, green: 0.4, blue: 0.9)
             case .meditations: return Color(red: 0.4, green: 0.7, blue: 0.9)
             case .pepTalks: return Color(red: 0.9, green: 0.6, blue: 0.3)
             case .healing: return Color(red: 0.8, green: 0.4, blue: 0.6)
@@ -325,7 +328,12 @@ struct CenteredView: View {
             stopPlaying()
         } else {
             stopPlaying()
-            audioPlayer.playVoice(fileName: track.fileName)
+            // Music category loops, everything else plays once
+            if selectedCategory == .music {
+                audioPlayer.playBackgroundMusic(fileName: track.fileName)
+            } else {
+                audioPlayer.playVoice(fileName: track.fileName)
+            }
             currentlyPlaying = track.fileName
             progressAnimation = true
         }
@@ -348,6 +356,17 @@ struct CenteredView: View {
     // MARK: - Track Data (organized by category)
     private func tracks(for category: AudioCategory) -> [CenteredTrack] {
         switch category {
+        case .music:
+            return [
+                CenteredTrack(name: "Ambient Night Lofi", fileName: "ambient-night-lofi-chill-baat-hip-hop-sleepy-lazy-cozy-149582", subtitle: "Chill & Relaxing", icon: "moon.stars.fill", color: Color(red: 0.4, green: 0.3, blue: 0.7)),
+                CenteredTrack(name: "Calm River Lofi", fileName: "calm-river-lofi-background-music-for-videos-7289", subtitle: "Peaceful Background", icon: "water.waves", color: Color(red: 0.3, green: 0.6, blue: 0.7)),
+                CenteredTrack(name: "Emotional Inspiring Violin", fileName: "emotional-inspiring-violin-342019", subtitle: "Cinematic & Uplifting", icon: "music.quarternote.3", color: Color(red: 0.8, green: 0.5, blue: 0.3)),
+                CenteredTrack(name: "Emotional Piano", fileName: "emotional-piano-background-209572", subtitle: "Deep & Reflective", icon: "pianokeys", color: Color(red: 0.5, green: 0.4, blue: 0.7)),
+                CenteredTrack(name: "Emotional Piano II", fileName: "emotional-piano-music-256262", subtitle: "Gentle & Moving", icon: "pianokeys", color: Color(red: 0.6, green: 0.4, blue: 0.8)),
+                CenteredTrack(name: "Smooth Evening Saxophone", fileName: "smooth-evening-saxophone-ja...-music-for-youtube-345557", subtitle: "Jazz & Smooth", icon: "music.mic", color: Color(red: 0.9, green: 0.6, blue: 0.3)),
+                CenteredTrack(name: "Soft Jazz", fileName: "soft-jazz-more-on-httpsmirceaiancu bandcamp com-336322", subtitle: "Mellow & Easy", icon: "music.note", color: Color(red: 0.7, green: 0.5, blue: 0.3)),
+                CenteredTrack(name: "Uplifting Piano", fileName: "uplifting-piano-is-112841", subtitle: "Hopeful & Bright", icon: "sun.max.fill", color: Color(red: 0.9, green: 0.7, blue: 0.3)),
+            ]
         case .meditations:
             return [
                 CenteredTrack(name: "Cooling the Fire", fileName: "anger_management_meditation", subtitle: "Anger Management", icon: "flame.fill", color: .red),
