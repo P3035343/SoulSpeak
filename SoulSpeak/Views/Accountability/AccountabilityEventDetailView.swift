@@ -26,6 +26,7 @@ struct AccountabilityEventDetailView: View {
 
     // Cancel flow
     @State private var showCancelFlow = false
+    @State private var showCancelTextField = false
     @State private var cancellationReason: String = ""
     @State private var cancelError: String = ""
     @State private var calvinCancelResponse: String = ""
@@ -398,111 +399,151 @@ struct AccountabilityEventDetailView: View {
         }
     }
 
-    // MARK: - Cancel Flow Overlay (REQUIRES REASON)
+    // MARK: - Cancel Flow Overlay (REQUIRES REASON + VIDEO)
     private var cancelFlowOverlay: some View {
         ZStack {
-            Color.black.opacity(0.9)
+            Color.black
                 .ignoresSafeArea()
 
-            VStack(spacing: 20) {
-                Spacer()
-
-                // Calvin's accountability face
-                ZStack {
-                    Circle()
-                        .fill(Color.red.opacity(0.15))
-                        .frame(width: 80, height: 80)
-                    Image(systemName: "person.crop.circle.badge.exclamationmark")
-                        .font(.system(size: 36))
-                        .foregroundColor(.red.opacity(0.8))
+            VStack(spacing: 0) {
+                // Calvin's accountability video plays first
+                if !showCancelTextField {
+                    FullScreenVideoBackground(
+                        videoName: "calvin_cancel",
+                        fileExtension: "mp4",
+                        looping: false,
+                        onFinished: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                showCancelTextField = true
+                            }
+                        }
+                    )
+                    .overlay(
+                        // Skip button after 2 seconds
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    withAnimation { showCancelTextField = true }
+                                }) {
+                                    Text("Skip")
+                                        .font(.system(size: 13, weight: .semibold))
+                                        .foregroundColor(.white.opacity(0.6))
+                                        .padding(.horizontal, 14)
+                                        .padding(.vertical, 8)
+                                        .background(Capsule().fill(Color.white.opacity(0.15)))
+                                }
+                                .padding(.trailing, 20)
+                                .padding(.top, 60)
+                            }
+                            Spacer()
+                        }
+                    )
+                } else {
+                    // After video: text field for cancellation reason
+                    cancelReasonForm
                 }
+            }
+        }
+    }
 
-                Text("Hold up.")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(.white)
+    // MARK: - Cancel Reason Form (shown after video)
+    private var cancelReasonForm: some View {
+        VStack(spacing: 20) {
+            Spacer()
 
-                Text("You made a commitment. If you're cancelling,\nI need to know WHY. Be honest.")
+            // Calvin's picture
+            Image("calvin")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 70, height: 70)
+                .clipShape(Circle())
+                .overlay(
+                    Circle()
+                        .stroke(Color.red.opacity(0.4), lineWidth: 2)
+                )
+
+            Text("Why are you cancelling?")
+                .font(.system(size: 22, weight: .bold))
+                .foregroundColor(.white)
+
+            Text("Be honest with yourself. Calvin's watching.")
+                .font(.system(size: 13))
+                .foregroundColor(.white.opacity(0.5))
+
+            // Reason text field (REQUIRED)
+            VStack(alignment: .leading, spacing: 6) {
+                TextEditor(text: $cancellationReason)
                     .font(.system(size: 14))
-                    .foregroundColor(.white.opacity(0.6))
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(3)
+                    .foregroundColor(.white)
+                    .scrollContentBackground(.hidden)
+                    .frame(minHeight: 120)
+                    .padding(12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.white.opacity(0.06))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(cancellationReason.count < 10 && !cancelError.isEmpty ? Color.red.opacity(0.5) : Color.white.opacity(0.1), lineWidth: 1)
+                            )
+                    )
 
-                // Reason text field (REQUIRED)
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Why are you cancelling?")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.white.opacity(0.5))
-
-                    TextEditor(text: $cancellationReason)
-                        .font(.system(size: 14))
-                        .foregroundColor(.white)
-                        .scrollContentBackground(.hidden)
-                        .frame(minHeight: 100)
-                        .padding(12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.white.opacity(0.06))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(cancellationReason.count < 10 && !cancelError.isEmpty ? Color.red.opacity(0.5) : Color.white.opacity(0.1), lineWidth: 1)
-                                )
-                        )
-
+                HStack {
                     if !cancelError.isEmpty {
                         Text(cancelError)
                             .font(.system(size: 11, weight: .medium))
                             .foregroundColor(.red)
                     }
-
-                    Text("\(cancellationReason.count)/10 minimum characters")
+                    Spacer()
+                    Text("\(cancellationReason.count)/10 minimum")
                         .font(.system(size: 10))
                         .foregroundColor(cancellationReason.count >= 10 ? .green.opacity(0.7) : .white.opacity(0.3))
                 }
-                .padding(.horizontal, 24)
-
-                // Calvin's response
-                if !calvinCancelResponse.isEmpty {
-                    Text(calvinCancelResponse)
-                        .font(.system(size: 13, weight: .medium, design: .serif))
-                        .foregroundColor(.orange.opacity(0.8))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 30)
-                        .italic()
-                }
-
-                Spacer()
-
-                // Buttons
-                HStack(spacing: 16) {
-                    Button(action: {
-                        withAnimation { showCancelFlow = false }
-                        cancellationReason = ""
-                        cancelError = ""
-                        calvinCancelResponse = ""
-                    }) {
-                        Text("Go Back")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.white.opacity(0.6))
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 14)
-                            .background(Capsule().fill(Color.white.opacity(0.1)))
-                    }
-
-                    Button(action: confirmCancellation) {
-                        Text("Confirm Cancel")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 14)
-                            .background(
-                                Capsule()
-                                    .fill(cancellationReason.count >= 10 ? Color.red.opacity(0.6) : Color.gray.opacity(0.3))
-                            )
-                    }
-                    .disabled(cancellationReason.count < 10)
-                }
-                .padding(.bottom, 40)
             }
+            .padding(.horizontal, 24)
+
+            // Calvin's response after confirming
+            if !calvinCancelResponse.isEmpty {
+                Text(calvinCancelResponse)
+                    .font(.system(size: 13, weight: .medium, design: .serif))
+                    .foregroundColor(.orange.opacity(0.8))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 30)
+                    .italic()
+            }
+
+            Spacer()
+
+            // Buttons
+            HStack(spacing: 16) {
+                Button(action: {
+                    withAnimation { showCancelFlow = false; showCancelTextField = false }
+                    cancellationReason = ""
+                    cancelError = ""
+                    calvinCancelResponse = ""
+                }) {
+                    Text("Go Back")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.6))
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 14)
+                        .background(Capsule().fill(Color.white.opacity(0.1)))
+                }
+
+                Button(action: confirmCancellation) {
+                    Text("Confirm Cancel")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 14)
+                        .background(
+                            Capsule()
+                                .fill(cancellationReason.count >= 10 ? Color.red.opacity(0.6) : Color.gray.opacity(0.3))
+                        )
+                }
+                .disabled(cancellationReason.count < 10)
+            }
+            .padding(.bottom, 40)
         }
     }
 
