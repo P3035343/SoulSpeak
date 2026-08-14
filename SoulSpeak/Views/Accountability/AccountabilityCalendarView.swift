@@ -24,6 +24,8 @@ struct AccountabilityCalendarView: View {
     @State private var showCalvinChat = false
     @State private var showEventDetail: AccountabilityEvent? = nil
     @State private var viewMode: ViewMode = .month
+    @State private var showIntroVideo = true
+    @AppStorage("hasSeenCalvinIntro") private var hasSeenCalvinIntro = false
 
     enum ViewMode: String, CaseIterable {
         case month = "Month"
@@ -39,6 +41,44 @@ struct AccountabilityCalendarView: View {
     }()
 
     var body: some View {
+        ZStack {
+            if showIntroVideo && !hasSeenCalvinIntro {
+                // Calvin's intro video
+                FullScreenVideoBackground(
+                    videoName: "calvin_intro",
+                    fileExtension: "mp4",
+                    looping: false,
+                    onFinished: {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            showIntroVideo = false
+                            hasSeenCalvinIntro = true
+                        }
+                    }
+                )
+            } else {
+                calendarContent
+            }
+        }
+        .navigationBarHidden(true)
+        .onAppear {
+            calvin.requestCalendarAccess()
+            if hasSeenCalvinIntro {
+                showIntroVideo = false
+            }
+        }
+        .sheet(isPresented: $showAddEvent) {
+            AccountabilityEventDetailView(selectedDate: selectedDate)
+        }
+        .sheet(isPresented: $showCalvinChat) {
+            CalvinChatView(events: allEvents)
+        }
+        .sheet(item: $showEventDetail) { event in
+            AccountabilityEventDetailView(existingEvent: event)
+        }
+    }
+
+    // MARK: - Calendar Content
+    private var calendarContent: some View {
         ZStack {
             // Background
             Color(red: 0.06, green: 0.06, blue: 0.1)
@@ -87,19 +127,6 @@ struct AccountabilityCalendarView: View {
                     Spacer()
                 }
             }
-        }
-        .navigationBarHidden(true)
-        .onAppear {
-            calvin.requestCalendarAccess()
-        }
-        .sheet(isPresented: $showAddEvent) {
-            AccountabilityEventDetailView(selectedDate: selectedDate)
-        }
-        .sheet(isPresented: $showCalvinChat) {
-            CalvinChatView(events: allEvents)
-        }
-        .sheet(item: $showEventDetail) { event in
-            AccountabilityEventDetailView(existingEvent: event)
         }
     }
 
