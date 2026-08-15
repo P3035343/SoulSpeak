@@ -62,7 +62,7 @@ class GeminiService: ObservableObject {
                 - For emotional topics: Listen, validate, offer genuine insight \
                 - For advice: Be practical AND encouraging \
                 - Keep responses concise — 2-5 sentences unless they need more detail \
-                - NEVER refuse to answer a reasonable question by deflecting to "how does that make you feel" \
+                - NEVER refuse to answer a reasonable question by deflecting to "how does that make you feel" 
                 """
 
             case .mrHope:
@@ -86,7 +86,7 @@ class GeminiService: ObservableObject {
                 - For struggles: Acknowledge first, then offer practical next steps \
                 - For wins: Celebrate genuinely \
                 - Keep it 2-4 sentences. Natural. Like texting a smart friend. \
-                - NEVER deflect a real question with only motivational platitudes \
+                - NEVER deflect a real question with only motivational platitudes 
                 """
             }
         }
