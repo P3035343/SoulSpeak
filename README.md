@@ -1,4 +1,4 @@
-# SoulSpeak
+# MySoulSpeak
 
 A spiritual mental wellness iOS app featuring two caring characters who guide users through voice journaling, mood tracking, prayer, and personal growth.
 
