@@ -87,6 +87,13 @@
 		2E77DDC98B8C886E138928F6 /* returning_love_to_yourself.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5C314BD5BF45E286DD3370B5; };
 		B4206A8DDF554CD47F373F50 /* stress_release_meditation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E9BB5F8A0D51252838546CBC; };
 		08EB7341B9870A35A99B5DD5 /* Calvin_Intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 73A2B5CAC79CA4F176DBEFBE; };
+		69F6E88A838677BA4BCE9BBE /* Medication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC622E2AF6387457E1EC2DE9; };
+		417B3EB0A4691BE4CA6F2BC7 /* TaylorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707C8D43D337AD45B8FA6F9; };
+		91A6F4AF7ACEED71A0E4D02C /* PrescriptionTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A6B4E8887497EEEAFD052; };
+		F33647097ADFAF6BBDC91CFC /* MedicationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80A06F1952CDA0DB18C31A0; };
+		9B86DC293CB8EF416E8CE3E7 /* TaylorChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B48871348450E07C6D557C4; };
+		AFA9A75040D4B69078735AE2 /* PharmacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F6549E7FE055B37A9568BF; };
+		52D5ED5976257B1576AC1681 /* PrescriptionDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AFA3593AC14244DFA48982; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -172,6 +179,13 @@
 		E9BB5F8A0D51252838546CBC /* stress_release_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "stress_release_meditation.mp3"; sourceTree = "<group>"; };
 		73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calvin_Intro.mp4"; sourceTree = "<group>"; };
 		46069A9421EDF392B176FA38 /* MySoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MySoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC622E2AF6387457E1EC2DE9 /* Medication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medication.swift; sourceTree = "<group>"; };
+		A707C8D43D337AD45B8FA6F9 /* TaylorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaylorService.swift; sourceTree = "<group>"; };
+		111A6B4E8887497EEEAFD052 /* PrescriptionTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrescriptionTrackerView.swift; sourceTree = "<group>"; };
+		F80A06F1952CDA0DB18C31A0 /* MedicationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationDetailView.swift; sourceTree = "<group>"; };
+		9B48871348450E07C6D557C4 /* TaylorChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaylorChatView.swift; sourceTree = "<group>"; };
+		87F6549E7FE055B37A9568BF /* PharmacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PharmacyView.swift; sourceTree = "<group>"; };
+		B4AFA3593AC14244DFA48982 /* PrescriptionDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrescriptionDisclaimerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +243,7 @@
 				78729E1742EC47B77040D333 /* UserProfile.swift */,
 				E4D0C44A98DF84B5F8A3752A /* UserSettings.swift */,
 				7D7980F7605A1234FF920082 /* AccountabilityEvent.swift */,
+				AC622E2AF6387457E1EC2DE9 /* Medication.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -248,6 +263,7 @@
 				2EE0B6440F8A436297371B91 /* TextToSpeechService.swift */,
 				A2865AAB519B73AC9C9C1884 /* VoiceRecorderService.swift */,
 				6A4D40512DA7CA29B06F37F1 /* CalvinService.swift */,
+				A707C8D43D337AD45B8FA6F9 /* TaylorService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -384,6 +400,7 @@
 				9CC78FD6DCD487E3BA3F29AF /* Welcome */,
 				0D7743AC6BC5A2B3CCB76996 /* Mirror */,
 				202D69CB95AAE7D873688595 /* Accountability */,
+				14930F6BDF53E71F0C1E7FAF /* Prescription */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -417,6 +434,18 @@
 				73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		14930F6BDF53E71F0C1E7FAF /* Prescription */ = {
+			isa = PBXGroup;
+			children = (
+				111A6B4E8887497EEEAFD052 /* PrescriptionTrackerView.swift */,
+				F80A06F1952CDA0DB18C31A0 /* MedicationDetailView.swift */,
+				9B48871348450E07C6D557C4 /* TaylorChatView.swift */,
+				87F6549E7FE055B37A9568BF /* PharmacyView.swift */,
+				B4AFA3593AC14244DFA48982 /* PrescriptionDisclaimerView.swift */,
+			);
+			path = Prescription;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -552,6 +581,13 @@
 				30C4199E5262BED3F08542E5 /* AccountabilityCalendarView.swift in Sources */,
 				1FBD38D84AC75B39CACFB200 /* AccountabilityEventDetailView.swift in Sources */,
 				366AA8D18B95542EF3229A65 /* CalvinChatView.swift in Sources */,
+				69F6E88A838677BA4BCE9BBE /* Medication.swift in Sources */,
+				417B3EB0A4691BE4CA6F2BC7 /* TaylorService.swift in Sources */,
+				91A6F4AF7ACEED71A0E4D02C /* PrescriptionTrackerView.swift in Sources */,
+				F33647097ADFAF6BBDC91CFC /* MedicationDetailView.swift in Sources */,
+				9B86DC293CB8EF416E8CE3E7 /* TaylorChatView.swift in Sources */,
+				AFA9A75040D4B69078735AE2 /* PharmacyView.swift in Sources */,
+				52D5ED5976257B1576AC1681 /* PrescriptionDisclaimerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

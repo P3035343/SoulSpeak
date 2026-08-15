@@ -13,6 +13,7 @@ struct MainHubView: View {
     @State private var showMood = false
     @State private var showMirror = false
     @State private var showAccountability = false
+    @State private var showPrescription = false
     @State private var showEmergency = false
     @State private var showSettings = false
     @State private var showCharacterPicker = false
@@ -129,6 +130,13 @@ struct MainHubView: View {
                             color: Color(red: 0.3, green: 0.7, blue: 0.9),
                             action: { showAccountability = true }
                         )
+
+                        hubIcon(
+                            name: "Prescriptions",
+                            icon: "pill.fill",
+                            color: Color(red: 0.4, green: 0.8, blue: 0.6),
+                            action: { showPrescription = true }
+                        )
                     }
                 }
                 .padding(.bottom, 70)
@@ -164,6 +172,9 @@ struct MainHubView: View {
         }
         .fullScreenCover(isPresented: $showAccountability) {
             NavigationStack { AccountabilityCalendarView() }
+        }
+        .fullScreenCover(isPresented: $showPrescription) {
+            NavigationStack { PrescriptionTrackerView() }
         }
         .fullScreenCover(isPresented: $showEmergency) {
             EmergencyView()
