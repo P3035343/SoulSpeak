@@ -171,7 +171,7 @@
 		5C314BD5BF45E286DD3370B5 /* returning_love_to_yourself.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "returning_love_to_yourself.mp3"; sourceTree = "<group>"; };
 		E9BB5F8A0D51252838546CBC /* stress_release_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "stress_release_meditation.mp3"; sourceTree = "<group>"; };
 		73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calvin_Intro.mp4"; sourceTree = "<group>"; };
-		46069A9421EDF392B176FA38 /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		46069A9421EDF392B176FA38 /* MySoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MySoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,7 +190,7 @@
 		9A76A62D587AD0C58292763F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				46069A9421EDF392B176FA38 /* SoulSpeak.app */,
+				46069A9421EDF392B176FA38 /* MySoulSpeak.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -432,8 +432,8 @@
 			);
 			buildRules = ();
 			dependencies = ();
-			name = SoulSpeak;
-			productName = SoulSpeak;
+			name = MySoulSpeak;
+			productName = MySoulSpeak;
 			productReference = 46069A9421EDF392B176FA38;
 			productType = "com.apple.product-type.application";
 		};
