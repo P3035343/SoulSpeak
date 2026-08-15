@@ -63,6 +63,30 @@
 		80FA9C3D9F4F93FE960D69EB /* MirrorSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF46BC7E76AA4F738E3DDEA3; };
 		814143D57128ED28BFD35CAF /* MirrorProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60172B53D0795D6F9FAF0B04; };
 		43583A8ED01A90F7BFE8BC32 /* MirrorAffirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741420197A85F433F334FAE; };
+		1017DD499E462F6D1B5B6482 /* anger_management_meditation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FC60F7C029080AAD3A360B80; };
+		6CF2498F683F291A1EAD6EBB /* breaking_free_abusive_relationship.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 319C8755F3D604DEB62F3F50; };
+		67A55EDF8B83FA808DC4B93E /* Disclaimer.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 7250A58CB2030936655DBF11; };
+		4A33A3941F42233C8E329C60 /* dr_hope_closing prayer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 607A6F2F34E84DC7CBB473B9; };
+		B63B406AB35853F8C186676F /* dr_hope_closing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 512246474654F3864AD84B4C; };
+		832A42224F694FA7052F6092 /* dr_hope_intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 9C107ED81FC80FBC45E9194A; };
+		1328F46864C64C82C27C4369 /* dr_hope_journing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D3DDAC77A4A8EC6448784079; };
+		CF4FD6A23129DF95D705EF85 /* dr_hope_response.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F415AF673F38D39D2C8CDB71; };
+		54B6A44591ED5B155DF258B0 /* feminine_energy_pep_talk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 68DAF88D6ABFA97D5E2B6532; };
+		46E44F27F921C24B2101703E /* inner_peace_meditation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 75E723909D28672D47AEECF6; };
+		BF937613FAC4D6FC25F8C27D /* internal_conflict_meditation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AF942EF5508C710F65F5AFAB; };
+		BE70065F44562681E4E22342 /* jazz_loop_2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2A4BBC07C5812CB2D063FCC4; };
+		0B0912946853665558DB3271 /* journal_door_entry.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2698E2A990DC2A6858637158; };
+		D07698080270C08E24065A19 /* masculine_energy_pep_talk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4017126179A7BDCC529A1488; };
+		06E71E9A14C6293C19D1AB45 /* mr_hope_greeting.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 48934743EC4F28F23FA3B462; };
+		C48F5DA2A9027A8E7F9E79E2 /* mr_hope_vent_room.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AC672BA0B08EF94B78B538E6; };
+		93384E63754302606F09A29B /* mr_hope_walkthrough.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 10F5171367B0360868C91CA2; };
+		7EBB70C049FDE6E2C9B891FA /* office_entry.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0D6D9501C04E85D8EA9FBEF8; };
+		D83ECA9931ACE32E04BE7BD1 /* overcoming_harmful_relationship.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 03175A687311431682DA98A5; };
+		788CB1218544B31CC43A78F3 /* rejuvenation_meditation_dh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C30D49983DE005774FEF589E; };
+		8EC11CC4700A786FF3BFA016 /* rejuvenation_meditation_mh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5B561966DD63F276ACA447BE; };
+		2E77DDC98B8C886E138928F6 /* returning_love_to_yourself.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5C314BD5BF45E286DD3370B5; };
+		B4206A8DDF554CD47F373F50 /* stress_release_meditation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E9BB5F8A0D51252838546CBC; };
+		08EB7341B9870A35A99B5DD5 /* Calvin_Intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 73A2B5CAC79CA4F176DBEFBE; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -123,6 +147,30 @@
 		B1B89D3AE6C66CFC8F0997E5 /* CalvinChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalvinChatView.swift; sourceTree = "<group>"; };
 		0BFF27C7E987F9099D6AED79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04C165BFC61BB770D0529EA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FC60F7C029080AAD3A360B80 /* anger_management_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "anger_management_meditation.mp3"; sourceTree = "<group>"; };
+		319C8755F3D604DEB62F3F50 /* breaking_free_abusive_relationship.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "breaking_free_abusive_relationship.mp3"; sourceTree = "<group>"; };
+		7250A58CB2030936655DBF11 /* Disclaimer.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Disclaimer.pdf"; sourceTree = "<group>"; };
+		607A6F2F34E84DC7CBB473B9 /* dr_hope_closing prayer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "dr_hope_closing prayer.mp3"; sourceTree = "<group>"; };
+		512246474654F3864AD84B4C /* dr_hope_closing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "dr_hope_closing.mp3"; sourceTree = "<group>"; };
+		9C107ED81FC80FBC45E9194A /* dr_hope_intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dr_hope_intro.mp4"; sourceTree = "<group>"; };
+		D3DDAC77A4A8EC6448784079 /* dr_hope_journing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "dr_hope_journing.mp3"; sourceTree = "<group>"; };
+		F415AF673F38D39D2C8CDB71 /* dr_hope_response.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dr_hope_response.mp4"; sourceTree = "<group>"; };
+		68DAF88D6ABFA97D5E2B6532 /* feminine_energy_pep_talk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "feminine_energy_pep_talk.mp3"; sourceTree = "<group>"; };
+		75E723909D28672D47AEECF6 /* inner_peace_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner_peace_meditation.mp3"; sourceTree = "<group>"; };
+		AF942EF5508C710F65F5AFAB /* internal_conflict_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "internal_conflict_meditation.mp3"; sourceTree = "<group>"; };
+		2A4BBC07C5812CB2D063FCC4 /* jazz_loop_2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "jazz_loop_2.mp3"; sourceTree = "<group>"; };
+		2698E2A990DC2A6858637158 /* journal_door_entry.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "journal_door_entry.mp4"; sourceTree = "<group>"; };
+		4017126179A7BDCC529A1488 /* masculine_energy_pep_talk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "masculine_energy_pep_talk.mp3"; sourceTree = "<group>"; };
+		48934743EC4F28F23FA3B462 /* mr_hope_greeting.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mr_hope_greeting.mp4"; sourceTree = "<group>"; };
+		AC672BA0B08EF94B78B538E6 /* mr_hope_vent_room.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mr_hope_vent_room.mp4"; sourceTree = "<group>"; };
+		10F5171367B0360868C91CA2 /* mr_hope_walkthrough.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mr_hope_walkthrough.mp4"; sourceTree = "<group>"; };
+		0D6D9501C04E85D8EA9FBEF8 /* office_entry.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "office_entry.mp4"; sourceTree = "<group>"; };
+		03175A687311431682DA98A5 /* overcoming_harmful_relationship.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "overcoming_harmful_relationship.mp3"; sourceTree = "<group>"; };
+		C30D49983DE005774FEF589E /* rejuvenation_meditation_dh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "rejuvenation_meditation_dh.mp3"; sourceTree = "<group>"; };
+		5B561966DD63F276ACA447BE /* rejuvenation_meditation_mh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "rejuvenation_meditation_mh.mp3"; sourceTree = "<group>"; };
+		5C314BD5BF45E286DD3370B5 /* returning_love_to_yourself.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "returning_love_to_yourself.mp3"; sourceTree = "<group>"; };
+		E9BB5F8A0D51252838546CBC /* stress_release_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "stress_release_meditation.mp3"; sourceTree = "<group>"; };
+		73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calvin_Intro.mp4"; sourceTree = "<group>"; };
 		D91517BFBDECE389497A425B /* SoulSpeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoulSpeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -142,7 +190,31 @@
 		0A2C978E52A76F0AA9F68BB5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D91517BFBDECE389497A425B /* SoulSpeak.app */,
+				FC60F7C029080AAD3A360B80 /* anger_management_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "anger_management_meditation.mp3"; sourceTree = "<group>"; };
+		319C8755F3D604DEB62F3F50 /* breaking_free_abusive_relationship.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "breaking_free_abusive_relationship.mp3"; sourceTree = "<group>"; };
+		7250A58CB2030936655DBF11 /* Disclaimer.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Disclaimer.pdf"; sourceTree = "<group>"; };
+		607A6F2F34E84DC7CBB473B9 /* dr_hope_closing prayer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "dr_hope_closing prayer.mp3"; sourceTree = "<group>"; };
+		512246474654F3864AD84B4C /* dr_hope_closing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "dr_hope_closing.mp3"; sourceTree = "<group>"; };
+		9C107ED81FC80FBC45E9194A /* dr_hope_intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dr_hope_intro.mp4"; sourceTree = "<group>"; };
+		D3DDAC77A4A8EC6448784079 /* dr_hope_journing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "dr_hope_journing.mp3"; sourceTree = "<group>"; };
+		F415AF673F38D39D2C8CDB71 /* dr_hope_response.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dr_hope_response.mp4"; sourceTree = "<group>"; };
+		68DAF88D6ABFA97D5E2B6532 /* feminine_energy_pep_talk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "feminine_energy_pep_talk.mp3"; sourceTree = "<group>"; };
+		75E723909D28672D47AEECF6 /* inner_peace_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner_peace_meditation.mp3"; sourceTree = "<group>"; };
+		AF942EF5508C710F65F5AFAB /* internal_conflict_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "internal_conflict_meditation.mp3"; sourceTree = "<group>"; };
+		2A4BBC07C5812CB2D063FCC4 /* jazz_loop_2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "jazz_loop_2.mp3"; sourceTree = "<group>"; };
+		2698E2A990DC2A6858637158 /* journal_door_entry.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "journal_door_entry.mp4"; sourceTree = "<group>"; };
+		4017126179A7BDCC529A1488 /* masculine_energy_pep_talk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "masculine_energy_pep_talk.mp3"; sourceTree = "<group>"; };
+		48934743EC4F28F23FA3B462 /* mr_hope_greeting.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mr_hope_greeting.mp4"; sourceTree = "<group>"; };
+		AC672BA0B08EF94B78B538E6 /* mr_hope_vent_room.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mr_hope_vent_room.mp4"; sourceTree = "<group>"; };
+		10F5171367B0360868C91CA2 /* mr_hope_walkthrough.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mr_hope_walkthrough.mp4"; sourceTree = "<group>"; };
+		0D6D9501C04E85D8EA9FBEF8 /* office_entry.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "office_entry.mp4"; sourceTree = "<group>"; };
+		03175A687311431682DA98A5 /* overcoming_harmful_relationship.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "overcoming_harmful_relationship.mp3"; sourceTree = "<group>"; };
+		C30D49983DE005774FEF589E /* rejuvenation_meditation_dh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "rejuvenation_meditation_dh.mp3"; sourceTree = "<group>"; };
+		5B561966DD63F276ACA447BE /* rejuvenation_meditation_mh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "rejuvenation_meditation_mh.mp3"; sourceTree = "<group>"; };
+		5C314BD5BF45E286DD3370B5 /* returning_love_to_yourself.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "returning_love_to_yourself.mp3"; sourceTree = "<group>"; };
+		E9BB5F8A0D51252838546CBC /* stress_release_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "stress_release_meditation.mp3"; sourceTree = "<group>"; };
+		73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calvin_Intro.mp4"; sourceTree = "<group>"; };
+		D91517BFBDECE389497A425B /* SoulSpeak.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,6 +228,7 @@
 				7999BCA23EC4E9B2C00838D3,
 				C454586A1F4E28C340BDC1AD /* Views */,
 				0BFF27C7E987F9099D6AED79 /* Assets.xcassets */,
+				97C2CB2BFEE0CE1F6038024A /* Resources */,
 				04C165BFC61BB770D0529EA7 /* Info.plist */,
 			);
 			path = SoulSpeak;
@@ -339,6 +412,37 @@
 			path = Welcome;
 			sourceTree = "<group>";
 		};
+		97C2CB2BFEE0CE1F6038024A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FC60F7C029080AAD3A360B80 /* anger_management_meditation.mp3 */,
+				319C8755F3D604DEB62F3F50 /* breaking_free_abusive_relationship.mp3 */,
+				7250A58CB2030936655DBF11 /* Disclaimer.pdf */,
+				607A6F2F34E84DC7CBB473B9 /* dr_hope_closing prayer.mp3 */,
+				512246474654F3864AD84B4C /* dr_hope_closing.mp3 */,
+				9C107ED81FC80FBC45E9194A /* dr_hope_intro.mp4 */,
+				D3DDAC77A4A8EC6448784079 /* dr_hope_journing.mp3 */,
+				F415AF673F38D39D2C8CDB71 /* dr_hope_response.mp4 */,
+				68DAF88D6ABFA97D5E2B6532 /* feminine_energy_pep_talk.mp3 */,
+				75E723909D28672D47AEECF6 /* inner_peace_meditation.mp3 */,
+				AF942EF5508C710F65F5AFAB /* internal_conflict_meditation.mp3 */,
+				2A4BBC07C5812CB2D063FCC4 /* jazz_loop_2.mp3 */,
+				2698E2A990DC2A6858637158 /* journal_door_entry.mp4 */,
+				4017126179A7BDCC529A1488 /* masculine_energy_pep_talk.mp3 */,
+				48934743EC4F28F23FA3B462 /* mr_hope_greeting.mp4 */,
+				AC672BA0B08EF94B78B538E6 /* mr_hope_vent_room.mp4 */,
+				10F5171367B0360868C91CA2 /* mr_hope_walkthrough.mp4 */,
+				0D6D9501C04E85D8EA9FBEF8 /* office_entry.mp4 */,
+				03175A687311431682DA98A5 /* overcoming_harmful_relationship.mp3 */,
+				C30D49983DE005774FEF589E /* rejuvenation_meditation_dh.mp3 */,
+				5B561966DD63F276ACA447BE /* rejuvenation_meditation_mh.mp3 */,
+				5C314BD5BF45E286DD3370B5 /* returning_love_to_yourself.mp3 */,
+				E9BB5F8A0D51252838546CBC /* stress_release_meditation.mp3 */,
+				73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -396,6 +500,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B17D9220D3967B7470B7197 /* Assets.xcassets in Resources */,
+				1017DD499E462F6D1B5B6482 /* anger_management_meditation.mp3 in Resources */,
+				6CF2498F683F291A1EAD6EBB /* breaking_free_abusive_relationship.mp3 in Resources */,
+				67A55EDF8B83FA808DC4B93E /* Disclaimer.pdf in Resources */,
+				4A33A3941F42233C8E329C60 /* dr_hope_closing prayer.mp3 in Resources */,
+				B63B406AB35853F8C186676F /* dr_hope_closing.mp3 in Resources */,
+				832A42224F694FA7052F6092 /* dr_hope_intro.mp4 in Resources */,
+				1328F46864C64C82C27C4369 /* dr_hope_journing.mp3 in Resources */,
+				CF4FD6A23129DF95D705EF85 /* dr_hope_response.mp4 in Resources */,
+				54B6A44591ED5B155DF258B0 /* feminine_energy_pep_talk.mp3 in Resources */,
+				46E44F27F921C24B2101703E /* inner_peace_meditation.mp3 in Resources */,
+				BF937613FAC4D6FC25F8C27D /* internal_conflict_meditation.mp3 in Resources */,
+				BE70065F44562681E4E22342 /* jazz_loop_2.mp3 in Resources */,
+				0B0912946853665558DB3271 /* journal_door_entry.mp4 in Resources */,
+				D07698080270C08E24065A19 /* masculine_energy_pep_talk.mp3 in Resources */,
+				06E71E9A14C6293C19D1AB45 /* mr_hope_greeting.mp4 in Resources */,
+				C48F5DA2A9027A8E7F9E79E2 /* mr_hope_vent_room.mp4 in Resources */,
+				93384E63754302606F09A29B /* mr_hope_walkthrough.mp4 in Resources */,
+				7EBB70C049FDE6E2C9B891FA /* office_entry.mp4 in Resources */,
+				D83ECA9931ACE32E04BE7BD1 /* overcoming_harmful_relationship.mp3 in Resources */,
+				788CB1218544B31CC43A78F3 /* rejuvenation_meditation_dh.mp3 in Resources */,
+				8EC11CC4700A786FF3BFA016 /* rejuvenation_meditation_mh.mp3 in Resources */,
+				2E77DDC98B8C886E138928F6 /* returning_love_to_yourself.mp3 in Resources */,
+				B4206A8DDF554CD47F373F50 /* stress_release_meditation.mp3 in Resources */,
+				08EB7341B9870A35A99B5DD5 /* Calvin_Intro.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
