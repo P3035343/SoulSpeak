@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "dr_hope_office_render.png",
+      "filename" : "dr_hope_office_render_1.jpeg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "dr_hope_office_render_2.jpeg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "dr_hope_office_render.jpeg",
       "idiom" : "universal",
       "scale" : "3x"
     }
