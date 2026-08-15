@@ -265,7 +265,7 @@
 			children = (
 				89462EFE92DBF877D9ECD19F /* AnalyticsView.swift */,
 			);
-			path = Views/Analytics;
+			path = Analytics;
 			sourceTree = "<group>";
 		};
 		8D8F4BF54F3687608F0E3277 /* Centered */ = {
@@ -275,7 +275,7 @@
 				ABBEE040121BF5BC47AD64A1 /* MeditationCatalogView.swift */,
 				10164713547C9DB5D98253D1 /* SoundscapesView.swift */,
 			);
-			path = Views/Centered;
+			path = Centered;
 			sourceTree = "<group>";
 		};
 		0AF496BF7F2B1E1A09F90351 /* Components */ = {
@@ -287,7 +287,7 @@
 				85752ED0EB58C6E382E85810 /* MainHubView.swift */,
 				A5E0524D9599A1C637FE4B60 /* PaywallView.swift */,
 			);
-			path = Views/Components;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		1EC4C4AFB04633244054AC2F /* MoodTracker */ = {
@@ -295,7 +295,7 @@
 			children = (
 				DB8517198D8647108EE747C4 /* MoodTrackerView.swift */,
 			);
-			path = Views/MoodTracker;
+			path = MoodTracker;
 			sourceTree = "<group>";
 		};
 		AD344533E7B4B07BE0A56E41 /* Prayer */ = {
@@ -303,7 +303,7 @@
 			children = (
 				4E527B9177DFAF14D72FA385 /* PrayerOutroView.swift */,
 			);
-			path = Views/Prayer;
+			path = Prayer;
 			sourceTree = "<group>";
 		};
 		D74444016EB8B3DC4BB00B72 /* Settings */ = {
@@ -311,7 +311,7 @@
 			children = (
 				C5265725617D6CCD75E2473C /* SettingsView.swift */,
 			);
-			path = Views/Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		966C237695925F03D72C261A /* VentRoom */ = {
@@ -325,7 +325,7 @@
 				DDB0EBA415265E7955271330 /* VentRecordingView.swift */,
 				C83A9DDA50C643AD6C05E4BE /* VentRoomView.swift */,
 			);
-			path = Views/VentRoom;
+			path = VentRoom;
 			sourceTree = "<group>";
 		};
 		2625E8844A73FF1A99F5C615 /* VoiceJournal */ = {
@@ -335,7 +335,7 @@
 				1683D205EE0ACDD3CF77AA22 /* VoiceJournalView.swift */,
 				D389E6BCEB9013961BED9734 /* WaveformView.swift */,
 			);
-			path = Views/VoiceJournal;
+			path = VoiceJournal;
 			sourceTree = "<group>";
 		};
 		9CC78FD6DCD487E3BA3F29AF /* Welcome */ = {
@@ -346,7 +346,7 @@
 				FB906CC691C59AC2A98B9611 /* VideoPlayerView.swift */,
 				0C8D6B06585CF61A549B5147 /* WelcomeView.swift */,
 			);
-			path = Views/Welcome;
+			path = Welcome;
 			sourceTree = "<group>";
 		};
 		0D7743AC6BC5A2B3CCB76996 /* Mirror */ = {
@@ -357,7 +357,7 @@
 				60172B53D0795D6F9FAF0B04 /* MirrorProgressView.swift */,
 				E741420197A85F433F334FAE /* MirrorAffirmationView.swift */,
 			);
-			path = Views/Mirror;
+			path = Mirror;
 			sourceTree = "<group>";
 		};
 		202D69CB95AAE7D873688595 /* Accountability */ = {
@@ -367,7 +367,7 @@
 				10B0224D7C5BCA62A45AF803 /* AccountabilityEventDetailView.swift */,
 				B1B89D3AE6C66CFC8F0997E5 /* CalvinChatView.swift */,
 			);
-			path = Views/Accountability;
+			path = Accountability;
 			sourceTree = "<group>";
 		};
 		CA1C33D0E46A19B67BEBC59F /* Views */ = {
