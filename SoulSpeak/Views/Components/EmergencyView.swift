@@ -15,6 +15,11 @@ struct EmergencyView: View {
     @State private var breatheIn = false
     @State private var pulseRed = false
     @State private var contactSent = false
+    @State private var showEditContact = false
+    @State private var editName = ""
+    @State private var editPhone = ""
+    @State private var editRelationship = ""
+    @State private var showConfirmSMS = false
 
     private var profile: UserProfile? { profiles.first }
 
@@ -55,6 +60,9 @@ struct EmergencyView: View {
                     } else {
                         contactSentConfirmation
                     }
+
+                    // Edit emergency contact
+                    editContactSection
 
                     // Crisis hotlines
                     hotlinesSection
@@ -234,6 +242,155 @@ struct EmergencyView: View {
                 .padding(.vertical, 12)
                 .frame(maxWidth: .infinity)
                 .background(RoundedRectangle(cornerRadius: 10).fill(Color.white.opacity(0.05)))
+        }
+    }
+
+    // MARK: - Edit Emergency Contact Section
+    private var editContactSection: some View {
+        VStack(spacing: 12) {
+            Button(action: {
+                editName = profile?.emergencyContactName ?? ""
+                editPhone = profile?.emergencyContactPhone ?? ""
+                withAnimation { showEditContact.toggle() }
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "pencil.circle.fill")
+                        .font(.system(size: 16))
+                    Text(profile?.emergencyContactName.isEmpty == false ? "Edit Emergency Contact" : "Set Up Emergency Contact")
+                        .font(.system(size: 13, weight: .semibold))
+                }
+                .foregroundColor(.white.opacity(0.6))
+                .padding(.vertical, 10)
+            }
+
+            // Current contact info display
+            if let p = profile, !p.emergencyContactName.isEmpty {
+                HStack(spacing: 10) {
+                    Image(systemName: "person.circle.fill")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white.opacity(0.4))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(p.emergencyContactName)
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(.white)
+                        Text(p.emergencyContactPhone)
+                            .font(.system(size: 11))
+                            .foregroundColor(.white.opacity(0.5))
+                    }
+                    Spacer()
+                }
+                .padding(12)
+                .background(RoundedRectangle(cornerRadius: 10).fill(Color.white.opacity(0.04)))
+            }
+
+            // Edit form (expandable)
+            if showEditContact {
+                VStack(spacing: 12) {
+                    TextField("Contact Name", text: $editName)
+                        .font(.system(size: 14))
+                        .foregroundColor(.white)
+                        .padding(12)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white.opacity(0.06)))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white.opacity(0.1), lineWidth: 1))
+
+                    TextField("Phone Number", text: $editPhone)
+                        .font(.system(size: 14))
+                        .foregroundColor(.white)
+                        .keyboardType(.phonePad)
+                        .padding(12)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white.opacity(0.06)))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white.opacity(0.1), lineWidth: 1))
+
+                    TextField("Relationship (e.g. Mother, Best Friend)", text: $editRelationship)
+                        .font(.system(size: 14))
+                        .foregroundColor(.white)
+                        .padding(12)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white.opacity(0.06)))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white.opacity(0.1), lineWidth: 1))
+
+                    // Save & Notify button
+                    Button(action: saveAndNotifyContact) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 16))
+                            Text("Save & Notify This Person")
+                                .font(.system(size: 14, weight: .bold))
+                        }
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(editName.isEmpty || editPhone.isEmpty ? Color.gray.opacity(0.3) : Color(red: 0.3, green: 0.7, blue: 0.5))
+                        )
+                    }
+                    .disabled(editName.isEmpty || editPhone.isEmpty)
+
+                    Text("A text will be sent to let them know you've chosen them as your emergency contact.")
+                        .font(.system(size: 10))
+                        .foregroundColor(.white.opacity(0.4))
+                        .multilineTextAlignment(.center)
+                }
+                .padding(16)
+                .background(RoundedRectangle(cornerRadius: 14).fill(Color.white.opacity(0.04)))
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+    }
+
+    // MARK: - Save Contact & Send Introduction SMS
+    private func saveAndNotifyContact() {
+        // Save to profile
+        if let p = profile {
+            p.emergencyContactName = editName
+            p.emergencyContactPhone = editPhone
+        } else {
+            let newProfile = UserProfile(
+                name: "",
+                preferredName: "",
+                emergencyContactName: editName,
+                emergencyContactPhone: editPhone
+            )
+            modelContext.insert(newProfile)
+        }
+
+        // Send introduction SMS to the emergency contact
+        sendIntroductionSMS()
+
+        withAnimation {
+            showEditContact = false
+        }
+    }
+
+    private func sendIntroductionSMS() {
+        let userName = profile?.preferredName.isEmpty == false ? profile!.preferredName : (profile?.name ?? "Someone")
+        let relationship = editRelationship.isEmpty ? "their loved one" : editRelationship
+        let contactName = editName
+
+        let message = """
+        Hi \(contactName),
+
+        \(userName) has chosen you as their Emergency Contact on the MySoulSpeak app — a mental wellness and spiritual health application.
+
+        What this means: If \(userName) ever feels overwhelmed, in crisis, or needs support, the app may reach out to you on their behalf with their location and a message asking for help.
+
+        This is a sign of TRUST and COURAGE. \(userName) is taking real steps to manage their mental health and live a healthier life. Your role is simple: be there. Be open-minded. Be encouraging.
+
+        Here's how you can help:
+        • If you receive an emergency alert, respond with compassion — not judgment
+        • Check in on \(userName) regularly
+        • Encourage their progress — they chose accountability over silence
+
+        Thank you for being someone \(userName) trusts. That matters more than you know.
+
+        — The MySoulSpeak Team
+        (This is an automated message from the MySoulSpeak wellness app)
+        """
+
+        let cleaned = editPhone.replacingOccurrences(of: "[^0-9+]", with: "", options: .regularExpression)
+        let encoded = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        if let url = URL(string: "sms:\(cleaned)&body=\(encoded)") {
+            UIApplication.shared.open(url)
         }
     }
 
