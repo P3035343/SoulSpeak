@@ -1,8 +1,8 @@
 import SwiftUI
 import AVKit
 
-/// Full-screen looping video player that plays bundled MP4 files.
-/// Used for character intro videos (Dr. Hope, Mr. Hope).
+/// Full-screen video player that plays bundled MP4 files.
+/// Optimized for smooth playback with async loading and preroll.
 struct VideoPlayerView: UIViewRepresentable {
     let videoName: String
     let fileExtension: String
@@ -20,9 +20,9 @@ struct VideoPlayerView: UIViewRepresentable {
 }
 
 /// UIView subclass that hosts an AVPlayerLayer for smooth video playback.
+/// Loads asset asynchronously and only plays when ready — no lag.
 class PlayerUIView: UIView {
     private var player: AVPlayer?
-    private var playerLayer: AVPlayerLayer?
     private var looping = false
     var onVideoFinished: (() -> Void)?
 
@@ -33,30 +33,43 @@ class PlayerUIView: UIView {
     func configure(videoName: String, fileExtension: String, looping: Bool) {
         self.looping = looping
 
-        // Ensure audio session allows video playback sound
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print("[SoulSpeak] Video audio session error: \(error)")
-        }
-
         guard let url = Bundle.main.url(forResource: videoName, withExtension: fileExtension) else {
             print("[SoulSpeak] Video not found: \(videoName).\(fileExtension)")
-            // If video not found, skip immediately
-            DispatchQueue.main.async { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
                 self?.onVideoFinished?()
             }
             return
         }
 
-        let asset = AVURLAsset(url: url)
+        // Load asset asynchronously to prevent main thread lag
+        let asset = AVURLAsset(url: url, options: [
+            AVURLAssetPreferPreciseDurationAndTimingKey: false // Faster load
+        ])
+
+        // Load playable status async
+        Task { @MainActor in
+            do {
+                let isPlayable = try await asset.load(.isPlayable)
+                guard isPlayable else {
+                    self.onVideoFinished?()
+                    return
+                }
+                self.setupPlayer(with: asset)
+            } catch {
+                print("[SoulSpeak] Video asset load error: \(error)")
+                self.onVideoFinished?()
+            }
+        }
+    }
+
+    private func setupPlayer(with asset: AVURLAsset) {
         let playerItem = AVPlayerItem(asset: asset)
-        // Buffer immediately for instant playback
-        playerItem.preferredForwardBufferDuration = 5.0
+        // Small buffer for fast start
+        playerItem.preferredForwardBufferDuration = 2.0
 
         player = AVPlayer(playerItem: playerItem)
-        player?.automaticallyWaitsToMinimizeStalling = false
+        // Let it buffer slightly before playing to avoid stutter
+        player?.automaticallyWaitsToMinimizeStalling = true
 
         let avPlayerLayer = layer as! AVPlayerLayer
         avPlayerLayer.player = player
@@ -71,8 +84,23 @@ class PlayerUIView: UIView {
             object: playerItem
         )
 
-        // Start playing immediately
-        player?.play()
+        // Play when ready (observe status)
+        playerItem.addObserver(self, forKeyPath: "status", options: [.new], context: nil)
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "status", let item = object as? AVPlayerItem {
+            if item.status == .readyToPlay {
+                player?.play()
+                item.removeObserver(self, forKeyPath: "status")
+            } else if item.status == .failed {
+                print("[SoulSpeak] Video failed to load: \(item.error?.localizedDescription ?? "unknown")")
+                DispatchQueue.main.async { [weak self] in
+                    self?.onVideoFinished?()
+                }
+                item.removeObserver(self, forKeyPath: "status")
+            }
+        }
     }
 
     @objc private func videoDidEnd() {
@@ -86,11 +114,6 @@ class PlayerUIView: UIView {
         }
     }
 
-    func stopPlayback() {
-        player?.pause()
-        player = nil
-    }
-
     override func layoutSubviews() {
         super.layoutSubviews()
         (layer as? AVPlayerLayer)?.frame = bounds
@@ -99,10 +122,12 @@ class PlayerUIView: UIView {
     deinit {
         NotificationCenter.default.removeObserver(self)
         player?.pause()
+        player = nil
     }
 }
 
-/// SwiftUI wrapper for a looping background video with overlay content.
+/// SwiftUI wrapper for a full-screen background video with skip button.
+/// Optimized: shows black background instantly, video fades in when ready.
 struct FullScreenVideoBackground: View {
     let videoName: String
     let fileExtension: String
@@ -110,9 +135,14 @@ struct FullScreenVideoBackground: View {
     var onFinished: (() -> Void)? = nil
 
     @State private var showSkip = false
+    @State private var videoReady = false
 
     var body: some View {
         ZStack {
+            // Solid black background (prevents flash/white frame)
+            Color.black.ignoresSafeArea()
+
+            // Video player
             VideoPlayerView(
                 videoName: videoName,
                 fileExtension: fileExtension,
