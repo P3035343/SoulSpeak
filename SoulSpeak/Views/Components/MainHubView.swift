@@ -153,28 +153,42 @@ struct MainHubView: View {
             }
         }
         .fullScreenCover(isPresented: $showJournal) {
-            NavigationStack { VoiceJournalView() }
+            TutorialGateView(tutorial: .journal) {
+                NavigationStack { VoiceJournalView() }
+            }
         }
         .fullScreenCover(isPresented: $showConversation) {
             ConversationView(character: selectedCharacter)
         }
         .fullScreenCover(isPresented: $showVent) {
-            VentRoomView()
+            TutorialGateView(tutorial: .vent) {
+                VentRoomView()
+            }
         }
         .fullScreenCover(isPresented: $showCentered) {
-            NavigationStack { CenteredView() }
+            TutorialGateView(tutorial: .centered) {
+                NavigationStack { CenteredView() }
+            }
         }
         .fullScreenCover(isPresented: $showMirror) {
-            NavigationStack { MirrorView() }
+            TutorialGateView(tutorial: .mirror) {
+                NavigationStack { MirrorView() }
+            }
         }
         .fullScreenCover(isPresented: $showMood) {
-            NavigationStack { MoodTrackerView() }
+            TutorialGateView(tutorial: .mood) {
+                NavigationStack { MoodTrackerView() }
+            }
         }
         .fullScreenCover(isPresented: $showAccountability) {
-            NavigationStack { AccountabilityCalendarView() }
+            TutorialGateView(tutorial: .accountability) {
+                NavigationStack { AccountabilityCalendarView() }
+            }
         }
         .fullScreenCover(isPresented: $showPrescription) {
-            NavigationStack { PrescriptionTrackerView() }
+            TutorialGateView(tutorial: .prescriptions) {
+                NavigationStack { PrescriptionTrackerView() }
+            }
         }
         .fullScreenCover(isPresented: $showEmergency) {
             EmergencyView()
