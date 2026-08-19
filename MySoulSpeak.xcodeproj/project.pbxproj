@@ -11,7 +11,7 @@
 		05B249C2541500634D02684F /* VoiceRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2865AAB519B73AC9C9C1884 /* VoiceRecorderService.swift */; };
 		06657EB41C74B2815E9AFD38 /* SoulSpeakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622D6B7546429E84F742BB55 /* SoulSpeakApp.swift */; };
 		06E71E9A14C6293C19D1AB45 /* mr_hope_greeting.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 48934743EC4F28F23FA3B462 /* mr_hope_greeting.mp4 */; };
-		08EB7341B9870A35A99B5DD5 /* Calvin_Intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */; };
+		08EB7341B9870A35A99B5DD5 /* calvin_intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 73A2B5CAC79CA4F176DBEFBE /* calvin_intro.mp4 */; };
 		0954332F1C4DC0FC9CED30E2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E1ED5C1C5E52A07C922A70 /* ContentView.swift */; };
 		0969038929DB979C39628C8C /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB82BFED2DC82F8F9CE3581 /* DisclaimerView.swift */; };
 		0A3336E56A336B7CBF2BE7B0 /* EmergencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEF1E9D6E28FEEAB3F656D2 /* EmergencyView.swift */; };
@@ -110,8 +110,8 @@
 		111A6B4E8887497EEEAFD052 /* PrescriptionTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrescriptionTrackerView.swift; sourceTree = "<group>"; };
 		1683D205EE0ACDD3CF77AA22 /* VoiceJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceJournalView.swift; sourceTree = "<group>"; };
 		1CA6BBCBE74BD05B1A9E106D /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
-		1FB3A78730313807005ACC7C /* taylor_intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = taylor_intro.mp4; path = ../../../Downloads/taylor_intro.mp4; sourceTree = "<group>"; };
-		1FB3A78B30313A6E005ACC7C /* calvin_cancel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = calvin_cancel.mp4; path = ../../../Downloads/calvin_cancel.mp4; sourceTree = "<group>"; };
+		1FB3A78730313807005ACC7C /* taylor_intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = taylor_intro.mp4; sourceTree = "<group>"; };
+		1FB3A78B30313A6E005ACC7C /* calvin_cancel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = calvin_cancel.mp4; sourceTree = "<group>"; };
 		2698E2A990DC2A6858637158 /* journal_door_entry.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = journal_door_entry.mp4; sourceTree = "<group>"; };
 		2A4BBC07C5812CB2D063FCC4 /* jazz_loop_2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jazz_loop_2.mp3; sourceTree = "<group>"; };
 		2CEF1E9D6E28FEEAB3F656D2 /* EmergencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyView.swift; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 		6A4D40512DA7CA29B06F37F1 /* CalvinService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalvinService.swift; sourceTree = "<group>"; };
 		6A8D34FC011A27FF60B37FC7 /* StoreKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitService.swift; sourceTree = "<group>"; };
 		7250A58CB2030936655DBF11 /* Disclaimer.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Disclaimer.pdf; sourceTree = "<group>"; };
-		73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Calvin_Intro.mp4; sourceTree = "<group>"; };
+		73A2B5CAC79CA4F176DBEFBE /* calvin_intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = calvin_intro.mp4; sourceTree = "<group>"; };
 		749D880B9C6C077A5A23C47F /* MoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodEntry.swift; sourceTree = "<group>"; };
 		75E723909D28672D47AEECF6 /* inner_peace_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = inner_peace_meditation.mp3; sourceTree = "<group>"; };
 		78729E1742EC47B77040D333 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
@@ -383,7 +383,7 @@
 				5B561966DD63F276ACA447BE /* rejuvenation_meditation_mh.mp3 */,
 				5C314BD5BF45E286DD3370B5 /* returning_love_to_yourself.mp3 */,
 				E9BB5F8A0D51252838546CBC /* stress_release_meditation.mp3 */,
-				73A2B5CAC79CA4F176DBEFBE /* Calvin_Intro.mp4 */,
+				73A2B5CAC79CA4F176DBEFBE /* calvin_intro.mp4 */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -538,7 +538,7 @@
 				8EC11CC4700A786FF3BFA016 /* rejuvenation_meditation_mh.mp3 in Resources */,
 				2E77DDC98B8C886E138928F6 /* returning_love_to_yourself.mp3 in Resources */,
 				B4206A8DDF554CD47F373F50 /* stress_release_meditation.mp3 in Resources */,
-				08EB7341B9870A35A99B5DD5 /* Calvin_Intro.mp4 in Resources */,
+				08EB7341B9870A35A99B5DD5 /* calvin_intro.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
