@@ -96,6 +96,8 @@
 		F33647097ADFAF6BBDC91CFC /* MedicationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80A06F1952CDA0DB18C31A0 /* MedicationDetailView.swift */; };
 		F600B2FD57C48E13754AC1AE /* TextToSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE0B6440F8A436297371B91 /* TextToSpeechService.swift */; };
 		F749BE8EB8DF4680D1569173 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA6BBCBE74BD05B1A9E106D /* MainTabView.swift */; };
+		1AB2D000E3064C7F9BEEE9DC /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AEB49F965FF45DDBF65B28; };
+		EB1E1F66D214BB57870B7C71 /* TutorialListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF57C57AC570CDA94010908; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,6 +192,8 @@
 		FC60F7C029080AAD3A360B80 /* anger_management_meditation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = anger_management_meditation.mp3; sourceTree = "<group>"; };
 		FCE9D4761C01ECC988F07325 /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
 		FD787163C78F536FBAE3F45D /* ReleaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseView.swift; sourceTree = "<group>"; };
+		72AEB49F965FF45DDBF65B28 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		9BF57C57AC570CDA94010908 /* TutorialListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,6 +452,7 @@
 				0D7743AC6BC5A2B3CCB76996 /* Mirror */,
 				202D69CB95AAE7D873688595 /* Accountability */,
 				14930F6BDF53E71F0C1E7FAF /* Prescription */,
+				A8012AEC4ABAF099C149AB5B /* Tutorial */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -458,6 +463,15 @@
 				C5265725617D6CCD75E2473C /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		A8012AEC4ABAF099C149AB5B /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				72AEB49F965FF45DDBF65B28 /* TutorialView.swift */,
+				9BF57C57AC570CDA94010908 /* TutorialListView.swift */,
+			);
+			path = Tutorial;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -611,6 +625,8 @@
 				9B86DC293CB8EF416E8CE3E7 /* TaylorChatView.swift in Sources */,
 				AFA9A75040D4B69078735AE2 /* PharmacyView.swift in Sources */,
 				52D5ED5976257B1576AC1681 /* PrescriptionDisclaimerView.swift in Sources */,
+				1AB2D000E3064C7F9BEEE9DC /* TutorialView.swift in Sources */,
+				EB1E1F66D214BB57870B7C71 /* TutorialListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

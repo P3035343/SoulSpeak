@@ -15,6 +15,7 @@ struct SettingsView: View {
     @State private var reminderMinute = 0
     @State private var showResourceLocator = false
     @State private var showAbout = false
+    @State private var showTutorials = false
 
     private var currentSettings: UserSettings? { settings.first }
 
@@ -31,6 +32,9 @@ struct SettingsView: View {
 
             // About section
             aboutSection
+
+            // Tutorials section
+            tutorialsSection
 
             // Data section
             dataSection
@@ -57,6 +61,9 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showAbout) {
             AboutView()
+        }
+        .sheet(isPresented: $showTutorials) {
+            TutorialListView()
         }
     }
 
@@ -220,6 +227,31 @@ struct SettingsView: View {
             }
         } header: {
             Text("About")
+        }
+    }
+
+    // MARK: - Tutorials
+    private var tutorialsSection: some View {
+        Section {
+            Button(action: { showTutorials = true }) {
+                HStack(spacing: 12) {
+                    settingIcon("play.circle.fill", color: Color(red: 0.3, green: 0.7, blue: 0.9))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("How to Use MySoulSpeak")
+                            .font(SSTypography.body)
+                            .foregroundColor(SSColors.textPrimary)
+                        Text("Watch interactive tutorials for each feature")
+                            .font(SSTypography.small)
+                            .foregroundColor(SSColors.textSecondary)
+                    }
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(SSColors.textSecondary)
+                }
+            }
+        } header: {
+            Text("Tutorials")
         }
     }
 
