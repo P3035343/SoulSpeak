@@ -12,6 +12,7 @@ struct SoulSpeakApp: App {
             AccountabilityEvent.self,
             Medication.self,
             PharmacyInfo.self,
+            DoctorInfo.self,
         ])
         let modelConfiguration = ModelConfiguration(
             schema: schema,

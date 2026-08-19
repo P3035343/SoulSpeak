@@ -98,6 +98,8 @@
 		F749BE8EB8DF4680D1569173 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA6BBCBE74BD05B1A9E106D /* MainTabView.swift */; };
 		1AB2D000E3064C7F9BEEE9DC /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AEB49F965FF45DDBF65B28; };
 		EB1E1F66D214BB57870B7C71 /* TutorialListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF57C57AC570CDA94010908; };
+		E683AE3F994452FD2A3D4E91 /* PharmacySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74156AA24D7F31D30580BBE5; };
+		083EDE3C199A373BA380B380 /* DoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63793966CAC44CB35A085C; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -194,6 +196,8 @@
 		FD787163C78F536FBAE3F45D /* ReleaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseView.swift; sourceTree = "<group>"; };
 		72AEB49F965FF45DDBF65B28 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		9BF57C57AC570CDA94010908 /* TutorialListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialListView.swift; sourceTree = "<group>"; };
+		74156AA24D7F31D30580BBE5 /* PharmacySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PharmacySearchView.swift; sourceTree = "<group>"; };
+		2F63793966CAC44CB35A085C /* DoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +241,8 @@
 				F80A06F1952CDA0DB18C31A0 /* MedicationDetailView.swift */,
 				9B48871348450E07C6D557C4 /* TaylorChatView.swift */,
 				87F6549E7FE055B37A9568BF /* PharmacyView.swift */,
+				74156AA24D7F31D30580BBE5 /* PharmacySearchView.swift */,
+				2F63793966CAC44CB35A085C /* DoctorView.swift */,
 				B4AFA3593AC14244DFA48982 /* PrescriptionDisclaimerView.swift */,
 			);
 			path = Prescription;
@@ -627,6 +633,8 @@
 				52D5ED5976257B1576AC1681 /* PrescriptionDisclaimerView.swift in Sources */,
 				1AB2D000E3064C7F9BEEE9DC /* TutorialView.swift in Sources */,
 				EB1E1F66D214BB57870B7C71 /* TutorialListView.swift in Sources */,
+				E683AE3F994452FD2A3D4E91 /* PharmacySearchView.swift in Sources */,
+				083EDE3C199A373BA380B380 /* DoctorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

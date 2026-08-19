@@ -16,6 +16,8 @@ struct PrescriptionTrackerView: View {
     @State private var showAddMedication = false
     @State private var showTaylorChat = false
     @State private var showPharmacy = false
+    @State private var showPharmacySearch = false
+    @State private var showDoctors = false
     @State private var showDisclaimer = true
     @State private var selectedMedication: Medication? = nil
     @AppStorage("hasAcceptedRxDisclaimer") private var hasAcceptedRxDisclaimer = false
@@ -56,6 +58,12 @@ struct PrescriptionTrackerView: View {
         }
         .sheet(isPresented: $showPharmacy) {
             PharmacyView()
+        }
+        .sheet(isPresented: $showPharmacySearch) {
+            PharmacySearchView()
+        }
+        .sheet(isPresented: $showDoctors) {
+            DoctorView()
         }
     }
 
@@ -410,15 +418,22 @@ struct PrescriptionTrackerView: View {
 
     // MARK: - Quick Actions
     private var quickActionsSection: some View {
-        HStack(spacing: 12) {
-            quickActionButton(icon: "barcode.viewfinder", label: "Scan Rx", color: .blue) {
-                showAddMedication = true
+        VStack(spacing: 10) {
+            HStack(spacing: 12) {
+                quickActionButton(icon: "barcode.viewfinder", label: "Scan Rx", color: .blue) {
+                    showAddMedication = true
+                }
+                quickActionButton(icon: "location.fill", label: "Find Pharmacy", color: .green) {
+                    showPharmacySearch = true
+                }
             }
-            quickActionButton(icon: "cross.case.fill", label: "Pharmacy", color: .green) {
-                showPharmacy = true
-            }
-            quickActionButton(icon: "questionmark.circle.fill", label: "Ask Taylor", color: .purple) {
-                showTaylorChat = true
+            HStack(spacing: 12) {
+                quickActionButton(icon: "stethoscope", label: "My Doctors", color: Color(red: 0.3, green: 0.6, blue: 0.9)) {
+                    showDoctors = true
+                }
+                quickActionButton(icon: "questionmark.circle.fill", label: "Ask Taylor", color: .purple) {
+                    showTaylorChat = true
+                }
             }
         }
     }
