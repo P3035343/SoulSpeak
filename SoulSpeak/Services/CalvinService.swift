@@ -58,7 +58,7 @@ class CalvinService: ObservableObject {
     - Sync with their real calendar
 
     RESPONSE STYLE:
-    - MAX 3 short paragraphs
+    - Give thorough, complete answers. No length limits.
     - Be practical and action-oriented
     - If they ask to schedule something, confirm the details clearly
     - If they're making excuses, call it out lovingly
@@ -155,7 +155,7 @@ class CalvinService: ObservableObject {
         // System prompt with event context
         contents.append([
             "role": "user",
-            "parts": [["text": systemPrompt + "\n\n---\nUSER'S CURRENT SCHEDULE CONTEXT:\n\(eventContext)\n\n---\nRESPONSE LENGTH RULE: MAX 3 short paragraphs. Be concise.\n\n---\nUser says: \"\(text)\""]]
+            "parts": [["text": systemPrompt + "\n\n---\nUSER'S CURRENT SCHEDULE CONTEXT:\n\(eventContext)\n\n---\nRespond thoroughly. Give the user everything they need to know.\n\n---\nUser says: \"\(text)\""]]
         ])
 
         // Recent conversation history
@@ -180,7 +180,7 @@ class CalvinService: ObservableObject {
                 "temperature": 0.8,
                 "topP": 0.9,
                 "topK": 40,
-                "maxOutputTokens": 1024,
+                "maxOutputTokens": 8192,
             ]
         ]
 

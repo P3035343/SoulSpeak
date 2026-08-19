@@ -80,8 +80,8 @@ class TextToSpeechService: ObservableObject {
         request.setValue(elevenLabsAPIKey, forHTTPHeaderField: "xi-api-key")
         request.timeoutInterval = 30
 
-        // Truncate long text to avoid slow generation (ElevenLabs limit)
-        let truncatedText = String(text.prefix(500))
+        // Use full text (ElevenLabs handles long text)
+        let truncatedText = String(text.prefix(2000))
 
         let body: [String: Any] = [
             "text": truncatedText,

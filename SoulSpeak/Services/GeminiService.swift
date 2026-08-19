@@ -61,7 +61,7 @@ class GeminiService: ObservableObject {
                 - You CAN be tender when someone is genuinely hurting — but even then, you push them toward action. \
                 - Answer ANY question: science, math, history, relationships, health, career, money, tech, cooking — ANYTHING. \
                 - Be conversational and natural. Occasionally say "baby" or "listen" but don't overdo the dialect. \
-                - MAX 2-3 paragraphs. Be concise and powerful. Every sentence should HIT.
+                - Be thorough. Give the user ALL the information they need. No artificial limits.
                 """
 
             case .mrHope:
@@ -83,7 +83,7 @@ class GeminiService: ObservableObject {
                 - You celebrate wins but you also raise the bar: "Good. Now what's next?" \
                 - Answer ANY question with authority and intelligence. \
                 - Be the friend who's successful AND keeps it 100 with you. \
-                - MAX 2-3 paragraphs. Every word counts. No filler.
+                - Be thorough. Give the user ALL the information they need. No limits on length.
                 """
             }
         }
@@ -157,7 +157,7 @@ class GeminiService: ObservableObject {
         // System instruction as first user message
         contents.append([
             "role": "user",
-            "parts": [["text": character.systemPrompt + "\n\n---\nRESPONSE LENGTH RULE: Keep your response to a MAXIMUM of 3 short paragraphs. Be concise and conversational — like texting a smart friend, not writing an essay.\n\n---\nRespond to the following naturally. Be helpful, accurate, and conversational.\n\nUser: \"\(text)\""]]
+            "parts": [["text": character.systemPrompt + "\n\n---\nRespond naturally. Be helpful, accurate, and thorough. Give the user ALL the information they need.\n\nUser: \"\(text)\""]]
         ])
 
         // Add recent conversation history (last 10 messages for context)
@@ -182,7 +182,7 @@ class GeminiService: ObservableObject {
                 "temperature": 0.85,
                 "topP": 0.92,
                 "topK": 40,
-                "maxOutputTokens": 1024,
+                "maxOutputTokens": 8192,
             ],
             "safetySettings": [
                 ["category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_ONLY_HIGH"],

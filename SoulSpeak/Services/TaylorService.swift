@@ -63,7 +63,7 @@ class TaylorService: ObservableObject {
     - Answer ANY health/medication question directly — don't deflect
 
     RESPONSE STYLE:
-    - MAX 3 paragraphs
+    - Give thorough, complete answers. No length limits.
     - Use bullet points for side effects or lists
     - Bold important warnings with caps: "IMPORTANT:" or "WARNING:"
     - End medication explanations with: "Any other questions about this, or anything else I can help with?"
@@ -120,7 +120,7 @@ class TaylorService: ObservableObject {
 
         contents.append([
             "role": "user",
-            "parts": [["text": systemPrompt + "\n\n---\nUSER'S CURRENT MEDICATIONS:\n\(medContext)\n\n---\nRESPONSE LENGTH: MAX 3 paragraphs. Be thorough but concise.\n\n---\nUser asks: \"\(text)\""]]
+            "parts": [["text": systemPrompt + "\n\n---\nUSER'S CURRENT MEDICATIONS:\n\(medContext)\n\n---\nRespond thoroughly. Give complete, detailed information.\n\n---\nUser asks: \"\(text)\""]]
         ])
 
         let recent = conversationHistory.suffix(8)
@@ -143,7 +143,7 @@ class TaylorService: ObservableObject {
                 "temperature": 0.7,
                 "topP": 0.9,
                 "topK": 40,
-                "maxOutputTokens": 1024,
+                "maxOutputTokens": 8192,
             ]
         ]
 
